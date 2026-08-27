@@ -1,14 +1,30 @@
 import reactLogo from "../assets/hero.png"
 import logo from "../assets/fwallet-icon.svg"
+import { useLocation } from "react-router-dom";
+
+const pageTitles = {
+  "/Dashboard": "لوحة التحكم",
+  "/analytics": "التحليلات والتدفقات",
+  "/accounts": "الحسابات المربوطة",
+  "/add-account": "إضافة حساب جديد",
+  "/transactions": "سجل المعاملات",
+  "/single-transfer": "تحويل فردي بين حسابين",
+  "/multi-transfer": "تحويل متعدد المصادر",
+  "/notifications": "الإشعارات والتنبيهات",
+  "/sync-status": "حالة مزامنة المزودين",
+  "/settings": "إعدادات الحساب والربط",
+};
 export function Header() {
+    const location = useLocation();
+    const pageTitle = pageTitles[location.pathname] || "لوحة التحكم"
   return (
   <div className="header">
     <div className="header-container">
-      <button className="logo-container">
-          <img src={logo} alt="logo" className="logo"/>
-          <h2>FWallet</h2>
-          <p>تحكم مالي شامل من مكان واحد</p>
-        </button>
+      <div className="right-side">
+       
+        <h3>FWallet/</h3>
+        <h3>{pageTitle}</h3>
+          </div>
   <div className="left-side ">
    <button className="sync">
     <span>مزامنة الحسابات</span>

@@ -6,19 +6,16 @@ export function AppLayout() {
   return (
     <div className="app-shell">
       <div className="app-main">
-        <header className="app-header" id="header">
+          <header className="app-header" id="header">
           <Header></Header>
         </header>
-        <div className="app-container">
-
            <aside className="app-sidebar" id="sidebar">
           <SideBar></SideBar>
         </aside>
-        <main  id="page-content">
-          <Outlet></Outlet>
+           <main  id="page-content">
+            <Outlet></Outlet>
         </main>
-        </div>
-       
+        <footer>جميع الحقوق محفوظة لدى SmartSegmmaSoft</footer>
       </div>
     </div>
   );

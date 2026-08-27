@@ -52,6 +52,7 @@ input, textarea, select {
     font: inherit;
 }
 .header{
+    
     position: sticky;
     top: 0;
     z-index: 30;
@@ -59,20 +60,21 @@ input, textarea, select {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    border-right: 1px solid rgba(226, 232, 240, 0.9);
 }
 .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 1280px;
+    /* max-width: 1280px; */
     margin:auto;
     padding-left: 12px;
     padding-right: 12px;
     height:64px;
 }
 
-@media (min-width: 640px) {
+/* @media (min-width: 640px) {
     .header-container {
         padding-left: 24px;
         padding-right: 24px;
@@ -85,7 +87,13 @@ input, textarea, select {
         padding-left: 10%;
         padding-right: 10%;
     }
-}
+} */
+ .header .right-side{
+    display: flex;
+    font-size: clamp(1rem, 2vw, 1.15rem);
+
+
+ }
 .header .left-side{
     display: flex;
     justify-content: center;
@@ -93,7 +101,7 @@ input, textarea, select {
     text-align: center;
     gap: 15px;
 }
-.header .profile-head-img{
+.profile-head-img{
     width:50px;
     height: 50px;
     border-radius: 50%;
@@ -171,6 +179,7 @@ input, textarea, select {
     
     color:#475569;
     background: transparent;
+    border-radius: 20px;
     font-size: 20px;
     font-weight: 600;
     transition:all 150ms ease;
@@ -180,40 +189,16 @@ input, textarea, select {
     color: #0F172A;
     background-color: #F1F5F9;
 }
+.header .notification:active {
+    color: #0F172A;
+    background-color: #094581;
+}
 .header .transfer,.header .sync {
     display: none;
 }
-.logo{
-    width:50px;
-    height:100px;
-}
 
-.logo-container{
-    position: relative;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    color:var(--primary-color);
-    font-weight: bold;
-}
-.logo-container h2{
-    position: absolute;
-    top:20px;
-    right:40px;
-    letter-spacing:0px;
-    font-weight:bolder;
-}
-.logo-container p{
-    position: absolute;
-    font-size: 14px;
-    max-width: max-content;
-    width:200px;
-    right:50px;
-    top:50px;
-    color:#334155;
-}
 
-@media (min-width: 640px) {
+@media (min-width: 665px) {
   .header  .transfer,.header .sync{
         display: inline-flex;
     }
@@ -223,16 +208,21 @@ input, textarea, select {
 /* SideBar */
 
 .app-sidebar{
-     width: 256px;
     flex-shrink: 0;
     display: none;
     background-color: #FFFFFF;
     border: 1px solid rgba(226, 232, 240, 0.8);
-    border-radius: 24px;
-    padding: 16px;
+    padding: 5px;
     user-select: none;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
+.app-sidebar hr {
+  width: 85%;
+  height: 2px;
+  margin: 10px auto;
+  background-color:var(--primary-color);
+}
+
 
 @media (min-width: 1024px) {
     .app-sidebar {
@@ -262,12 +252,14 @@ input, textarea, select {
 
     border-radius: 12px;
     color: #475569;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
 
     text-align: right;
-
     transition: all 150ms ease;
+    svg{
+        width:15px;
+    }
 }
 
 .nav-item:hover {
@@ -295,4 +287,76 @@ input, textarea, select {
     border-radius: 9999px;
     background-color: #E2E8F0;
     color:#334155;
+}
+.logo{
+    width:50px;
+    height:60px;
+}
+
+.logo-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color:var(--primary-color);
+    font-weight: bold;
+    padding-right:10px;
+}
+.logo-container h2{
+    position: absolute;
+    top:7px;
+    right:50px;
+    letter-spacing:0px;
+    font-weight:bolder;
+}
+.logo-container p{
+    position: absolute;
+    font-size: 12px;
+    max-width: max-content;
+    width:200px;
+    right:60px;
+    top:35px;
+    color:#334155;
+}
+.profile{
+    display: flex;
+    align-items: center;
+    padding:5px;
+    gap:6px;
+}
+
+.profile-img{
+    width:50px;
+    border-radius: 50%;
+    border:1px solid var(--primary-color)
+}
+.profile-title{
+        h6{
+            background-color:rgb(26, 255, 26);
+            border-radius: 20px;
+            color:black;
+        }
+        p{
+                font-family: "Inter", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+
+        }
+}
+
+.logout-sidebar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   color:red;
+   margin-top:6px;
+   padding:4px;
+   width:100%;
+   gap:6px;
+   font-weight:600;
+   background-color:#F1F5F9 ;
+   border-radius: 12px;
+}
+.logout-sidebar:hover{
+      background-color: rgb(226 232 240 / 80%);
 }

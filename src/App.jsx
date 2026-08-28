@@ -21,9 +21,9 @@ export default function App(){
             <Route path="/login" element={<LoginPage/>}></Route>
             {/* <Route path="/singin" element={<SinginPage/>}/> */}
           </Route>
-          <Route element={<AppDataProvider><ProtectedRoute/></AppDataProvider>}>
+          <Route element={<ProtectedRoute/>}>
          
-            <Route element={<AppLayout/>}>
+            <Route element={<AppDataProvider><AppLayout/></AppDataProvider>}>
               <Route path="/" element={<WelcomePage/>}/>
               <Route path="/dashboard" element={<Dashboard/>}> </Route>
                 <Route path="/notifications" element={<NotificationPage/>}> </Route>

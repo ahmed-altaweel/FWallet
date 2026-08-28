@@ -5,6 +5,7 @@ import { httpClient } from '../../shared/utils/HttClient';
 const AuthContext=createContext(null)
 export function AuthProvider({children}){
     const [isLoggedIn,setIsLoggedIn]=useState(false);
+    const [token,setToken]=useState("")
     async function login(username,password){
         const users = await httpClient.get("usersData.json");
         const user = Array.isArray(users) ? users.find(item => item.userName === username && item.password === password) : null;
@@ -19,7 +20,7 @@ export function AuthProvider({children}){
     }
 
     return (
-        <AuthContext.Provider value={{isLoggedIn,login,logout}}>
+        <AuthContext.Provider value={{isLoggedIn,token,login,logout}}>
             {children}
         </AuthContext.Provider>
     )

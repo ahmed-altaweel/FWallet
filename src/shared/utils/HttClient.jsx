@@ -1,3 +1,5 @@
+
+
 const BASE_URL = "/data";
 
 async function handleResponse(response) {
@@ -25,19 +27,26 @@ async function handleResponse(response) {
   return data;
 }
 
-async function post(endpoint, body) {
+async function post(endpoint, body,token) {
+  
   const response = await fetch(`${BASE_URL}/${endpoint}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+       "Content-Type": "application/json"
+      ,"Authorization":`Bearer ${token}`
+     },
     body: JSON.stringify(body),
   });
   return handleResponse(response);
 }
 
-async function get(endpoint) {
+async function get(endpoint,token) {
+    
   const response = await fetch(`${BASE_URL}/${endpoint}`, {
     method: "GET",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json"
+      ,"Authorization":`Bearer ${token}`
+     },
   });
   return handleResponse(response);
 }

@@ -1,5 +1,5 @@
 import reactLogo from "../assets/hero.png"
-import logo from "../assets/fwallet-icon.svg"
+
 import { useLocation } from "react-router-dom";
 
 const pageTitles = {

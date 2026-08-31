@@ -8,6 +8,8 @@ import { Dashboard } from "./features/dashboard/dashboard.page";
 import { NotificationPage } from "./features/notifications/notification.page";
 import { AppDataProvider } from "./core/state/AppDataContext";
 import { LoginPage } from "./features/auth/login.page";
+import { SignupPage } from "./features/auth/signup.page";
+import "./features/auth/auth.style.css"
 
 export default function App(){
   return (
@@ -19,7 +21,7 @@ export default function App(){
         <Routes>
           <Route element={<AuthLayout/>}>
             <Route path="/login" element={<LoginPage/>}></Route>
-            {/* <Route path="/singin" element={<SinginPage/>}/> */}
+            <Route path="/signup" element={<SignupPage/>}/>
           </Route>
           <Route element={<ProtectedRoute/>}>
          

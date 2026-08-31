@@ -13,7 +13,7 @@ import {
   LogOut,
 } from "lucide-react";
 import reactLogo from "../assets/hero.png";
-import logo from "../assets/fwallet-icon.svg";
+
 import { useAppData } from "../core/state/AppDataContext";
 
 const MENU_SECTIONS = [
@@ -88,7 +88,7 @@ export function SideBar() {
   return (
     <>
       <button className="logo-container">
-        <img src={logo} alt="logo" className="logo" />
+        <img src="/fwallet-icon.svg"alt="logo" className="logo" />
         <h2>FWallet</h2>
         <p>تحكم مالي شامل من مكان واحد</p>
       </button>

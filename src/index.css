@@ -1,19 +1,46 @@
+/* .app-shell{
+  min-width: 100vw;
+
+} */
 .app-main{
+  width:100%;
   display: grid;
 
     grid-template-columns:  240px 1fr;
-    grid-template-rows: 80px 1fr 60px;
+    grid-template-rows: 80px minmax(0, 1fr) 60px;
 
     min-height: 100vh;
-    
+
+
 
 }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+.app-main::-webkit-scrollbar{
+  width: 10px;
+}
+
 .app-sidebar{
     grid-column: 1;
     grid-row: 1 / 4;
     position: sticky;
      top: 0;
-     max-height: 100vh;
+     height: 100vh;
 }
 .app-header{
   grid-column: 2;
@@ -25,6 +52,8 @@
     grid-column: 2;
     grid-row: 2;
     padding:30px;
+    min-height: 0;
+  overflow-y: auto;
 }
 footer{
    grid-column: 2;
@@ -32,6 +61,8 @@ footer{
     display: flex;
     align-items: center;
     justify-content: center;
+    position: static;
+    bottom: 0;
 }
 
 
@@ -55,6 +86,7 @@ footer{
     grid-row: 2;
     width: 100%;
     padding: 20px;
+  
   }
 
   footer {

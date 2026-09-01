@@ -1,3 +1,4 @@
+import {ProviderChart} from "./ProvideCharts.jsx"
 export function TotalBalanceCard({ currency, balance, accounts }) {
   const formattedBalance = new Intl.NumberFormat("en-EG").format(balance);
 
@@ -8,10 +9,11 @@ export function TotalBalanceCard({ currency, balance, accounts }) {
         <span className="amount">{formattedBalance}</span>
         <span className="currency">{currency}</span>
       </div>
-      <div className="total-accounts">
+      {/* <div className="total-accounts">
         <span>الحسابات النشطة: </span>
         <span className="accounts-count">{accounts}</span>
-      </div>
+      </div> */}
+      <ProviderChart title={"حصة كل محفظة"}/>
     </div>
   );
 }

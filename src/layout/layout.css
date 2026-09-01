@@ -5,12 +5,7 @@
     direction: rtl;
   
 }
-:root{
-    --primary-color:#0D2A4A;
-    --secondry-color: #22D3EE;
-    --bg-primary: rgba(255, 255, 255, 0.9);
-    --bg-secondry:#F1F5F9;
-}
+
 
 html {
     scroll-behavior: smooth;
@@ -20,10 +15,9 @@ body {
     /* font-family: Arial, Helvetica, sans-serif; */
     line-height: 1.5;
     color: #222;
-    background-color:var(--bg-primary);
     -webkit-font-smoothing: antialiased;
     font-family:"IBM Plex Sans Arabic", Arial, sans-serif;
-    transition: all 0.20s ease;
+   
    
 }
 
@@ -53,11 +47,10 @@ input, textarea, select {
     font: inherit;
 }
 .header{
-    
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+
+
+    background-color: var( --primary-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(226, 232, 240, 0.9);
@@ -211,7 +204,7 @@ input, textarea, select {
 .app-sidebar{
     flex-shrink: 0;
     display: none;
-    background-color: #FFFFFF;
+    background-color: var(--primary-bg);
     border: 1px solid rgba(226, 232, 240, 0.8);
     padding: 5px;
     user-select: none;

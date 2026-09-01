@@ -25,4 +25,5 @@ export function BalanceChart(){
         currency: "USD",
     },
 ];
+
 }

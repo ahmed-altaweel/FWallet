@@ -2,10 +2,43 @@
   min-width: 100vw;
 
 } */
+:root{
+    /* --- الألوان الأساسية (كما اقترحتها) --- */
+    --primary-color:#0D2A4A;      /* Navy - اللون الرئيسي */
+    --secondry-color:#22D3EE;     /* Cyan - لون التمييز/الأكشن */
+    --primary-bg:#ffffff;
+    --secondry-bg:#F1F5F9;
+
+    /* --- تدرجات مشتقة من primary (للنصوص والخلفيات الداكنة) --- */
+    --primary-700:#123A63;        /* أفتح شوية من primary، للـ hover/tooltip */
+    --primary-500:#3E5C7D;        /* للعناوين الثانوية فوق خلفية داكنة */
+    --primary-300:#8FA3B8;        /* نص هادئ/muted فوق خلفية داكنة */
+    --primary-100:#DCE4EC;        /* حدود فاتحة جداً فوق خلفية داكنة */
+
+    /* --- تدرجات مشتقة من secondry (cyan) للتمييز --- */
+    --secondry-600:#0EA5C4;       /* cyan أغمق قليلاً - نص/أيقونات فوق أبيض */
+    --secondry-100:#CFFAFE;       /* خلفية شارة/Badge فاتحة */
+
+    /* --- نصوص عامة (فوق الخلفيات الفاتحة) --- */
+    --text-primary:#0D2A4A;       /* نفس primary، للعناوين */
+    --text-secondary:#5B6B7C;     /* نص ثانوي رمادي-أزرق فوق أبيض */
+    --text-muted:#94A3B8;         /* نص خافت جداً */
+
+    /* --- عناصر مساعدة --- */
+    --border-light:#E5EAF0;       /* حدود فوق خلفية فاتحة */
+    --white-color:#ffffff;
+    --smoke-color1:rgb(255 255 255 / 85%); /* نص شبه أبيض فوق الداكن */
+
+    --shadow-soft: 0 0 10px 1px rgba(13, 42, 74, 0.07);
+}
+ body{
+  background-color: var(--primary-bg);
+ }
+
 .app-main{
   width:100%;
   display: grid;
-
+   
     grid-template-columns:  240px 1fr;
     grid-template-rows: 80px minmax(0, 1fr) 60px;
 
@@ -47,13 +80,15 @@
     grid-row: 1;
     position: sticky;
     top:0;
+    z-index: 1000;
 }
 #page-content{
     grid-column: 2;
     grid-row: 2;
-
+  background-color:var(--primary-bg);
     min-height: 0;
   overflow-y: auto;
+
 }
 footer{
    grid-column: 2;
@@ -85,8 +120,8 @@ footer{
   #page-content {
     grid-row: 2;
     width: 100%;
-    padding: 20px;
   
+
   }
 
   footer {

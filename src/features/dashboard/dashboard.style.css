@@ -6,6 +6,7 @@
 .dashboard{
     position: relative;
     display: flex;
+    flex-direction: column;
     width:100%;
    
     border-radius: 12px;
@@ -54,13 +55,18 @@
     padding-right: 10px;
     padding-left:10px;
 
- width:33%;
+
  max-width: 50%;
- min-width: 200px;
+ min-width: 260px;
  border-radius: 12px;
 
  gap:5px;
  position: relative;
+}
+@media (max-width:570px) {
+    .total-balance-card{
+         max-width: 100%;
+    }
 }
 
 .total-balance{
@@ -100,6 +106,7 @@
     position: relative;
     isolation: isolate;
     max-width: 500px;
+   
    
 }
 
@@ -196,5 +203,249 @@
 
 .provider-chart__tooltip-value {
      color: var(--primary-300);
+}
+
+.transactions-chart{
+    margin-top: 40px;
+      width: 100%;
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+   color: var(--text-primary);
+    p{
+    font-size: 20px;
+    font-weight: 600;
+    }
+
+    hr{
+   height: 2px;
+   border: none;
+   background-color: var(--secondry-color);
+   border-radius: 12px;
+
+}
+}
+
+/* transactions chart */
+
+.transaction-chart {
+
+    width: 100%;
+
+    background:var(--smoke-color1);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: var(--shadow-soft);
+    border-radius: 16px;
+
+    padding: 10px 10px 0px;
+
+    color: #ffffff;
+
+    box-sizing: border-box;
+    img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+
+}
+tspan {
+    fill: var(--primary-color);
+}
+
+.transaction-chart-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-bottom: 10px;
+
+    margin-bottom: 10px;
+
+    border-bottom: 2px solid var(--primary-700);
+}
+
+
+.transaction-chart-title {
+    margin: 0;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+
+
+.transaction-net {
+    text-align: left;
+}
+
+
+.transaction-net-label {
+    margin-bottom: 2px;
+
+    color: #0039ff;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.transaction-net-value {
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+
+.transaction-net-value.positive {
+    color: #2dd4bf;
+}
+
+
+.transaction-net-value.negative {
+    color: #fb7185;
+}
+
+
+
+.transaction-legend {
+    display: flex;
+
+    gap: 24px;
+
+    margin-bottom: 8px;
+
+    padding-right: 4px;
+}
+
+
+.transaction-legend-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 13px;
+}
+
+
+.transaction-legend-dot {
+    width: 10px;
+
+    height: 10px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    display: inline-block;
+}
+
+
+.income-dot {
+    background: #2dd4bf;
+}
+
+
+.expense-dot {
+    background: #fb7185;
+}
+
+
+.transaction-legend-label {
+    color:var(--text-primary);
+}
+
+
+.transaction-legend-value {
+    color: #ffffff;
+
+    font-weight: 600;
+}
+
+
+.transaction-chart-container {
+    width: 100%;
+
+    min-width: 0;
+}
+
+
+
+.transaction-tooltip {
+    min-width: 150px;
+
+    padding: 12px 14px;
+
+    background: var(--primary-color);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 10px;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+
+    direction: rtl;
+}
+
+
+.transaction-tooltip-date {
+    margin-bottom: 8px;
+
+    color: #8b95b8;
+
+    font-size: 12px;
+
+    text-align: right;
+}
+
+
+.transaction-tooltip-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 4px;
+
+    font-size: 13px;
+}
+
+
+.transaction-tooltip-name {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #e6e9f5;
+}
+
+
+.transaction-tooltip-dot {
+    width: 8px;
+
+    height: 8px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    display: inline-block;
+}
+
+
+.transaction-tooltip-value {
+    color: #ffffff;
+
+    font-weight: 600;
 }
 

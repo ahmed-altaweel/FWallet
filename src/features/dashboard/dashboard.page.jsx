@@ -1,5 +1,6 @@
 import { useAuth } from "../../core/auth/AuthContext";
 import {TotalBalanceCard} from "./totalCard.jsx"
+import {TransactionChart} from "./TransactionsChart.jsx"
 import "./dashboard.style.css"
 export function Dashboard(){
     const{token}=useAuth()
@@ -41,6 +42,13 @@ export function Dashboard(){
                     />
                 })}
                 </div>
+            </div>
+            <div className="transactions-chart">
+                 <p className="transaction-chart-title">
+                    التدفقات المالية
+                </p>
+                <hr />
+                <TransactionChart/>
             </div>
         </div>
          </>

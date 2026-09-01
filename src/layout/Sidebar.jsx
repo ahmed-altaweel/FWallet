@@ -15,7 +15,8 @@ import {
 import reactLogo from "../assets/hero.png";
 
 import { useAppData } from "../core/state/AppDataContext";
-
+import { useAuth } from "../core/auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 const MENU_SECTIONS = [
   {
     title: "الرئيسية",
@@ -69,6 +70,7 @@ function navLinkClassName({ isActive }) {
 }
 
 function MenuItem({ to, label, icon: Icon, badgeValue }) {
+
   return (
     <li>
       <NavLink className={navLinkClassName} to={to}>
@@ -84,6 +86,8 @@ function MenuItem({ to, label, icon: Icon, badgeValue }) {
 
 export function SideBar() {
   const { data } = useAppData();
+  const {logout}=useAuth()
+  const navigate=useNavigate();
 
   return (
     <>
@@ -124,7 +128,7 @@ export function SideBar() {
             <h6>جلسة نشطة</h6>
           </div>
         </button>
-        <button className="logout-sidebar">
+        <button className="logout-sidebar"  onClick={()=>{logout() ;navigate("/login")}}>
           <LogOut size={18} />
           <p>تسجيل الخروج</p>
         </button>

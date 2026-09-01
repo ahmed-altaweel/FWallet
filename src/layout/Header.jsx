@@ -1,5 +1,5 @@
 import reactLogo from "../assets/hero.png"
-
+import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 const pageTitles = {
@@ -15,6 +15,7 @@ const pageTitles = {
   "/settings": "إعدادات الحساب والربط",
 };
 export function Header() {
+  const navigate=useNavigate();
     const location = useLocation();
     const pageTitle = pageTitles[location.pathname] || "لوحة التحكم"
   return (
@@ -30,11 +31,11 @@ export function Header() {
     <span>مزامنة الحسابات</span>
     <i className="fa-solid fa-rotate"></i>
    </button>
-    <button  className="transfer">
+    <button  className="transfer" onClick={()=>{navigate("/single-transfer")}}>
     <span>تحويل مالي جديد</span>
     <i className="fa-regular fa-paper-plane"></i>
   </button>
-      <button className="notification">
+      <button className="notification" onClick={()=>{navigate("/notifications")}}>
       <i className="fa-regular fa-bell"></i>
     </button>
      <div className="header-profile">

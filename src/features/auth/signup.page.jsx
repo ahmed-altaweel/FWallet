@@ -21,7 +21,7 @@ export function SignupPage(){
            if(user)
             navigate('/login')
         }catch(error){
-                console.log(error)
+               setError(error)
         }
     }
     function showUserNameError(error){

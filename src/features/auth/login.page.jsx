@@ -1,9 +1,9 @@
-import { Navigate } from "react-router-dom";
+
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/auth/AuthContext";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { Lock, Mail, ArrowLeft, ShieldCheck, AlertCircle, ArrowRight } from 'lucide-react';
+import {  ArrowLeft } from 'lucide-react';
 export function LoginPage(){
     const {login} =useAuth()
     const navigate=useNavigate()
@@ -13,14 +13,14 @@ export function LoginPage(){
         const formData=new FormData(event.currentTarget);
         let username=formData.get("username") ||'';
         let password=formData.get("password")||''
-        let response;
+      
         try{
            let user= await login(username,password);
            console.log(user)
            if(user)
             navigate('/dashboard')
         }catch(error){
-                console.log(error)
+            setError(error.message);
         }
     }
         function showUserNameError(error){

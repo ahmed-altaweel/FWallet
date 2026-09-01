@@ -1,0 +1,87 @@
+:root{
+    --primary-color:#113458;
+    --secondry-color: #22D3EE;
+    --bg-primary: rgba(255, 255, 255, 0.9);
+    --bg-secondry:#F1F5F9;
+}
+
+.dashboard{
+    display: flex;
+    width:100%;
+    background-color:var(--bg-primary) ;
+    border-radius: 12px;
+    padding:20px;
+    font-family:"IBM Plex Sans Arabic", Arial, sans-serif;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.077);
+}
+
+.staticts-balance{
+    width: 100%;
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+    color:var(--primary-color);
+    p{
+    font-size: 20px;
+    font-weight: 600;
+    }
+
+    hr{
+   height: 2px;
+   border: none;
+   background-color: var(--primary-color);
+   border-radius: 12px;
+
+}
+
+}
+
+.total-card{
+    display: flex;
+
+   flex-wrap: wrap;
+    color:white;
+    gap:4px;
+}
+.total-balance-card{
+    display: flex;
+    flex-direction: column;
+   background-color: white;
+    padding-top:10px;
+    padding-right: 10px;
+    padding-left:10px;
+ background-color: var(--primary-color);
+ width:33%;
+ min-width: 200px;
+ border-radius: 12px;
+ height:120px;
+ gap:5px;
+}
+
+.total-balance{
+    display: flex;
+    justify-content: space-between;
+
+    color:rgba(255, 255, 255, 0.923);
+    font-size:16px;
+
+}
+.amount{
+    font-weight: bold;
+    font-size:20px;
+    letter-spacing: 2px;
+}
+.total-accounts{
+    display: flex;
+}
+.text{
+    font-size:16px !important;
+    color:rgba(245, 245, 245, 0.978);
+
+}
+.total-accounts{
+    margin-top: 10px;
+    border-top:2px solid rgba(245, 245, 245, 0.978);
+    font-size:14px;
+    color:rgb(204, 215, 198);
+}

@@ -20,9 +20,10 @@ body {
     /* font-family: Arial, Helvetica, sans-serif; */
     line-height: 1.5;
     color: #222;
-    background-color:  #F1F5F9;
+    background-color:var(--bg-primary);
     -webkit-font-smoothing: antialiased;
     font-family:"IBM Plex Sans Arabic", Arial, sans-serif;
+    transition: all 0.20s ease;
    
 }
 

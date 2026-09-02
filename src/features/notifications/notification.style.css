@@ -34,7 +34,9 @@
 .notifications-page .container-Box {
     margin-bottom: 35px;
 }
-
+.notifications-card:hover {
+    transform: translateY(-2px);
+}
 .notification-tabs {
     display: flex;
 
@@ -68,6 +70,14 @@ cursor: pointer;
     white-space: nowrap;
     transition-duration: 0.4s;
 }
+.NotificationItem {
+    cursor: pointer;
+}
+.NotificationItem:hover {
+    transform: translateY(-1px);
+     transition-duration: 0.2s;
+
+}
 
 .notification-tab:hover{
     background-color: #83519f;
@@ -77,6 +87,11 @@ cursor: pointer;
 
 }
 
+.notifications-card:hover{
+background-color: #8197b571;
+translate: 10px 10px;
+
+}
 
 .notification-tab.active {
     background-color: #266a87;

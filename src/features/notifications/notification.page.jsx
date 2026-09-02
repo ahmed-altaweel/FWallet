@@ -72,10 +72,13 @@ export function Button({
 
 
 
-export function Notification({ notification }) {
+export function Notification({ notification,onClick }) {
 
     return (
-        <div className="NotificationItem">
+        <div className="NotificationItem"
+        
+        
+        onClick={onClick}>
 
             <div
                 className={`notification-icon ${notification.type}`}

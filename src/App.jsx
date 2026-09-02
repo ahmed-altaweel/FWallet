@@ -9,6 +9,8 @@ import { NotificationPage } from "./features/notifications/notification.page";
 import { AppDataProvider } from "./core/state/AppDataContext";
 import { LoginPage } from "./features/auth/login.page";
 import { SignupPage } from "./features/auth/signup.page";
+import {TransactionsPage} from "./features/Transactions/Transaction.page";
+
 import "./features/auth/auth.style.css"
 
 export default function App(){
@@ -29,6 +31,7 @@ export default function App(){
               <Route path="/" element={<WelcomePage/>}/>
               <Route path="/dashboard" element={<Dashboard/>}> </Route>
                 <Route path="/notifications" element={<NotificationPage/>}> </Route>
+                <Route path="/transactions" element={<TransactionsPage/>}></Route>
             </Route>
              
           </Route>

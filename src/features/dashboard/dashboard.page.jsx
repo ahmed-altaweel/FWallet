@@ -1,30 +1,10 @@
 import { useAuth } from "../../core/auth/AuthContext";
-import {TotalBalanceCard} from "./totalCard.jsx"
-import {TransactionChart} from "./TransactionsChart.jsx"
+import {TotalBalanceCard} from "./Card/totalCard.jsx"
+import {TransactionChart} from "./TransactionsChart/TransactionsChart.jsx"
 import "./dashboard.style.css"
 export function Dashboard(){
     const{token}=useAuth()
-    const balance=[
-        {"currency":"ر.س",
-            "balance":200000,
-            "accountsCount":4
-        },
-        {"currency":"دولار امريكي",
-            "balance":200000,
-            "accountsCount":4
-        }
-        ,{"currency":"ر.ي",
-            "balance":200000,
-            "accountsCount":4
-        }
 
-    ]
-
-    const providers=[
-        {
-          "currency":"ر.ي"
-        }
-    ]
 
     return(
         <>
@@ -33,14 +13,7 @@ export function Dashboard(){
                 <p>إجمالي الرصيد حسب العملة</p>
                 <hr />
                 <div className="total-card">
-                {balance.map((x,i)=>{
-                  return  <TotalBalanceCard 
-                  key={i}
-                    currency={x.currency}
-                    balance={x.balance}
-                    accounts={x.accountsCount}
-                    />
-                })}
+                    <TotalBalanceCard token={token}/>
                 </div>
             </div>
             <div className="transactions-chart">
@@ -48,7 +21,7 @@ export function Dashboard(){
                     التدفقات المالية
                 </p>
                 <hr />
-                <TransactionChart/>
+                <TransactionChart token={token}/>
             </div>
         </div>
          </>

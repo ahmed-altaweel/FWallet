@@ -1,8 +1,9 @@
 
 import { useMemo } from "react";
 import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
-import "./dashboard.style.css";
-
+import { formatPercent } from "../../../shared/utils/FormatFunction";
+import { CustomTooltip } from "./CustomTootlip";
+import { renderCustomLabel } from "./CustomLabel";
 const DEFAULT_COLORS = [
   "#6b8aab",
   "#4A6FA5",
@@ -11,11 +12,7 @@ const DEFAULT_COLORS = [
   "#B9C6D6",
 ];
 
-const DEFAULT_DATA = [
-  { name: "الكريمي", value: 1200 },
-  { name: "جيب", value: 600 },
-  { name: "كاش", value: 200 },
-];
+
 
 function withColors(data, palette) {
   return data.map((entry, index) => ({
@@ -24,56 +21,30 @@ function withColors(data, palette) {
   }));
 }
 
-function formatPercent(value, total) {
-  return total > 0 ? ((value / total) * 100).toFixed(1) : "0.0";
-}
 
-function CustomTooltip({ active, payload, total }) {
-  if (!active || !payload?.length) return null;
 
-  const { name, value, fill } = payload[0].payload;
 
-  return (
-    <div className="provider-chart__tooltip">
-      <span
-        className="provider-chart__dot"
-        style={{ backgroundColor: fill }}
-      />
-
-      <span className="provider-chart__tooltip-name">
-        {name}
-      </span>
-
-      <span className="provider-chart__tooltip-value">
-        {value.toLocaleString()} · {formatPercent(value, total)}%
-      </span>
-    </div>
-  );
-}
-function renderCustomLabel({ cx, cy, midAngle, outerRadius, percent }) {
-  const RADIAN = Math.PI / 180;
-  const labelRadius = outerRadius + 18; // نفس منطقك الأصلي: نصف قطر أبعد من الحلقة
-
-  const x = cx + labelRadius * Math.cos(-midAngle * RADIAN);
-  const y = cy + labelRadius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      textAnchor="middle"
-      dominantBaseline="central"
-      className="provider-chart__label"
-    >
-      {(percent * 100).toFixed(0)}%
-    </text>
-  );
-}
 export function ProviderChart({
-  data: rawData = DEFAULT_DATA,
   colors = DEFAULT_COLORS,
   title = "Provider distribution",
+  token
 }) {
+  
+   const [status,setStatus]=useState("Loading");
+        const [rowdata,setData]=useState([]);
+        const loadData=async ()=>{
+          fetchData("TransactionsData.json",token).then((res)=>{
+              setData(res);
+              setStatus("Done")
+          }).catch((error)=>{
+              setStatus(`Error:${error}`);
+          })
+        }
+  
+        useEffect(()=>{
+          loadData();
+  
+        },[token]);
   const data = useMemo(
     () => withColors(rawData, colors),
     [rawData, colors]

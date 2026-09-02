@@ -6,7 +6,7 @@ import { AuthLayout } from "./layout/AuthLayout";
 import { AppLayout } from "./layout/ApplicationLayout";
 import { Dashboard } from "./features/dashboard/dashboard.page";
 import { NotificationPage } from "./features/notifications/notification.page";
-import { AppDataProvider } from "./core/state/AppDataContext";
+import { AppDataProvider } from "./core/state/AppDataProvider";
 import { LoginPage } from "./features/auth/login.page";
 import { SignupPage } from "./features/auth/signup.page";
 import "./features/auth/auth.style.css"

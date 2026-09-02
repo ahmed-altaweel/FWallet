@@ -1,0 +1,64 @@
+const DEFAULT_DATA = [
+  { name: "الكريمي", value: 1200 },
+  { name: "جيب", value: 600 },
+  { name: "كاش", value: 200 },
+];
+
+    const balance=[
+        {"currency":"ر.س",
+            "balance":200000,
+            "accountsCount":4
+        },
+        {"currency":"دولار امريكي",
+            "balance":200000,
+            "accountsCount":4
+        }
+        ,{"currency":"ر.ي",
+            "balance":200000,
+            "accountsCount":4
+        }
+
+    ]
+[
+    {"token":"Bearer ahmed"
+    ,"data": [
+    {
+      "ProviderName": "الكريمي",
+      "accounts": [
+        {"id": "0001", "currency": "ر.س", "balance": 5000},
+        {"id": "0002", "currency": "ر.س", "balance": 12500},
+        {"id": "0003", "currency": "دولار امريكي", "balance": 800}
+      ]
+    },
+    {
+      "ProviderName": "بنك الراجحي",
+      "accounts": [
+        {"id": "1001", "currency": "ر.س", "balance": 32000},
+        {"id": "1002", "currency": "ر.س", "balance": 750}
+      ]
+    },
+    {
+      "ProviderName": "البنك الأهلي السعودي",
+      "accounts": [
+        {"id": "2001", "currency": "ر.س", "balance": 15200},
+        {"id": "2002", "currency": "دولار امريكي", "balance": 4300},
+        {"id": "2003", "currency": "يورو", "balance": 1250}
+      ]
+    },
+    {
+      "ProviderName": "بنك سامبا",
+      "accounts": [
+        {"id": "3001", "currency": "ر.س", "balance": 9800}
+      ]
+    },
+    {
+      "ProviderName": "بنك الرياض",
+      "accounts": [
+        {"id": "4001", "currency": "ر.س", "balance": 21750},
+        {"id": "4002", "currency": "ر.س", "balance": 300}
+      ]
+    }
+  ]
+     
+    }
+]

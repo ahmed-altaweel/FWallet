@@ -1,0 +1,7 @@
+[
+    {
+        "token":"Bearer ahmed",
+        "data":{ "accounts_count":4,
+        "unread_notifications":10}
+    }
+]

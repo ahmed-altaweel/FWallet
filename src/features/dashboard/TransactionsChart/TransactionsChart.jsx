@@ -1,5 +1,5 @@
 
-import { useMemo } from "react";
+import { useMemo ,useEffect,useState} from "react";
 import {
     ResponsiveContainer,
     LineChart,
@@ -9,105 +9,40 @@ import {
     CartesianGrid,
     Tooltip,
 } from "recharts";
+import { fetchTransactionsData } from "./TransactionsChart.Api";
+import { CustomTooltip } from "./CustomTooltip";
+import { formatNumber,formatDate } from "../../../shared/utils/FormatFunction";
+import { fetchData } from "../../../shared/utils/FetchData";
 
+export function TransactionChart({token}) {
+        console.log(token);
+      const [status,setStatus]=useState("Loading");
+      const [data,setData]=useState([]);
+      const loadData=async ()=>{
+        fetchData("TransactionsData.json",token).then((res)=>{
+            setData(res);
+            setStatus("Done")
+        }).catch((error)=>{
+            setStatus(`Error:${error}`);
+        })
+      }
 
-const transactions = [
-    {
-        date: "2026-09-01",
-        amount: 100,
-        type: "expense",
-        currency: "USD",
-    },
-    {
-        date: "2026-09-02",
-        amount: 30,
-        type: "expense",
-        currency: "USD",
-    },
-    {
-        date: "2026-09-04",
-        amount: 50,
-        type: "income",
-        currency: "USD",
-    },
-    {
-        date: "2026-09-05",
-        amount: 20,
-        type: "expense",
-        currency: "USD",
-    },
-];
+      useEffect(()=>{
+        loadData();
 
-
-// تنسيق التاريخ
-function formatDate(dateStr) {
-    const d = new Date(dateStr);
-
-    return d.toLocaleDateString("en-EG", {
-        day: "2-digit",
-        month: "2-digit",
-    });
-}
-
-
-// Tooltip مخصص
-function CustomTooltip({ active, payload, label }) {
-    if (!active || !payload || !payload.length) {
-        return null;
-    }
-
-    return (
-        <div className="transaction-tooltip">
-
-            <div className="transaction-tooltip-date">
-                {formatDate(label)}
-            </div>
-
-            {payload.map((entry) => (
-                <div
-                    key={entry.dataKey}
-                    className="transaction-tooltip-row"
-                >
-
-                    <span className="transaction-tooltip-name">
-
-                        <span
-                            className="transaction-tooltip-dot"
-                            style={{
-                                background: entry.color,
-                            }}
-                        />
-
-                        {entry.name}
-
-                    </span>
-
-                    <span className="transaction-tooltip-value">
-                        {entry.value.toLocaleString("en-EG")}
-                    </span>
-
-                </div>
-            ))}
-
-        </div>
-    );
-}
-
-
-export function TransactionChart() {
-
+      },[token]);
     // تجهيز بيانات المخطط
     const chartData = useMemo(() => {
 
         const grouped = {};
 
-        transactions.forEach((transaction) => {
+        data.forEach((d) => {
 
             const {
                 date,
                 amount,
                 type,
-            } = transaction;
+            } = d;
 
             if (!grouped[date]) {
 
@@ -135,7 +70,7 @@ export function TransactionChart() {
                 new Date(b.date)
         );
 
-    }, []);
+    }, [data]);
 
 
     // حساب الإجماليات
@@ -165,13 +100,8 @@ export function TransactionChart() {
     return (
 
         <div className="transaction-chart">
-
             {/* رأس البطاقة */}
-
             <div className="transaction-chart-header">
-
-               
-
                 <div className="transaction-net">
 
                     <div className="transaction-net-label">
@@ -186,8 +116,7 @@ export function TransactionChart() {
                         }`}
                     >
                         {totals.net >= 0 ? "+" : ""}
-
-                        {totals.net.toLocaleString("en-EG")}
+                        {formatNumber(totals.net)}
 
                     </div>
 
@@ -211,14 +140,11 @@ export function TransactionChart() {
                     </span>
 
                     <span className="transaction-legend-value">
-                        {totals.income.toLocaleString("en-EG")}
+                            {formatNumber(totals.income)}
                     </span>
 
                 </div>
-
-
                 {/* المصروف */}
-
                 <div className="transaction-legend-item">
 
                     <span className="transaction-legend-dot expense-dot" />
@@ -228,7 +154,8 @@ export function TransactionChart() {
                     </span>
 
                     <span className="transaction-legend-value">
-                        {totals.expense.toLocaleString("en-EG")}
+                        
+                            {formatNumber(totals.expense)}
                     </span>
 
                 </div>

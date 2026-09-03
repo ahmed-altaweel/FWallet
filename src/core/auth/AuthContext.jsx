@@ -19,7 +19,6 @@ export function AuthProvider({children}){
     }
     function logout(){
         setIsLoggedIn(false);
-        
     }
 
     return (

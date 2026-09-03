@@ -23,7 +23,7 @@ useEffect(()=>{
     if(!isLoggedIn) return
     loadData();
     console.log("after load Data");
-},[isLoggedIn]);
+},[]);
 
 if(!isLoggedIn) return <Navigate to='/login' replace/>
 if(status==='loading')

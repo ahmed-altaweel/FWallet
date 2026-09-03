@@ -1,5 +1,5 @@
 import { useAuth } from "../../core/auth/AuthContext";
-import {TotalBalanceCard} from "./Card/totalCard.jsx"
+import {TotalBalanceCard} from "./Card/card.jsx"
 import {TransactionChart} from "./TransactionsChart/TransactionsChart.jsx"
 import "./dashboard.style.css"
 export function Dashboard(){

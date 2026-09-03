@@ -1,24 +1,4 @@
-const DEFAULT_DATA = [
-  { name: "الكريمي", value: 1200 },
-  { name: "جيب", value: 600 },
-  { name: "كاش", value: 200 },
-];
 
-    const balance=[
-        {"currency":"ر.س",
-            "balance":200000,
-            "accountsCount":4
-        },
-        {"currency":"دولار امريكي",
-            "balance":200000,
-            "accountsCount":4
-        }
-        ,{"currency":"ر.ي",
-            "balance":200000,
-            "accountsCount":4
-        }
-
-    ]
 [
     {"token":"Bearer ahmed"
     ,"data": [

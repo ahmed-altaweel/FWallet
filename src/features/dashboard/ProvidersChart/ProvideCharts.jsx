@@ -1,5 +1,5 @@
 
-import { useMemo } from "react";
+import { useMemo ,useState} from "react";
 import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
 import { formatPercent } from "../../../shared/utils/FormatFunction";
 import { CustomTooltip } from "./CustomTootlip";
@@ -27,31 +27,38 @@ function withColors(data, palette) {
 export function ProviderChart({
   colors = DEFAULT_COLORS,
   title = "Provider distribution",
-  token
+  data:Data
 }) {
   
+   const rowData=useMemo(()=>{
+    let d=[]
+    Object.entries(Data).forEach(([providerName,balance])=>{
+      d.push({"name":providerName,"value":balance})
+    })
+    return d;
+   },[Data])
    const [status,setStatus]=useState("Loading");
-        const [rowdata,setData]=useState([]);
-        const loadData=async ()=>{
-          fetchData("TransactionsData.json",token).then((res)=>{
-              setData(res);
-              setStatus("Done")
-          }).catch((error)=>{
-              setStatus(`Error:${error}`);
-          })
-        }
+        // const [rowdata,setData]=useState([]);
+        // const loadData=async ()=>{
+        //   fetchData("TransactionsData.json",token).then((res)=>{
+        //       setData(res);
+        //       setStatus("Done")
+        //   }).catch((error)=>{
+        //       setStatus(`Error:${error}`);
+        //   })
+        // }
   
-        useEffect(()=>{
-          loadData();
+        // useEffect(()=>{
+        //   loadData();
   
-        },[token]);
+        // },[token]);
   const data = useMemo(
-    () => withColors(rawData, colors),
-    [rawData, colors]
+    () => withColors(rowData, colors),
+    [rowData, colors]
   );
 
   const total = useMemo(
-    () => data.reduce((sum, item) => sum + item.value, 0),
+    () => data.reduce((sum, item) => sum + item, 0),
     [data]
   );
 

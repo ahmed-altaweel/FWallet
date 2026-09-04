@@ -58,7 +58,7 @@ export function ProviderChart({
   );
 
   const total = useMemo(
-    () => data.reduce((sum, item) => sum + item, 0),
+    () => data.reduce((sum, item) => sum + item.value, 0),
     [data]
   );
 

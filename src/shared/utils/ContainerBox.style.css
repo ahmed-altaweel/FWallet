@@ -1,0 +1,21 @@
+.container-box {
+    width: 100%;
+
+    background-color: #ffffff;
+
+    border: 1px solid #dfe6ef;
+
+    border-radius: 28px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 2px 3px rgba(15, 23, 42, 0.05);
+        padding: 25px;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+    padding: 25px;
+    margin-bottom: 35px;
+    box-sizing: border-box;
+    display: block;
+}

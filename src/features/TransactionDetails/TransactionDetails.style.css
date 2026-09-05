@@ -1,0 +1,14 @@
+.box{
+    min-height:200px;
+   display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+gap:10px;
+
+}
+
+.transaction-d-page{
+    width: 100%; padding: 30px 40px;
+     box-sizing: border-box;
+}

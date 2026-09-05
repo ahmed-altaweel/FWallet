@@ -55,59 +55,44 @@ export function TransactionChart({ token }) {
             if (type === "expense") {
                 grouped[date].expense += Number(amount);
             }
-
         });
-
         return Object.values(grouped).sort(
             (a, b) =>
                 new Date(a.date) -
                 new Date(b.date)
         );
-
     }, [data]);
-
-
-    // حساب الإجماليات
+   // حساب الإجماليات
     const totals = useMemo(() => {
-
         const income = chartData.reduce(
             (sum, item) =>
                 sum + item.income,
             0
         );
-
         const expense = chartData.reduce(
             (sum, item) =>
                 sum + item.expense,
             0
         );
-
         return {
             income,
             expense,
             net: income - expense,
         };
-
     }, [chartData]);
     if(isLoading)
         return <div>Loading</div>
     if (isError)
         return <div>{error}</div>
     // تجهيز بيانات المخطط
-  
-
-
     return (
-
         <div className="transaction-chart">
             {/* رأس البطاقة */}
             <div className="transaction-chart-header">
                 <div className="transaction-net">
-
                     <div className="transaction-net-label">
                         صافي التدفق
                     </div>
-
                     <div
                         className={`transaction-net-value ${totals.net >= 0
                                 ? "positive"
@@ -116,61 +101,38 @@ export function TransactionChart({ token }) {
                     >
                         {totals.net >= 0 ? "+" : ""}
                         {formatNumber(totals.net)}
-
                     </div>
-
                 </div>
-
             </div>
-
-
             {/* الإحصائيات */}
-
             <div className="transaction-legend">
-
                 {/* الدخل */}
-
                 <div className="transaction-legend-item">
-
                     <span className="transaction-legend-dot income-dot" />
-
                     <span className="transaction-legend-label">
                         المعاملات الداخلة
                     </span>
-
                     <span className="transaction-legend-value">
                         {formatNumber(totals.income)}
                     </span>
-
                 </div>
                 {/* المصروف */}
                 <div className="transaction-legend-item">
-
                     <span className="transaction-legend-dot expense-dot" />
-
                     <span className="transaction-legend-label">
                         المعاملات الخارجة
                     </span>
-
                     <span className="transaction-legend-value">
-
                         {formatNumber(totals.expense)}
                     </span>
-
                 </div>
-
             </div>
-
-
             {/* المخطط */}
-
             <div className="transaction-chart-container">
-
                 <ResponsiveContainer
                     width="100%"
                     height={320}
                 >
-
                     <LineChart
                         data={chartData}
                         margin={{
@@ -180,14 +142,11 @@ export function TransactionChart({ token }) {
                             bottom: 10,
                         }}
                     >
-
                         <CartesianGrid
                             strokeDasharray="3 3"
                             stroke="#0d2a4a91"
                             vertical={true}
                         />
-
-
                         <XAxis
                             dataKey="date"
                             tickFormatter={formatDate}
@@ -200,10 +159,7 @@ export function TransactionChart({ token }) {
                             axisLine={{
                                 stroke: "#0d2a4a",
                             }}
-
                         />
-
-
                         <YAxis
                             stroke="#000000"
                             tick={{
@@ -216,18 +172,13 @@ export function TransactionChart({ token }) {
                             tickMargin={20}
 
                         />
-
-
                         <Tooltip
                             content={<CustomTooltip />}
                             cursor={{
                                 stroke: "#0d2a4a",
                             }}
                         />
-
-
                         {/* خط المعاملات الداخلة */}
-
                         <Line
                             type="monotone"
                             dataKey="income"
@@ -246,11 +197,8 @@ export function TransactionChart({ token }) {
                                 strokeWidth: 2,
                             }}
                         />
-
-
                         {/* خط المعاملات الخارجة */}
-
-                        <Line
+``                      <Line
                             type="monotone"
                             dataKey="expense"
                             name="المعاملات الخارجة"
@@ -268,14 +216,9 @@ export function TransactionChart({ token }) {
                                 strokeWidth: 2,
                             }}
                         />
-
                     </LineChart>
-
                 </ResponsiveContainer>
-
             </div>
-
         </div>
     );
 }
-

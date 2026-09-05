@@ -1,5 +1,6 @@
 
-import { useMemo ,useEffect,useState} from "react";
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
     ResponsiveContainer,
     LineChart,
@@ -9,30 +10,23 @@ import {
     CartesianGrid,
     Tooltip,
 } from "recharts";
-import { fetchTransactionsData } from "./TransactionsChart.Api";
 import { CustomTooltip } from "./CustomTooltip";
-import { formatNumber,formatDate } from "../../../shared/utils/FormatFunction";
+import { formatNumber, formatDate } from "../../../shared/utils/FormatFunction";
 import { fetchData } from "../../../shared/utils/FetchData";
 
-export function TransactionChart({token}) {
-        console.log(token);
-      const [status,setStatus]=useState("Loading");
-      const [data,setData]=useState([]);
-      const loadData=async ()=>{
-        fetchData("TransactionsData.json",token).then((res)=>{
-            setData(res);
-            setStatus("Done")
-        }).catch((error)=>{
-            setStatus(`Error:${error}`);
-        })
-      }
-
-      useEffect(()=>{
-        loadData();
-
-      },[token]);
-    // تجهيز بيانات المخطط
-    const chartData = useMemo(() => {
+export function TransactionChart({ token }) {
+    const {
+        data=[],
+        isLoading,
+        isError,
+        error
+    } = useQuery({
+        queryKey: ["transactions", token],
+        queryFn: () => fetchData("TransactionsData.json", token),
+        enabled: !!token,
+    });
+    console.log(data)
+      const chartData = useMemo(() => {
 
         const grouped = {};
 
@@ -95,6 +89,12 @@ export function TransactionChart({token}) {
         };
 
     }, [chartData]);
+    if(isLoading)
+        return <div>Loading</div>
+    if (isError)
+        return <div>{error}</div>
+    // تجهيز بيانات المخطط
+  
 
 
     return (
@@ -109,11 +109,10 @@ export function TransactionChart({token}) {
                     </div>
 
                     <div
-                        className={`transaction-net-value ${
-                            totals.net >= 0
+                        className={`transaction-net-value ${totals.net >= 0
                                 ? "positive"
                                 : "negative"
-                        }`}
+                            }`}
                     >
                         {totals.net >= 0 ? "+" : ""}
                         {formatNumber(totals.net)}
@@ -140,7 +139,7 @@ export function TransactionChart({token}) {
                     </span>
 
                     <span className="transaction-legend-value">
-                            {formatNumber(totals.income)}
+                        {formatNumber(totals.income)}
                     </span>
 
                 </div>
@@ -154,8 +153,8 @@ export function TransactionChart({token}) {
                     </span>
 
                     <span className="transaction-legend-value">
-                        
-                            {formatNumber(totals.expense)}
+
+                        {formatNumber(totals.expense)}
                     </span>
 
                 </div>
@@ -201,7 +200,7 @@ export function TransactionChart({token}) {
                             axisLine={{
                                 stroke: "#0d2a4a",
                             }}
-                            
+
                         />
 
 
@@ -210,12 +209,12 @@ export function TransactionChart({token}) {
                             tick={{
                                 fill: "#0d2a4a",
                                 fontSize: 12,
-                                padding:10,
+                                padding: 10,
                             }}
                             tickLine={false}
                             axisLine={true}
                             tickMargin={20}
-                          
+
                         />
 
 

@@ -4,7 +4,7 @@ import {ContainerBox} from "../../shared/utils/ContainerBox";
 import { useNavigate } from "react-router-dom";
 import "./notification.style.css";
 
-const today = new Date().toLocaleString("ar-SA");
+const today = new Date().toLocaleString("en-SA");
 
 const Data = [
     {

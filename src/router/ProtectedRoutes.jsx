@@ -4,7 +4,6 @@ export function ProtectedRoute(){
     const {isLoggedIn}=useAuth()
   
     if(  !isLoggedIn){
-                        //
         return <Navigate to="/login" replace></Navigate>
     }
     return <Outlet></Outlet>

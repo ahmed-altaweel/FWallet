@@ -1,40 +1,32 @@
-import { useState,useEffect } from "react"
+
 import { Navigate } from "react-router-dom";
 import {useAuth} from '../auth/AuthContext.jsx'
-import { fetchAppData } from "./AppDataApi.jsx";
 import {AppDataContext} from "./AppDataContext.data.jsx"
 import { fetchData } from "../../shared/utils/FetchData.jsx";
-
+import { useQuery } from "@tanstack/react-query";
 export function AppDataProvider({children}){
 const {isLoggedIn, token} =useAuth()
-const [data,setData]=useState(null);
-const [status,setStatus]=useState("loading");
-console.log("Hello");
-const loadData=()=>{
-    fetchData("appData.json",token)
-    .then((res)=>{setData(res)
-       ;setStatus("success")})
-    .catch((error)=>{
- console.log(`in error:${error}`);
-        setStatus("error")
-    })
-}
-useEffect(()=>{
-    if(!isLoggedIn) return
-    loadData();
-    console.log("after load Data");
-},[]);
+const {
+    data = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["appData", token],
+    queryFn: () => fetchData("appData.json", token),
+    enabled: !!token,
+  });
 
 if(!isLoggedIn) return <Navigate to='/login' replace/>
-if(status==='loading')
+if(isLoading==='loading')
   return(<div>
     جاري التحميل    
   </div>)
-if(status==="error")
-    return <div>حصل خطاء</div>
+if(isError==="error")
+    return <div>{error}</div>
 
 return (
-    <AppDataContext.Provider value={{data,status,refetch:loadData}}>
+    <AppDataContext.Provider value={{data}}>
         {children}
     </AppDataContext.Provider>
 )

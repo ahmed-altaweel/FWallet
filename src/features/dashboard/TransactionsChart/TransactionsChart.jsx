@@ -11,8 +11,8 @@ import {
     Tooltip,
 } from "recharts";
 import { CustomTooltip } from "./CustomTooltip";
-import { formatNumber, formatDate } from "../../../shared/utils/FormatFunction";
-import { fetchData } from "../../../shared/utils/FetchData";
+import { formatNumber, formatDate } from "@/shared/utils/FormatFunction";
+import { fetchData } from "@/shared/utils/FetchData";
 
 export function TransactionChart({ token }) {
     const {

@@ -1,7 +1,8 @@
-import reactLogo from "../assets/hero.png"
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
+import { NotificationBell } from "../features/notifications/notificationbell";
+import { useAppData } from "../core/state/useAppData.jsx";
+import {Bell} from "lucide-react"
 const pageTitles = {
   "/Dashboard": "لوحة التحكم",
   "/analytics": "التحليلات والتدفقات",
@@ -15,6 +16,7 @@ const pageTitles = {
   "/settings": "إعدادات الحساب والربط",
 };
 export function Header() {
+    const { data } = useAppData(); 
   const navigate=useNavigate();
     const location = useLocation();
     const pageTitle = pageTitles[location.pathname] || "لوحة التحكم"
@@ -35,12 +37,22 @@ export function Header() {
     <span>تحويل مالي جديد</span>
     <i className="fa-regular fa-paper-plane"></i>
   </button>
-      <button className="notification" onClick={()=>{navigate("/notifications")}}>
-      <i className="fa-regular fa-bell"></i>
+    <NotificationBell>
+
+    <button
+        className="notification"
+        onClick={() => {
+            navigate("/notifications");
+        }}
+    >
+        {/* <i className="fa-regular fa-bell"></i> */}
+        <Bell size={22}/>
     </button>
+
+</NotificationBell>
      <div className="header-profile">
-    <div className="profile-head-img">
-        <img  src={reactLogo}></img>  
+    <div className="profile-head-img profile-image">
+        <img  src={data.img}></img>  
     </div>
     </div>
   </div>  

@@ -1,0 +1,36 @@
+[
+ {"token":"Bearer ahmed"
+    ,"data":  [ {
+    "id": "tr_001",
+    "type": "transfer",
+    "title": "تحويل مالي",
+    "amount": "2,500.00",
+    "currency": "SAR",
+    "from": "حساب الأهلي",
+    "to": "حساب الراجحي الجاري",
+    "status": "success",
+    "date": "٢٥ أغسطس، ٠٧:٤٠ م"
+  },
+  {
+    "id": "tr_002",
+    "type": "deposit",
+    "title": "إيداع مالي",
+    "amount": "1,250.00",
+    "currency": "USD",
+    "from": "Stripe International",
+    "to": "الحساب الرئيسي",
+    "status": "success",
+    "date": "٢٤ أغسطس، ١٢:٢٠ م"
+  },
+  {
+    "id": "tr_003",
+    "type": "transfer",
+    "title": "تحويل مالي",
+    "amount": "750.00",
+    "currency": "SAR",
+    "from": "حساب الراجحي",
+    "to": "حساب الأهلي",
+    "status": "pending",
+    "date": "٢٣ أغسطس، ٠٣:١٠ م"
+  }]
+}]

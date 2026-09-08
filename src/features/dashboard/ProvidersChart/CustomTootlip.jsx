@@ -1,4 +1,4 @@
-import { formatNumber ,formatPercent} from "../../../shared/utils/FormatFunction";
+import { formatNumber ,formatPercent} from "@/shared/utils/FormatFunction";
 
 export function CustomTooltip({ active, payload, total }) {
   if (!active || !payload?.length) return null;

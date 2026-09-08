@@ -3,7 +3,7 @@
     --notification-card: #ffffff;
     --notification-border: #dfe6ef;
     --notification-text: #10233f;
-    --notification-muted: #7890af;
+    --notification-muted: #b6c0cd;
 }
 
 
@@ -34,9 +34,9 @@
 .notifications-page .container-Box {
     margin-bottom: 35px;
 }
-.notifications-card:hover {
-    transform: translateY(-2px);
-}
+/* .notifications-card:hover {
+  
+} */
 .notification-tabs {
     display: flex;
 
@@ -61,7 +61,7 @@
 
     color: #334e6f;
 
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
 
 cursor: pointer;
@@ -74,14 +74,14 @@ cursor: pointer;
     cursor: pointer;
 }
 .NotificationItem:hover {
-    transform: translateY(-1px);
+   
      transition-duration: 0.2s;
 
 }
 
 .notification-tab:hover{
-    background-color: #83519f;
-    transform: scale(1);
+    background-color: #517b9f;
+    
 
     color:whitesmoke;
 
@@ -89,7 +89,7 @@ cursor: pointer;
 
 .notifications-card:hover{
 background-color: #8197b571;
-translate: 10px 10px;
+
 
 }
 
@@ -105,6 +105,7 @@ translate: 10px 10px;
 
 .notifications-card {
     width: 100%;
+
 
     background-color: var(--notification-card);
 
@@ -128,9 +129,9 @@ translate: 10px 10px;
 
     align-items: center;
 
-    min-height: 143px;
+    min-height: 50px;
 
-    padding: 25px 35px;
+    padding: 10px 20px;
 
     box-sizing: border-box;
 
@@ -152,8 +153,8 @@ translate: 10px 10px;
 .notification-icon {
     flex-shrink: 0;
 
-    width: 68px;
-    height: 68px;
+    width: 40px;
+    height: 40px;
 
     margin-right: 0;
     margin-left: 20px;
@@ -165,7 +166,7 @@ translate: 10px 10px;
     align-items: center;
     justify-content: center;
 
-    font-size: 34px;
+    font-size: 20px;
 
     font-weight: 700;
 }
@@ -188,7 +189,6 @@ translate: 10px 10px;
 }
 
 
-/* Webhook */
 
 .notification-icon.webhook {
     background-color: #f0f5f9;
@@ -206,7 +206,6 @@ translate: 10px 10px;
 }
 
 
-/* Title */
 
 .notification-title {
     display: flex;
@@ -221,9 +220,9 @@ translate: 10px 10px;
 
     color: #071b35;
 
-    font-size: 23px;
+    font-size: 15px;
 
-    font-weight: 800;
+    font-weight: bold;
 }
 
 
@@ -246,7 +245,7 @@ translate: 10px 10px;
 .notification-message {
     color: #385b82;
 
-    font-size: 19px;
+    font-size: 14px;
 
     line-height: 1.6;
 }
@@ -265,7 +264,7 @@ translate: 10px 10px;
 
     color: #8197b5;
 
-    font-size: 17px;
+    font-size: 14px;
 
     text-align: left;
 
@@ -309,7 +308,7 @@ translate: 10px 10px;
     }
 
     .notification-title {
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .notification-message {

@@ -1,5 +1,5 @@
 
-import { httpClient } from "../../../shared/utils/HttClient";
+import { httpClient } from "@/shared/utils/HttClient";
 export async function fetchTransactionsData(token){
     try{
         const response =await httpClient.get("/TransactionsData.json",token);

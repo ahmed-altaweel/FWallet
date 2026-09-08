@@ -1,7 +1,5 @@
-import { formatNumber } from "../../../shared/utils/FormatFunction.jsx";
-import {ProviderChart} from "../ProvidersChart/ProvideCharts.jsx"
+import { formatNumber } from "@/shared/utils/FormatFunction.jsx";
 export function TotalCard({ currency, balance, accounts }) {
-  // const formattedBalance = new Intl.NumberFormat("en-EG").format(balance);
 
   return (
    <>

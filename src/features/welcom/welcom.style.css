@@ -1,0 +1,309 @@
+:root {
+    --primary-color: #0D2A4A;
+}
+
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--primary-bg);
+}
+
+.welcome-page {
+    min-height: 100vh;
+    background: #ffffff;
+    color: var(--primary-color);
+}
+
+
+
+/* Header */
+
+.welcome-header {
+    height: 80px;
+    padding: 0 8%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--primary-color);
+}
+.auth-btns {
+    display: flex; 
+    /* width:20%; */
+    /* align-items: center; 
+    justify-content: center;  */
+    gap: 10px;
+   
+   
+
+}
+
+.logo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+h2{
+    position: absolute;
+    right: 40px;
+    top:5px;
+    font-size: 24px;
+    font-weight: bolder;
+}
+.logo span {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--primary-color);
+    color: white;
+
+    border-radius: 8px;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.logo h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.login-btn {
+    padding: 9px 20px;
+
+    background: var(--primary-color);
+    color: var(--white-color);
+
+    /* border: 1px solid #d8d8d8; */
+    border-radius: 7px;
+    box-shadow:var(--shadow-soft);
+    cursor: pointer;
+}
+.register-btn{
+      padding: 9px 20px;
+
+    background-color: var(--primary-color);
+    color: var(--white-color);
+
+    /* border: 1px solid #d8d8d8; */
+    border-radius: 7px;
+    box-shadow:var(--shadow-soft);
+    cursor: pointer;
+
+}
+.register-btn:hover {
+    /* border-color: var(--primary-color); */
+    background-color: var(--primary-500);
+}
+.login-btn:hover {
+    /* border-color: var(--primary-color); */
+    background-color: var(--primary-500);
+}
+
+
+/* Main */
+
+.welcome-main {
+    max-width: 1100px;
+    min-height: calc(100vh - 80px);
+
+    margin: auto;
+    padding: 50px 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 80px;
+}
+
+
+/* Text */
+
+.welcome-text {
+    direction: rtl;
+    text-align: right;
+
+    flex: 1;
+}
+
+.small-title {
+    color: #718096;
+    font-size: 15px;
+
+    margin-bottom: 15px;
+}
+
+.welcome-text h1 {
+    font-size: 60px;
+    line-height: 1.2;
+
+    margin: 0 0 20px;
+
+    font-weight: 700;
+}
+
+.welcome-text h1 span {
+    color: var(--primary-color);
+}
+
+.description {
+    max-width: 450px;
+
+    color: #667085;
+
+    font-size: 18px;
+    line-height: 1.8;
+
+    margin-bottom: 30px;
+}
+
+.start-btn {
+    padding: 13px 32px;
+
+    background: var(--primary-color);
+    color: white;
+
+    border: none;
+    border-radius: 7px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+.start-btn:hover {
+    opacity: 0.9;
+}
+
+
+/* Wallet */
+
+.wallet-preview {
+    flex: 1;
+
+    display: flex;
+    justify-content: center;
+}
+
+.wallet-card {
+    width: 390px;
+    height: 240px;
+
+    padding: 25px;
+
+    background: var(--primary-color);
+    color: white;
+
+    border-radius: 18px;
+
+    box-shadow: 0 20px 40px rgba(13, 42, 74, 0.18);
+
+    transform: rotate(3deg);
+
+    direction: rtl;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border-radius: 8px;
+}
+
+.card-balance {
+    margin-top: 45px;
+}
+
+.card-balance p {
+    margin: 0 0 5px;
+
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.card-balance h2 {
+    margin: 0;
+
+    font-size: 32px;
+}
+.wallet-card {
+    position: relative;
+}
+.card-header {
+  
+    position: absolute;
+    top: 50px;
+}
+
+.card-header span {
+
+    font-size: 14px;
+    opacity: 0.7;
+}
+.card-number {
+    margin-top: 35px;
+
+    font-size: 14px;
+
+    letter-spacing: 2px;
+
+    opacity: 0.8;
+}
+
+
+/* Mobile */
+
+@media (max-width: 800px) {
+
+    .welcome-main {
+        flex-direction: column;
+
+        text-align: center;
+
+        padding-top: 60px;
+    }
+
+    .welcome-text {
+        text-align: center;
+    }
+
+    .description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .welcome-text h1 {
+        font-size: 45px;
+    }
+
+    .wallet-card {
+        width: 340px;
+        height: 210px;
+    }
+}

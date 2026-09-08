@@ -1,4 +1,26 @@
 import { httpClient } from "./HttClient";
+
+// export async function fetchData(url,token){
+//     try{
+//         const response =await httpClient.get(url,token);
+//         if (!Array.isArray(response)) {
+//             return response;
+//         }
+
+//         const isTokenWrapped = response.some(item => item?.token);
+//         if (!isTokenWrapped) {
+//             return response;
+//         }
+
+//         const user = response.find(item => item.token === token);
+//         return user?.data ?? [];
+//     }catch(error){
+//         return null;
+//     }
+// }
+
+
+
 export async function fetchData(url,token){
     try{
         const response =await httpClient.get(url,token);
@@ -9,7 +31,7 @@ export async function fetchData(url,token){
         console.log(response.find(item=>item.token===token))
         const user=Array.isArray(response)? response.find(item=>item.token===token):null;
         console.log(user)
-        return user.data;  
+        return user?.data;  
     }catch(error){
         console.log(error)
         return null;

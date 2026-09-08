@@ -2,7 +2,7 @@
 import { Navigate } from "react-router-dom";
 import {useAuth} from '../auth/AuthContext.jsx'
 import {AppDataContext} from "./AppDataContext.data.jsx"
-import { fetchData } from "../../shared/utils/FetchData.jsx";
+import { fetchData } from "@/shared/utils/FetchData.jsx";
 import { useQuery } from "@tanstack/react-query";
 export function AppDataProvider({children}){
 const {isLoggedIn, token} =useAuth()

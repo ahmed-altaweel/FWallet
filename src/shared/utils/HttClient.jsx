@@ -30,7 +30,7 @@ async function handleResponse(response) {
 async function post(endpoint, body,token) {
   
   const response = await fetch(`${BASE_URL}/${endpoint}`, {
-    method: "POST",
+    method: "POST", 
     headers: {
        "Content-Type": "application/json"
       ,"Authorization":`Bearer ${token}`

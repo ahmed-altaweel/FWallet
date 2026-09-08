@@ -3,11 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../core/auth/AuthContext";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+// import "./features/auth/login.style.css"
+// import "./login.style.css"
 import {  ArrowLeft } from 'lucide-react';
 export function LoginPage(){
     const {login} =useAuth()
     const navigate=useNavigate()
         const [error,setError]=useState("")
+          const [showPassword, setShowPassword] = useState(false);
     const handleSubmit=async (event)=>{
         event.preventDefault();
         const formData=new FormData(event.currentTarget);
@@ -45,11 +49,16 @@ export function LoginPage(){
             {error &&showUserNameError(error)}
          </div>
                 
-         <div className="user-name input">
-            <label htmlFor="password">كلمة المرور</label>
-            <input className={error && "input-error"} name="password" type="password"/>
-            {error &&showUserNameError(error)}
-         </div>
+         <div className="login password  input">
+              <label htmlFor="password">كلمة المرور</label>
+              <input
+                className={error && "input-error"}
+                name="password"
+                type={showPassword ? "text" : "password"}
+              />
+               {error &&showUserNameError(error)}
+              <button type="button" className="signup-password-toggle" onClick={() => setShowPassword((prev) => !prev)} > {showPassword ? <EyeOff  /> : <Eye  />} </button>
+            </div>
                         <button className="submit" type="submit"> إرسال <ArrowLeft/>    </button>
         </form>
         <div className="create-account-link">

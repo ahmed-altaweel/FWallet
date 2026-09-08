@@ -1,4 +1,3 @@
-
 import { Route,Routes,BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./core/auth/AuthContext";
 import { ProtectedRoute } from "./router/ProtectedRoutes";
@@ -12,14 +11,14 @@ import { LoginPage } from "./features/auth/login.page";
 import { SignupPage } from "./features/auth/signup.page";
 import {TransactionsPage} from "./features/Transactions/Transaction.page";
 import {TransactionDetails} from "./features/TransactionDetails/TransactionDetails.Page";
-import "./features/auth/auth.style.css";
+import {AccountsPage} from "./features/accounts/accounts.page";
+import "./features/auth/login.style.css";
+import MultiSourceTransfer from "./features/Transfer/MultiSourceTransfer.jsx";
+import SingleTransfer from "./features/Transfer/SingleTransfer.jsx";
+import TransferConfirmation from "./features/Transfer/TransferConfirmation.jsx";
+import TransferStatus from "./features/Transfer/TransferStatus.jsx";
+
 import { SettingsPage } from "./features/settings/settings.page";
-import TransferStatus from "./features/Transfer/TransferStatus";
-import SingleTransfer from "./features/Transfer/SingleTransfer";
-import TransferConfirmation from "./features/Transfer/TransferConfirmation";
-import MultiSourceTransfer from "./features/Transfer/MultiSourceTransfer";
-
-
 
 export default function App(){
   return (
@@ -27,31 +26,33 @@ export default function App(){
     <AuthProvider>
        <BrowserRouter>
       
-     
+      
         <Routes>
-          <Route element={<AuthLayout/>}>
+           <Route path="/" element={<WelcomePage/>}/>
+            <Route element={<AuthLayout/>}>
             <Route path="/login" element={<LoginPage/>}></Route>
             <Route path="/signup" element={<SignupPage/>}/>
-              <Route path="/" element={<WelcomePage/>}/>
+              
           </Route>
           <Route element={<ProtectedRoute/>}>
          
             <Route element={<AppDataProvider><AppLayout/></AppDataProvider>}>
             
               <Route path="/dashboard" element={<Dashboard/>}> </Route>
-                <Route path="/notifications" element={<NotificationPage/>}> </Route>
+                <Route path="/notifications" element={<NotificationPage  />}> </Route>
                 <Route path="/transactions" element={<TransactionsPage/>}></Route>
                  <Route path="/settings" element={<SettingsPage/>}></Route>
                  <Route
             path="/transactions/:id"
             element={<TransactionDetails/>}
-        />   
-         <Route path="/single-transfer" element={<SingleTransfer />}/>
-        <Route path="/transfer-confirmation" element={<TransferConfirmation />}/>
-        <Route path="/multi-transfer" element={<MultiSourceTransfer />}/>
-        <Route path="/transfer-status" element={<TransferStatus />}/>
+        />
+        <Route path="/single-transfer" element={<SingleTransfer/>}></Route>
+        <Route path="/multi-transfer" element={<MultiSourceTransfer/>}></Route>
+        <Route path="/transfer-confirmation" element={<TransferConfirmation/>}></Route>
+        <Route path="/transfer-status" element={<TransferStatus/>}></Route>
             </Route>
-             
+            
+             <Route path="/accounts" element={<AccountsPage/>}>  </Route>
           </Route>
         </Routes>
    

@@ -1,4 +1,4 @@
-import { httpClient } from "../../shared/utils/HttClient";
+import { httpClient } from "@/shared/utils/HttClient";
 
 export async function fetchAppData(token){
     console.log("Hello From fetch");

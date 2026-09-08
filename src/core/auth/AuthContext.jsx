@@ -1,5 +1,5 @@
 import {createContext,useState,useContext} from 'react'
-import { httpClient } from '../../shared/utils/HttClient';
+import { httpClient } from '@/shared/utils/HttClient';
 
 
 const AuthContext=createContext(null)

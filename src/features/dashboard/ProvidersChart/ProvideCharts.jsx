@@ -1,7 +1,7 @@
 
 import { useMemo ,useState} from "react";
 import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
-import { formatPercent } from "../../../shared/utils/FormatFunction";
+import { formatPercent } from "@/shared/utils/FormatFunction";
 import { CustomTooltip } from "./CustomTootlip";
 import { renderCustomLabel } from "./CustomLabel";
 const DEFAULT_COLORS = [

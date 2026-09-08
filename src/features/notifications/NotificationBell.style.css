@@ -1,0 +1,258 @@
+.notification-bell-container {
+    position: relative;
+}
+
+
+/* =========================
+   Dropdown
+========================= */
+
+.notification-dropdown {
+    position: absolute;
+
+    top: 55px;
+
+    left: 0;
+
+    width: 380px;
+
+    background-color: #ffffff;
+
+    border: 1px solid #dfe6ef;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.15);
+
+    overflow: hidden;
+
+    z-index: 9999;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(-8px);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+}
+
+
+/* يظهر عند Hover */
+
+.notification-bell-container:hover .notification-dropdown {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+
+/* =========================
+   Dropdown Header
+========================= */
+
+.notification-dropdown-header {
+    padding: 18px 20px;
+
+    border-bottom: 1px solid #e6ebf2;
+
+    text-align: right;
+}
+
+.notification-dropdown-header h3 {
+    margin: 0 0 6px;
+
+    color: #10233f;
+
+    font-size: 19px;
+
+    font-weight: 800;
+}
+
+.notification-dropdown-header span {
+    color: #7890af;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   List
+========================= */
+
+.notification-dropdown-list {
+    max-height: 350px;
+
+    overflow-y: auto;
+}
+
+
+/* =========================
+   Notification
+========================= */
+
+.notification-preview {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    padding: 15px 18px;
+
+    border-bottom: 1px solid #edf1f5;
+
+    cursor: pointer;
+
+    direction: rtl;
+}
+
+.notification-preview:hover {
+    background-color: #f7f9fc;
+}
+
+
+/* =========================
+   Icon
+========================= */
+
+.notification-preview-icon {
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background-color: #f0f5f9;
+
+    font-size: 20px;
+}
+
+
+/* =========================
+   Content
+========================= */
+
+.notification-preview-content {
+    flex: 1;
+
+    min-width: 0;
+
+    text-align: right;
+}
+
+
+/* =========================
+   Title
+========================= */
+
+.notification-preview-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 5px;
+
+    color: #10233f;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   Unread
+========================= */
+
+.preview-unread-dot {
+    width: 8px;
+    height: 8px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background-color: #102f51;
+}
+
+
+/* =========================
+   Message
+========================= */
+
+.notification-preview-message {
+    color: #7890af;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    display: -webkit-box;
+
+    /* -webkit-line-clamp: 2; */
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   Date
+========================= */
+
+.notification-preview-date {
+    margin-top: 5px;
+
+    color: #9aaabe;
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   Footer
+========================= */
+
+.notification-dropdown-footer {
+    padding: 12px;
+}
+
+.notification-dropdown-footer button {
+    width: 100%;
+
+    padding: 10px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background-color: #102f51;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.notification-dropdown-footer button:hover {
+    background-color: #0c2744;
+}

@@ -1,0 +1,39 @@
+[
+  {"token":"Bearer ahmed"
+    ,"data": [{
+    "userId": "usr_fwallet_01",
+    "title": "اكتمال التحويل بنجاح",
+    "message": "تم تحويل مبلغ 2,500.00 ريال بنجاح من حساب الأهلي إلى حساب الراجحي الجاري.",
+    "isRead": false,
+    "date": "2026-09-05T18:00:00.000Z",
+    "type": "transfer",
+    "icon": "↔"
+  },
+  {
+    "userId": "usr_fwallet_02",
+    "title": "تأكيد مزامنة المزودات",
+    "message": "تمت مزامنة جميع الحسابات المربوطة بنجاح.",
+    "isRead": true,
+    "date": "2026-09-05T18:05:00.000Z",
+    "type": "sync",
+    "icon": "↻"
+  },
+  {
+    "userId": "usr_fwallet_03",
+    "title": "إيداع مالي جديد عبر Webhook",
+    "message": "استقبل النظام إشعار إيداع 1,250.00 USD.",
+    "isRead": false,
+    "date": "2026-09-05T18:10:00.000Z",
+    "type": "webhook",
+    "icon": "⚡"
+  },
+  {
+    "userId": "usr_fwallet_04",
+    "title": "تنبيه الموازنة",
+    "message": "اقترب الإنفاق من الحد المحدد للموازنة.",
+    "isRead": true,
+    "date": "2026-09-05T18:15:00.000Z",
+    "type": "budget",
+    "icon": "⚠"
+  }]}
+]

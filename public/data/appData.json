@@ -2,6 +2,14 @@
     {
         "token":"Bearer ahmed",
         "data":{ "accounts_count":4,
-        "unread_notifications":10}
+        "unread_notifications":10,
+        "img":"/imges/image.png",
+        "name":"أحمد الطويل" ,
+        "email":"ahmedaltweel@gmail.com"
+       
+
+
+        
+    }
     }
 ]

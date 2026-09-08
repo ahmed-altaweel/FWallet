@@ -1,13 +1,15 @@
+import { fetchData } from "../FetchData";
+
 const STORAGE_PREFIX = "fwallet_";
 
 
-function getStorageKey(resource) {
-    return `${STORAGE_PREFIX}${resource}`;
+function getStorageKey(resource, token) {
+    return `${STORAGE_PREFIX}${resource}_${token}`;
 }
 
 
-export function read(resource) {
-    const key = getStorageKey(resource);
+export function read(resource, token) {
+    const key = getStorageKey(resource, token);
 
     const storedData = localStorage.getItem(key);
 
@@ -28,8 +30,8 @@ export function read(resource) {
 }
 
 
-export function write(resource, data) {
-    const key = getStorageKey(resource);
+export function write(resource, token, data) {
+    const key = getStorageKey(resource, token);
 
     localStorage.setItem(
         key,
@@ -39,12 +41,10 @@ export function write(resource, data) {
     return data;
 }
 
-export function remove(resource) {
-    const key = getStorageKey(resource);
-
+export function remove(resource, token) {
+    const key = getStorageKey(resource, token);
     localStorage.removeItem(key);
 }
-
 
 
 export function clear() {
@@ -59,21 +59,8 @@ export function clear() {
 
 
 export function getUserData(resource, token) {
-    const data = read(resource);
-
-    if (!Array.isArray(data)) {
-        return null;
-    }
-
-    const userData = data.find(
-        item => item.token === token
-    );
-
-    return userData
-        ? userData.data
-        : null;
+    return read(resource, token);
 }
-
 
 
 export function updateUserData(
@@ -81,79 +68,44 @@ export function updateUserData(
     token,
     newData
 ) {
-    const data = read(resource);
-
-    if (!Array.isArray(data)) {
-        throw new Error(
-            `${resource} must contain an array.`
-        );
-    }
-
-    const userIndex = data.findIndex(
-        item => item.token === token
-    );
-
-    if (userIndex === -1) {
-        throw new Error(
-            "User data was not found."
-        );
-    }
-
-    data[userIndex] = {
-        ...data[userIndex],
-        data: newData
-    };
-
-    write(resource, data);
-
+    write(resource, token, newData);
     return newData;
 }
 
 
-
 export async function initialize(
     resource,
-    seedUrl
+    seedUrl,
+    token
 ) {
-    const existingData = read(resource);
+    const existingData = read(resource, token);
 
     if (existingData !== null) {
         return existingData;
     }
 
-    const response = await fetch(`/data/${seedUrl}`);
-
-if (!response.ok) {
-    console.error(
-        `Failed to initialize ${resource}:`,
-        response.statusText
+    const seedData = await fetchData(
+        seedUrl,
+        token
     );
 
-    throw new Error(`Failed to initialize ${resource}.`);
-}
+    if (seedData === null || seedData === undefined) {
+        console.error(
+            `Failed to initialize ${resource} for the given token.`
+        );
 
-console.log(
-    `Successfully fetched response for ${resource} from ${seedUrl}`
-);
-const text = await response.text();
+        throw new Error(`Failed to initialize ${resource}.`);
+    }
 
-console.log("RAW RESPONSE:");
-console.log(text);
+    console.log(
+        `Successfully fetched and parsed data for ${resource} via fetchData.`
+    );
 
-const seedData = JSON.parse(text);
-//const seedData = await response.json();
+    write(resource, token, seedData);
 
-console.log(
-    `Successfully parsed JSON for ${resource}:`,
-    seedData
-);
-
-write(resource, seedData);
-
-console.log(
-    `Data for ${resource} initialized successfully.`
-);
-
+    console.log(
+        `Data for ${resource} initialized successfully.`
+    );
 
     return seedData;
 }

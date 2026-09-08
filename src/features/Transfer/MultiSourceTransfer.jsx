@@ -26,9 +26,6 @@ export default function MultiSourceTransfer() {
     const [validationError, setValidationError] =
         useState(null);
 
-    //const [validatedTransfer, setValidatedTransfer] =  useState(null);
-
-
     const {
         data: accounts = [],
         isLoading,
@@ -39,8 +36,6 @@ export default function MultiSourceTransfer() {
         queryFn: () => getAccounts(token),
         enabled: !!token
     });
-
-
     function handleSourceChange(index, field, value) {
 
         const updated = [...sources];
@@ -52,11 +47,9 @@ export default function MultiSourceTransfer() {
 
         setSources(updated);
         setValidationError(null);
-        //setValidatedTransfer(null);
     }
 
-
-    function addSource() {
+  function addSource() {
 
         setSources([
             ...sources,
@@ -70,8 +63,6 @@ export default function MultiSourceTransfer() {
         setSources(sources.filter((_, i) => i !== index)
         );
     }
-
-
 
 async function handleSubmit(event) {
 
@@ -101,8 +92,6 @@ async function handleSubmit(event) {
 
         return;
     }
-
-
     navigate(
         "/transfer-confirmation",
         {
@@ -138,9 +127,6 @@ async function handleSubmit(event) {
         }
     );
 }
-
-
-
     if (isLoading) {
         return (
             <div className="transfer-state">
@@ -151,8 +137,6 @@ async function handleSubmit(event) {
             </div>
         );
     }
-
-
     if (isError) {
         return (
             <div className="transfer-state">
@@ -163,8 +147,6 @@ async function handleSubmit(event) {
             </div>
         );
     }
-
-
     if (accounts.length < 2) {
         return (
             <div className="transfer-state">
@@ -178,8 +160,6 @@ async function handleSubmit(event) {
             </div>
         );
     }
-
-
     const totalAmount = sources.reduce(
         (total, source) =>
             total + (Number(source.amount) || 0),
@@ -202,18 +182,13 @@ async function handleSubmit(event) {
 
                 <div className="transfer-card">
 
-                    <form
-                        className="transfer-form"
-                        onSubmit={handleSubmit}
-                    >
-
-                        {/* Destination */}
+                    <form className="transfer-form" onSubmit={handleSubmit}>
 
                         <div className="form-group">
 
-                            <label className="form-label">
-                                الحساب الوجهة
-                            </label>
+                            {/*<label className="form-label">*/}
+                               <h3>الحساب الوجهة</h3> 
+                            
 
                             <select
                                 className="form-select"
@@ -246,12 +221,9 @@ async function handleSubmit(event) {
 
                         </div>
 
-
-                        {/* Sources */}
-
                         <div className="sources-header">
 
-                            <h2>الحسابات المصدر</h2>
+                            <h3>الحسابات المصدر</h3>
 
                             <button
                                 type="button"
@@ -262,8 +234,6 @@ async function handleSubmit(event) {
                             </button>
 
                         </div>
-
-
                         {sources.map((source, index) => {
 
                             const account =
@@ -411,10 +381,6 @@ async function handleSubmit(event) {
                         </button>
 
                     </form>
-
-
-  
-
                 </div>
             </div>
         </div>

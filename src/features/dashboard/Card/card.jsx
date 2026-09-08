@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from "react";
+import {  useMemo } from "react";
 import { Calculate } from "./Calcualte";
-import { fetchData } from "../../../shared/utils/FetchData";
+import { fetchData } from "@/shared/utils/FetchData";
 import { TotalCard } from "./totalCard.jsx";
 import { ProviderChart } from "../ProvidersChart/ProvideCharts.jsx";
 import { useQuery } from "@tanstack/react-query";

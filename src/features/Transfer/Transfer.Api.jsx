@@ -11,21 +11,23 @@ import {
 /* =========================================================
    Initialization
    ========================================================= */
-
-export async function initializeTransferData() {
+export async function initializeTransferData(token) {
     await initialize(
         "accounts",
-        "accountsData.json"
+        "accountsData.json",
+        token
     );
 
     await initialize(
         "transactions",
-        "TransactionsData.json"
+        "TransactionsData.json",
+        token
     );
 
     await initialize(
         "transfers",
-        "TransfersData.json"
+        "TransfersData.json",
+        token
     );
 }
 
@@ -33,11 +35,11 @@ export async function initializeTransferData() {
 /* =========================================================
    Accounts
    ========================================================= */
-
 export async function getAccounts(token) {
     await initialize(
         "accounts",
-        "accountsData.json"
+        "accountsData.json",
+        token
     );
 
     return getUserData(
@@ -46,15 +48,12 @@ export async function getAccounts(token) {
     );
 }
 
-
-/* =========================================================
-   Transactions
-   ========================================================= */
 
 export async function getTransactions(token) {
     await initialize(
         "transactions",
-        "TransactionsData.json"
+        "TransactionsData.json",
+        token
     );
 
     return getUserData(
@@ -63,15 +62,11 @@ export async function getTransactions(token) {
     );
 }
 
-
-/* =========================================================
-   Transfers
-   ========================================================= */
-
 export async function getTransfers(token) {
     await initialize(
         "transfers",
-        "TransfersData.json"
+        "TransfersData.json",
+        token
     );
 
     return getUserData(
@@ -79,11 +74,6 @@ export async function getTransfers(token) {
         token
     );
 }
-
-
-/* =========================================================
-   Single Transfer Validation
-   ========================================================= */
 
 export async function validateSingleTransfer(
     token,
@@ -195,9 +185,6 @@ export async function validateSingleTransfer(
 }
 
 
-/* =========================================================
-   Multi Source Validation
-   ========================================================= */
 
 export async function validateMultiSourceTransfer(
     token,
@@ -364,9 +351,6 @@ export async function validateMultiSourceTransfer(
 }
 
 
-/* =========================================================
-   Create Transfer
-   ========================================================= */
 
 export function createTransferRequest(
     token,
@@ -409,9 +393,6 @@ export function createTransferRequest(
 }
 
 
-/* =========================================================
-   Mock Provider - Single
-   ========================================================= */
 
 export async function mockProviderTransfer(
     validation
@@ -477,10 +458,6 @@ export async function mockProviderTransfer(
     };
 }
 
-
-/* =========================================================
-   Mock Provider - Multi Source
-   ========================================================= */
 
 export async function mockProviderMultiSourceTransfer(
     validation
@@ -600,9 +577,6 @@ export async function mockProviderMultiSourceTransfer(
 }
 
 
-/* =========================================================
-   Create Transactions
-   ========================================================= */
 
 export function createTransactionRecords(
     transfer,
@@ -686,17 +660,14 @@ export function createTransactionRecords(
 }
 
 
-/* =========================================================
-   Save Transfer
-   ========================================================= */
-
 export async function saveTransfer(
     token,
     transfer
 ) {
     await initialize(
         "transfers",
-        "TransfersData.json"
+        "TransfersData.json",
+        token
     );
 
     const transfers =
@@ -720,9 +691,6 @@ export async function saveTransfer(
 }
 
 
-/* =========================================================
-   Save Transactions
-   ========================================================= */
 
 export async function saveTransactions(
     token,
@@ -730,7 +698,8 @@ export async function saveTransactions(
 ) {
     await initialize(
         "transactions",
-        "TransactionsData.json"
+        "TransactionsData.json",
+        token
     );
 
     const currentTransactions =
@@ -756,9 +725,6 @@ export async function saveTransactions(
 }
 
 
-/* =========================================================
-   Update Account Balance
-   ========================================================= */
 
 export async function updateAccountBalance(
     token,
@@ -767,7 +733,8 @@ export async function updateAccountBalance(
 ) {
     await initialize(
         "accounts",
-        "AccountsData.json"
+        "accountsData.json",
+        token
     );
 
     const accounts =
@@ -809,8 +776,6 @@ export async function updateAccountBalance(
 
     return accounts[accountIndex];
 }
-
-
 /* =========================================================
    Confirm Transfer
    ========================================================= */
@@ -945,10 +910,6 @@ export async function confirmTransfer(
         };
     }
 
-
-    /* =========================================
-       MULTI SOURCE
-       ========================================= */
 
     if (
         transferData.type ===

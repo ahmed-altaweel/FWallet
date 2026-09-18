@@ -20,6 +20,7 @@ import "./features/auth/login.style.css"
 
 
 import { SettingsPage } from "./features/settings/settings.page";
+import AddAccountsPage from "./features/add-accounts/add_accounts.page";
 
 export default function App(){
   return (
@@ -52,6 +53,7 @@ export default function App(){
         <Route path="/transfer-confirmation" element={<TransferConfirmation />}/>
         <Route path="/multi-transfer" element={<MultiSourceTransfer />}/>
         <Route path="/transfer-status" element={<TransferStatus />}/>
+        <Route path="add-account" element={<AddAccountsPage/>}/>
             </Route>
             
           </Route>

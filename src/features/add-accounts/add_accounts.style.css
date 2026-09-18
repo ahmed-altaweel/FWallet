@@ -1,0 +1,388 @@
+.add-account-page {
+    direction: rtl;
+    width: 100%;
+    min-height: 100%;
+    padding: 40px 24px;
+    box-sizing: border-box;
+    background: var(--secondry-bg);
+}
+
+.add-account-container {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.add-account-header {
+    margin-bottom: 28px;
+}
+
+.add-account-header h1 {
+    margin: 0 0 8px;
+    color: var(--text-primary);
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.add-account-header p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.add-account-card {
+    padding: 30px;
+    background: var(--white-color);
+    border: 1px solid var(--border-light);
+    border-radius: 18px;
+    box-shadow: var(--shadow-soft);
+}
+
+.add-account-step-badge {
+    display: inline-flex;
+    width: max-content;
+    margin: 0 0 22px;
+    padding: 7px 16px;
+    background: var(--secondry-100);
+    color: var(--primary-color);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.add-account-step-title {
+    margin: 0 0 20px;
+    color: var(--text-primary);
+    font-size: 19px;
+}
+
+.add-account-back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 18px;
+    padding: 8px 14px;
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    background: var(--white-color);
+    color: var(--primary-color);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.add-account-back-button:hover {
+    background: var(--secondry-bg);
+    border-color: var(--primary-300);
+}
+
+.add-account-selected-provider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    background: var(--secondry-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    color: var(--text-primary);
+}
+
+/* =========================================================
+   Provider Grid
+   ========================================================= */
+
+.provider-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.provider-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    background: var(--white-color);
+    font-family: inherit;
+    text-align: right;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.provider-card:hover {
+    border-color: var(--primary-300);
+    box-shadow: var(--shadow-soft);
+}
+
+.provider-card.selected {
+    border-color: var(--secondry-color);
+    background: var(--secondry-100);
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, .15);
+}
+
+.provider-card-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--secondry-bg);
+    color: var(--primary-color);
+}
+
+.provider-card.selected .provider-card-icon {
+    background: var(--primary-color);
+    color: var(--white-color);
+}
+
+.provider-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.provider-card-body strong {
+    color: var(--text-primary);
+    font-size: 15px;
+}
+
+.provider-card-body span {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.provider-card-check {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    color: var(--secondry-600);
+}
+
+/* =========================================================
+   Form
+   ========================================================= */
+
+.add-account-form {
+    display: flex;
+    flex-direction: column;
+    gap: 19px;
+}
+
+/* =========================================================
+   States (loading / empty / error)
+   ========================================================= */
+
+.add-account-state {
+    padding: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    background: var(--secondry-bg);
+    border: 1px dashed var(--border-light);
+    border-radius: 12px;
+    color: var(--text-secondary);
+}
+
+.add-account-state-error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+.add-account-error {
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+.add-account-primary-button {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform .1s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+.add-account-primary-button:hover {
+    background: var(--primary-700);
+    box-shadow: 0 6px 18px rgba(13, 42, 74, .18);
+}
+
+.add-account-primary-button:active {
+    transform: translateY(1px);
+}
+
+.add-account-primary-button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.add-account-ghost-button {
+    width: 100%;
+    height: 52px;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    background: var(--white-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.add-account-ghost-button:hover {
+    background: var(--secondry-bg);
+    border-color: var(--primary-300);
+}
+
+.add-account-loading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.add-account-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: add-account-spin .7s linear infinite;
+}
+
+@keyframes add-account-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   Success State
+   ========================================================= */
+
+.add-account-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0 0;
+    text-align: center;
+}
+
+.add-account-success-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.add-account-success h2 {
+    margin: 0 0 8px;
+    color: var(--text-primary);
+    font-size: 20px;
+}
+
+.add-account-success > p {
+    margin: 0 0 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.add-account-summary {
+    width: 100%;
+    margin-bottom: 24px;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.add-account-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 52px;
+    padding: 0 18px;
+    background: var(--white-color);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.add-account-summary-row:last-child {
+    border-bottom: 0;
+}
+
+.add-account-summary-row span {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.add-account-summary-row strong {
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.add-account-success-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+
+    .add-account-page {
+        padding: 24px 14px;
+    }
+
+    .add-account-card {
+        padding: 20px;
+        border-radius: 14px;
+    }
+
+    .add-account-header h1 {
+        font-size: 25px;
+    }
+
+    .provider-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .add-account-success-actions {
+        grid-template-columns: 1fr;
+    }
+}

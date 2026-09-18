@@ -22,7 +22,7 @@ const MENU_SECTIONS = [
     title: "الرئيسية",
     items: [
       { to: "/Dashboard", label: "لوحة التحكم", icon: LayoutDashboard },
-      { to: "/analytics", label: "التحليلات والتدفقات", icon: ChartColumn },
+    
     ],
   },
   {
@@ -58,7 +58,7 @@ const MENU_SECTIONS = [
         icon: Bell,
         badgeKey: "unread_notifications",
       },
-      { to: "/sync-status", label: "حالة مزامنة المزودين", icon: RotateCw },
+     
       { to: "/settings", label: "إعدادات الحساب والربط", icon: Settings },
     ],
   },

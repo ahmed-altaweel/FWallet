@@ -1,0 +1,416 @@
+import { useMemo, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, CircleCheck } from "lucide-react";
+
+import { useAuth } from "@/core/auth/AuthContext";
+import { Icon } from "@/shared/components/Icon";
+import { LuxField } from "@/shared/components/LuxField";
+import { FieldWrapper } from "@/shared/components/FieldWrapper";
+import { InputShell } from "@/shared/components/InputShell";
+
+import { getProviders, connectAccount, CURRENCIES } from "./AddAccounts.Api";
+
+import "./add_accounts.style.css";
+
+const initialForm = {
+    accountNumber: "",
+    iban: "",
+    currency: ""
+};
+
+export function AddAccountsPage() {
+
+    const { token } = useAuth();
+    const navigate = useNavigate();
+
+    const [step, setStep] = useState(1);
+    const [selectedProviderId, setSelectedProviderId] = useState("");
+    const [form, setForm] = useState(initialForm);
+    const [formError, setFormError] = useState("");
+
+
+    const {
+        data: providers = [],
+        isLoading: isLoadingProviders,
+        isError: isErrorProviders,
+        error: providersError
+    } = useQuery({
+        queryKey: ["connect-providers"],
+        queryFn: getProviders
+    });
+
+
+    const selectedProvider = useMemo(
+        () =>
+            providers.find(
+                provider => provider.id === selectedProviderId
+            ),
+        [providers, selectedProviderId]
+    );
+
+
+    const mutation = useMutation({
+        mutationFn: () =>
+            connectAccount(token, {
+                providerId: selectedProviderId,
+                accountNumber: form.accountNumber.trim(),
+                iban: form.iban.trim(),
+                currency: form.currency
+            })
+    });
+
+
+    function setField(key, value) {
+        setForm(prev => ({ ...prev, [key]: value }));
+        setFormError("");
+    }
+
+
+    function goToDetails() {
+
+        if (!selectedProviderId) {
+            setFormError("يرجى اختيار المزود المالي أولًا.");
+            return;
+        }
+
+        setFormError("");
+        setStep(2);
+    }
+
+
+    function backToProviders() {
+        mutation.reset();
+        setFormError("");
+        setStep(1);
+    }
+
+
+    function handleSubmit(event) {
+
+        event.preventDefault();
+
+        if (!form.accountNumber.trim()) {
+            setFormError("يرجى إدخال رقم الحساب.");
+            return;
+        }
+
+        if (!form.currency) {
+            setFormError("يرجى اختيار عملة الحساب.");
+            return;
+        }
+
+        setFormError("");
+        mutation.mutate();
+    }
+
+
+    function connectAnother() {
+        mutation.reset();
+        setForm(initialForm);
+        setSelectedProviderId("");
+        setFormError("");
+        setStep(1);
+    }
+
+
+    return (
+        <div className="add-account-page">
+            <div className="add-account-container">
+
+                <header className="add-account-header">
+                    <h1>ربط حساب مالي جديد</h1>
+                    <p>
+                        اختر المزود المالي، ثم أدخل بيانات الحساب لربطه بمحفظتك.
+                    </p>
+                </header>
+
+                <div className="add-account-card">
+
+                    {mutation.isSuccess ? (
+
+                        <SuccessState
+                            account={mutation.data}
+                            onConnectAnother={connectAnother}
+                            onGoToAccounts={() => navigate("/accounts")}
+                        />
+
+                    ) : (
+
+                        <>
+                            <div className="add-account-step-badge">
+                                الخطوة {step} من 2
+                            </div>
+
+
+                            {step === 1 && (
+
+                                <section className="add-account-step">
+
+                                    <h2 className="add-account-step-title">
+                                        اختر المزود المالي
+                                    </h2>
+
+
+                                    {isLoadingProviders && (
+                                        <div className="add-account-state">
+                                            <p>جاري تحميل المزودين الماليين...</p>
+                                        </div>
+                                    )}
+
+
+                                    {isErrorProviders && (
+                                        <div className="add-account-state add-account-state-error">
+                                            <p>
+                                                {providersError?.message ||
+                                                    "تعذر تحميل قائمة المزودين."}
+                                            </p>
+                                        </div>
+                                    )}
+
+
+                                    {!isLoadingProviders &&
+                                        !isErrorProviders &&
+                                        providers.length === 0 && (
+                                            <div className="add-account-state">
+                                                <p>
+                                                    لا توجد جهات مالية متاحة للربط حاليًا.
+                                                </p>
+                                            </div>
+                                        )}
+
+
+                                    {!isLoadingProviders &&
+                                        !isErrorProviders &&
+                                        providers.length > 0 && (
+                                            <div className="provider-grid">
+
+                                                {providers.map(provider => (
+
+                                                    <button
+                                                        type="button"
+                                                        key={provider.id}
+                                                        className={`provider-card ${
+                                                            selectedProviderId === provider.id
+                                                                ? "selected"
+                                                                : ""
+                                                        }`}
+                                                        onClick={() =>
+                                                            setSelectedProviderId(provider.id)
+                                                        }
+                                                    >
+
+                                                        <span className="provider-card-icon">
+                                                            <Icon name={provider.icon} />
+                                                        </span>
+
+                                                        <span className="provider-card-body">
+                                                            <strong>{provider.name}</strong>
+                                                            <span>{provider.description}</span>
+                                                        </span>
+
+                                                        {selectedProviderId === provider.id && (
+                                                            <span className="provider-card-check">
+                                                                <CircleCheck size={20} />
+                                                            </span>
+                                                        )}
+
+                                                    </button>
+
+                                                ))}
+
+                                            </div>
+                                        )}
+
+
+                                    {formError && (
+                                        <div className="add-account-error">
+                                            {formError}
+                                        </div>
+                                    )}
+
+
+                                    <button
+                                        type="button"
+                                        className="add-account-primary-button"
+                                        onClick={goToDetails}
+                                        disabled={
+                                            isLoadingProviders ||
+                                            providers.length === 0
+                                        }
+                                    >
+                                        متابعة
+                                    </button>
+
+                                </section>
+                            )}
+
+
+                            {step === 2 && (
+
+                                <section className="add-account-step">
+
+                                    <button
+                                        type="button"
+                                        className="add-account-back-button"
+                                        onClick={backToProviders}
+                                    >
+                                        <ArrowRight size={16} />
+                                        تغيير المزود
+                                    </button>
+
+
+                                    <div className="add-account-selected-provider">
+                                        <span className="provider-card-icon">
+                                            <Icon name={selectedProvider?.icon} />
+                                        </span>
+                                        <strong>{selectedProvider?.name}</strong>
+                                    </div>
+
+
+                                    <h2 className="add-account-step-title">
+                                        بيانات الحساب
+                                    </h2>
+
+
+                                    <form
+                                        className="add-account-form"
+                                        onSubmit={handleSubmit}
+                                    >
+
+                                        <LuxField
+                                            icon="id"
+                                            label="رقم الحساب"
+                                            value={form.accountNumber}
+                                            onChange={v => setField("accountNumber", v)}
+                                            placeholder="أدخل رقم الحساب"
+                                            dir="ltr"
+                                        />
+
+                                        <LuxField
+                                            icon="id"
+                                            label="رقم الآيبان (IBAN)"
+                                            value={form.iban}
+                                            onChange={v => setField("iban", v)}
+                                            placeholder="اختياري"
+                                            dir="ltr"
+                                        />
+
+                                        <FieldWrapper label="عملة الحساب">
+                                            <InputShell icon="currency">
+                                                <select
+                                                    value={form.currency}
+                                                    onChange={e =>
+                                                        setField("currency", e.target.value)
+                                                    }
+                                                >
+                                                    <option value="">
+                                                        اختر عملة الحساب
+                                                    </option>
+
+                                                    {CURRENCIES.map(currency => (
+                                                        <option
+                                                            key={currency.code}
+                                                            value={currency.code}
+                                                        >
+                                                            {currency.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </InputShell>
+                                        </FieldWrapper>
+
+
+                                        {(formError || mutation.isError) && (
+                                            <div className="add-account-error">
+                                                {formError ||
+                                                    mutation.error?.message ||
+                                                    "تعذر ربط الحساب."}
+                                            </div>
+                                        )}
+
+
+                                        <button
+                                            type="submit"
+                                            className="add-account-primary-button"
+                                            disabled={mutation.isPending}
+                                        >
+                                            {mutation.isPending ? (
+                                                <span className="add-account-loading">
+                                                    <span className="add-account-spinner" />
+                                                    جاري ربط الحساب...
+                                                </span>
+                                            ) : (
+                                                "ربط الحساب"
+                                            )}
+                                        </button>
+
+                                    </form>
+
+                                </section>
+                            )}
+                        </>
+                    )}
+
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+function SuccessState({ account, onConnectAnother, onGoToAccounts }) {
+    return (
+        <section className="add-account-success">
+
+            <span className="add-account-success-icon">
+                <CircleCheck size={26} />
+            </span>
+
+            <h2>تم ربط الحساب بنجاح</h2>
+            <p>تمت إضافة الحساب إلى قائمة حساباتك المرتبطة.</p>
+
+            <div className="add-account-summary">
+
+                <div className="add-account-summary-row">
+                    <span>المزود</span>
+                    <strong>{account?.provider}</strong>
+                </div>
+
+                <div className="add-account-summary-row">
+                    <span>رقم الحساب</span>
+                    <strong dir="ltr">{account?.accountNumber}</strong>
+                </div>
+
+                <div className="add-account-summary-row">
+                    <span>العملة</span>
+                    <strong>{account?.currency}</strong>
+                </div>
+
+            </div>
+
+            <div className="add-account-success-actions">
+
+                <button
+                    type="button"
+                    className="add-account-ghost-button"
+                    onClick={onConnectAnother}
+                >
+                    ربط حساب آخر
+                </button>
+
+                <button
+                    type="button"
+                    className="add-account-primary-button"
+                    onClick={onGoToAccounts}
+                >
+                    الذهاب إلى الحسابات
+                </button>
+
+            </div>
+
+        </section>
+    );
+}
+
+export default AddAccountsPage;

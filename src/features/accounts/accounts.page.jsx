@@ -444,6 +444,7 @@ export function SearchBar({
 ربط حساب مالي 
 </Button>
     </div>
+    
   );
 }
 

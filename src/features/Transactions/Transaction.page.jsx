@@ -3,6 +3,9 @@ import { useAuth } from "../../core/auth/AuthContext";
 
 import { useQuery } from "@tanstack/react-query";
 import {fetchData} from "@/shared/utils/FetchData";
+import {formatDate} from "@/shared/utils/FormatFunction";
+import "./Transaction.style.css"
+
 
 export function TransactionsPage(){
     const {token}=useAuth();
@@ -43,33 +46,35 @@ export function TransactionsPage(){
 
 
  {TransactionData?.map((transaction) => (
-                <ContainerBox key={transaction.id} className="trans-container" >
+<ContainerBox key={transaction.id} className="trans-container">
+    <div className="transaction-header">
+        <h4 className="transaction-title">{transaction.title}</h4>
+        <div className="transaction-amount">
+            {transaction.amount} <span>{transaction.currency}</span>
+        </div>
+    </div>
 
-                    <div className="transaction-title">
-                        {transaction.title}
-                    </div>
+    <div className="transaction-details">
+        <div className="transaction-from">
+            <span className="label">من:</span>
+            <span className="value">{transaction.from}</span>
+        </div>
+        <div className="transaction-to">
+            <span className="label">إلى:</span>
+            <span className="value">{transaction.to}</span>
+        </div>
+    </div>
 
-                    <div className="transaction-amount">
-                        {transaction.amount} {transaction.currency}
-                    </div>
+    <div className="transaction-footer">
+        <div className={`transaction-status status-${transaction.status?.toLowerCase()}`}>
+            {transaction.status}
+        </div>
+        <div className="transaction-date">
+            {formatDate(transaction.date)}
+        </div>
+    </div>
+</ContainerBox>
 
-                    <div className="transaction-from">
-                        من: {transaction.from}
-                    </div>
-
-                    <div className="transaction-to">
-                        إلى: {transaction.to}
-                    </div>
-
-                    <div className="transaction-status">
-                        {transaction.status}
-                    </div>
-
-                    <div className="transaction-date">
-                              {new Date(transaction.date).toLocaleString("ar-SA")}
-                    </div>
-
-                </ContainerBox>
             ))}       
 
 </div> 

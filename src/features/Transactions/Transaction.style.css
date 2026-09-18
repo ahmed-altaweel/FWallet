@@ -1,16 +1,145 @@
 
-
-.transaction-d-page{
-
-width: 100%;
-padding: 30px 40px;
-
-box-sizing: border-box;
-
-
+.transaction-d-page {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    box-sizing: border-box;
+    direction: rtl;
 }
-trans-container:hover{
-transition-duration: 0.2s;
-background-color: rgba(255, 250, 250, 0.834);
 
+
+.transaction-d-page h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.transaction-d-page h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 400;
+    color: #64748b;
+}
+
+
+.trans-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 16px;
+    padding: 20px !important;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+}
+
+.trans-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    border-color: #cbd5e1;
+}
+
+
+.transaction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.transaction-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.transaction-amount {
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f172a;
+    direction: ltr;
+}
+
+.transaction-amount span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    margin-left: 4px;
+}
+
+
+.transaction-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.transaction-from,
+.transaction-to {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.transaction-from .label,
+.transaction-to .label {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.transaction-from .value,
+.transaction-to .value {
+    font-size: 14px;
+    color: #334155;
+    font-weight: 600;
+}
+
+.transaction-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+}
+
+.transaction-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+
+.status-success, 
+.status-completed {
+    background-color: #ecfdf5;
+    color: #059669;
+    border: 1px solid #a7f3d0;
+}
+
+.status-pending {
+    background-color: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fde68a;
+}
+
+.status-failed {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.transaction-date {
+    font-size: 13px;
+    color: #64748b;
+    direction: ltr;
 }

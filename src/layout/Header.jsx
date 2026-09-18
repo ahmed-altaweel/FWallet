@@ -29,10 +29,7 @@ export function Header() {
         <h3>{pageTitle}</h3>
           </div>
   <div className="left-side ">
-   <button className="sync">
-    <span>مزامنة الحسابات</span>
-    <i className="fa-solid fa-rotate"></i>
-   </button>
+  
     <button  className="transfer" onClick={()=>{navigate("/single-transfer")}}>
     <span>تحويل مالي جديد</span>
     <i className="fa-regular fa-paper-plane"></i>

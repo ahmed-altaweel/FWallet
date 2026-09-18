@@ -76,25 +76,23 @@ cursor: pointer;
 .NotificationItem:hover {
    
      transition-duration: 0.2s;
+     
+    
 
 }
 
 .notification-tab:hover{
-    background-color: #517b9f;
+    background-color:var(--primary-300);
     
 
-    color:whitesmoke;
+   
 
 }
 
-.notifications-card:hover{
-background-color: #8197b571;
 
-
-}
 
 .notification-tab.active {
-    background-color: #266a87;
+    background-color: var(--primary-color);
 
     color: white;
 
@@ -275,7 +273,7 @@ background-color: #8197b571;
 
 
 .NotificationItem:hover {
-    background-color: #fafcff;
+    background-color: var(--primary-300);
 }
 
 

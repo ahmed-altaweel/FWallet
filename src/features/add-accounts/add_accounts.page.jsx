@@ -147,9 +147,9 @@ export function AddAccountsPage() {
 
                                 <section className="add-account-step">
 
-                                    <h2 className="add-account-step-title">
+                                    <h3 className="add-account-step-title">
                                         اختر المزود المالي
-                                    </h2>
+                                    </h3>
 
 
                                     {isLoadingProviders && (
@@ -190,11 +190,10 @@ export function AddAccountsPage() {
                                                     <button
                                                         type="button"
                                                         key={provider.id}
-                                                        className={`provider-card ${
-                                                            selectedProviderId === provider.id
+                                                        className={`provider-card ${selectedProviderId === provider.id
                                                                 ? "selected"
                                                                 : ""
-                                                        }`}
+                                                            }`}
                                                         onClick={() =>
                                                             setSelectedProviderId(provider.id)
                                                         }

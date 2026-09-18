@@ -149,7 +149,7 @@ export function NotificationPage () {
    <ContainerBox>
      <h1> الاشعارات 
 </h1>
-<h3> الاشعارات ............ </h3>
+
    </ContainerBox>
             
 

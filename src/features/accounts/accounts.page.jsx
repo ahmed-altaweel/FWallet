@@ -275,7 +275,7 @@ const query = searchQuery.trim().toLowerCase();
                     <div className="account-actions">
 
                      
-                        <Button Onclick={() => navigate("/single-transfer")} className="btn"   >
+                        <Button onClick={() => navigate("/single-transfer")}   >
                                                   بدء تحويل من الحساب
    
                         </Button>
@@ -409,7 +409,7 @@ export function SearchBar({
   selectedProvider,
   setSelectedProvider
 }) {
-
+  const navigate = useNavigate();
   return (
     <div className="container-search">
 
@@ -440,8 +440,11 @@ export function SearchBar({
       />
 
     
-<Button Onclick={() => navigate("/add-account")}  icon={<CirclePlus />} >
-ربط حساب مالي 
+<Button
+  onClick={() => navigate("/add-account")}
+  icon={<CirclePlus />}
+>
+  ربط حساب مالي
 </Button>
     </div>
     

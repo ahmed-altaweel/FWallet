@@ -103,7 +103,7 @@ export function NotificationPage () {
     }
     if(isError){
         return(  <div>
-            خكأ 
+            خطأ 
             {error?.message}
 
         </div> );

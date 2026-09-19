@@ -1,8 +1,7 @@
-
-import { useMemo ,useState} from "react";
+import { useMemo } from "react";
 import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
 import { formatPercent } from "@/shared/utils/FormatFunction";
-import { CustomTooltip } from "./CustomTootlip";
+import { CustomTooltip } from "./CustomTooltip";
 import { renderCustomLabel } from "./CustomLabel";
 const DEFAULT_COLORS = [
   "#6b8aab",
@@ -13,7 +12,6 @@ const DEFAULT_COLORS = [
 ];
 
 
-
 function withColors(data, palette) {
   return data.map((entry, index) => ({
     ...entry,
@@ -21,15 +19,11 @@ function withColors(data, palette) {
   }));
 }
 
-
-
-
 export function ProviderChart({
   colors = DEFAULT_COLORS,
   title = "Provider distribution",
-  data:Data
+  data: Data
 }) {
-  
    const rowData=useMemo(()=>{
     let d=[]
     Object.entries(Data).forEach(([providerName,balance])=>{
@@ -37,21 +31,6 @@ export function ProviderChart({
     })
     return d;
    },[Data])
-   const [status,setStatus]=useState("Loading");
-        // const [rowdata,setData]=useState([]);
-        // const loadData=async ()=>{
-        //   fetchData("TransactionsData.json",token).then((res)=>{
-        //       setData(res);
-        //       setStatus("Done")
-        //   }).catch((error)=>{
-        //       setStatus(`Error:${error}`);
-        //   })
-        // }
-  
-        // useEffect(()=>{
-        //   loadData();
-  
-        // },[token]);
   const data = useMemo(
     () => withColors(rowData, colors),
     [rowData, colors]

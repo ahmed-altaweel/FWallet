@@ -1,5 +1,3 @@
-
-
 const BASE_URL = "/data";
 
 async function handleResponse(response) {
@@ -7,14 +5,10 @@ async function handleResponse(response) {
   let data = null;
 
   if (contentType.includes("application/json")) {
-    // parse JSON once
     data = await response.json();
   } else {
-    // non-JSON (likely HTML error page) — read as text
     const text = await response.text();
-    // leave data as raw text when not JSON
     data = text;
-  
   }
 
   if (!response.ok) {

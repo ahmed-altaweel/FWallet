@@ -8,6 +8,7 @@ import {
 } from "./Transfer.Api";
 
 import { useAuth } from "../../core/auth/AuthContext";
+import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
 
 import "./MultiSourceTransfer.css";
 
@@ -30,7 +31,8 @@ export  function MultiSourceTransfer() {
         data: accounts = [],
         isLoading,
         isError,
-        error
+        error,
+        refetch
     } = useQuery({
         queryKey: ["accounts", token],
         queryFn: () => getAccounts(token),
@@ -57,7 +59,6 @@ export  function MultiSourceTransfer() {
         ]);
     }
 
-
     function removeSource(index) {
         if (sources.length === 1) return;
         setSources(sources.filter((_, i) => i !== index)
@@ -82,7 +83,6 @@ async function handleSubmit(event) {
                 }))
             }
         );
-
 
     if (!result.valid) {
 
@@ -129,35 +129,27 @@ async function handleSubmit(event) {
 }
     if (isLoading) {
         return (
-            <div className="transfer-state">
-                <div className="state-card">
-                    <h2>جاري تحميل الحسابات</h2>
-                    <p>يرجى الانتظار قليلًا...</p>
-                </div>
-            </div>
+            <LoadingState
+                title="جاري تحميل الحسابات"
+                message="يرجى الانتظار قليلًا..."
+            />
         );
     }
     if (isError) {
         return (
-            <div className="transfer-state">
-                <div className="state-card state-error">
-                    <h2>تعذر تحميل الحسابات</h2>
-                    <p>{error?.message}</p>
-                </div>
-            </div>
+            <ErrorState
+                title="تعذر تحميل الحسابات"
+                message={error?.message || "حدث خطأ أثناء جلب حساباتك."}
+                onRetry={refetch}
+            />
         );
     }
     if (accounts.length < 2) {
         return (
-            <div className="transfer-state">
-                <div className="state-card">
-                    <h2>لا توجد حسابات كافية</h2>
-                    <p>
-                        يجب أن يكون لديك حسابان على الأقل
-                        لإجراء تحويل.
-                    </p>
-                </div>
-            </div>
+            <EmptyState
+                title="لا توجد حسابات كافية"
+                message="يجب أن يكون لديك حسابان على الأقل لإجراء تحويل."
+            />
         );
     }
     const totalAmount = sources.reduce(
@@ -165,7 +157,6 @@ async function handleSubmit(event) {
             total + (Number(source.amount) || 0),
         0
     );
-
 
     return (
         <div className="multi-transfer-page">
@@ -179,14 +170,12 @@ async function handleSubmit(event) {
                     </p>
                 </header>
 
-
                 <div className="transfer-card">
 
                     <form className="transfer-form" onSubmit={handleSubmit}>
 
                         <div className="form-group">
 
-                            {/*<label className="form-label">*/}
                                <h3>الحساب الوجهة</h3> 
                             
 
@@ -287,7 +276,6 @@ async function handleSubmit(event) {
 
                                     </div>
 
-
                                     <div className="form-group">
 
                                         <label className="form-label">
@@ -323,7 +311,6 @@ async function handleSubmit(event) {
 
                                     </div>
 
-
                                     {sources.length > 1 && (
                                         <button
                                             type="button"
@@ -339,9 +326,6 @@ async function handleSubmit(event) {
                                 </div>
                             );
                         })}
-
-
-                        {/* Total */}
 
                         <div className="transfer-total">
 
@@ -365,13 +349,11 @@ async function handleSubmit(event) {
 
                         </div>
 
-
                         {validationError && (
                             <div className="validation-error">
                                 {validationError}
                             </div>
                         )}
-
 
                         <button
                             className="review-button"

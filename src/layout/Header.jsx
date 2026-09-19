@@ -42,7 +42,6 @@ export function Header() {
             navigate("/notifications");
         }}
     >
-        {/* <i className="fa-regular fa-bell"></i> */}
         <Bell size={22}/>
     </button>
 

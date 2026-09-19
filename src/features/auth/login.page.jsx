@@ -4,8 +4,6 @@ import { useAuth } from "../../core/auth/AuthContext";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-// import "./features/auth/login.style.css"
-// import "./login.style.css"
 import {  ArrowLeft } from 'lucide-react';
 export function LoginPage(){
     const {login} =useAuth()

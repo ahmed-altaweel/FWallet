@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getTransferStatus } from "./Transfer.Api";
 import { useAuth } from "../../core/auth/AuthContext";
+import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
 
 import "./TransferStatus.css";
 
@@ -13,7 +14,7 @@ export  function TransferStatus() {
 
     const transferId = state?.transferId;
 
-    const { data, isLoading, isError, error } = useQuery({
+    const { data, isLoading, isError, error, refetch } = useQuery({
         queryKey: ["transfer-status", token, transferId],
         queryFn: () => getTransferStatus(token, transferId),
         enabled: !!token && !!transferId
@@ -23,19 +24,17 @@ export  function TransferStatus() {
 
     if (!transferId)
         return (
-            <StateCard
-                icon="!"
-                title="حالة التحويل"
-                message="لا توجد عملية تحويل لعرضها."
-                button="العودة للتحويل"
-                onClick={goToTransfer}
+            <EmptyState
+                title="لا توجد عملية تحويل"
+                message="لا توجد عملية تحويل لعرض حالتها."
+                actionLabel="العودة للتحويل"
+                onAction={goToTransfer}
             />
         );
 
     if (isLoading)
         return (
-            <StateCard
-                loading
+            <LoadingState
                 title="حالة التحويل"
                 message="جاري الحصول على حالة التحويل..."
             />
@@ -43,25 +42,20 @@ export  function TransferStatus() {
 
     if (isError)
         return (
-            <StateCard
-                error
-                icon="!"
+            <ErrorState
                 title="تعذر الحصول على حالة التحويل"
-                message="حدث خطأ أثناء الحصول على بيانات العملية."
-                errorMessage={error?.message}
-                button="العودة للتحويل"
-                onClick={goToTransfer}
+                message={error?.message || "حدث خطأ أثناء الحصول على بيانات العملية."}
+                onRetry={refetch}
             />
         );
 
     if (!data?.found)
         return (
-            <StateCard
-                icon="?"
-                title="حالة التحويل"
-                message="التحويل غير موجود."
-                button="تحويل جديد"
-                onClick={goToTransfer}
+            <EmptyState
+                title="التحويل غير موجود"
+                message="لم يتم العثور على عملية تحويل بهذا المعرف."
+                actionLabel="تحويل جديد"
+                onAction={goToTransfer}
             />
         );
 
@@ -215,9 +209,11 @@ export  function TransferStatus() {
                             ))}
                         </div>
                     ) : (
-                        <div className="empty-transactions">
-                            لا توجد عمليات مسجلة.
-                        </div>
+                        <EmptyState
+                            title="لا توجد عمليات"
+                            message="لم يتم تسجيل أي عملية ضمن هذا التحويل."
+                            size="sm"
+                        />
                     )}
                 </section>
 
@@ -259,48 +255,3 @@ function Account({ label, value }) {
         </div>
     );
 }
-
-function StateCard({
-    icon,
-    title,
-    message,
-    button,
-    onClick,
-    loading,
-    error,
-    errorMessage
-}) {
-    return (
-        <div className="transfer-status-page">
-            <div className="transfer-status-container">
-                <div className={`status-state-card ${error ? "status-error-state" : ""}`}>
-
-                    {loading ? (
-                        <div className="status-spinner" />
-                    ) : (
-                        <div className="status-state-icon">{icon}</div>
-                    )}
-
-                    <h1>{title}</h1>
-                    <p>{message}</p>
-
-                    {errorMessage && (
-                        <div className="status-error-message">
-                            {errorMessage}
-                        </div>
-                    )}
-
-                    {button && (
-                        <button
-                            className="status-primary-button"
-                            onClick={onClick}
-                        >
-                            {button}
-                        </button>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
-}
-

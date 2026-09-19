@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAccounts, validateSingleTransfer } from "./Transfer.Api";
 import { useAuth } from "../../core/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
 import "./SingleTransfer.css";
 
 export  function SingleTransfer() {
@@ -22,14 +23,12 @@ export  function SingleTransfer() {
     const [validationError, setValidationError] =
         useState(null);
 
-   // const [validatedTransfer, setValidatedTransfer] =useState(null);
-
-
     const {
         data: accounts = [],
         isLoading,
         isError,
-        error
+        error,
+        refetch
     } = useQuery({
         queryKey: ["accounts", token],
 
@@ -38,7 +37,6 @@ export  function SingleTransfer() {
 
         enabled: !!token
     });
-
 
   
 async function handleSubmit(event) {
@@ -57,7 +55,6 @@ async function handleSubmit(event) {
             }
         );
 
-
     if (!result.valid) {
 
         setValidationError(
@@ -66,7 +63,6 @@ async function handleSubmit(event) {
 
         return;
     }
-
 
     navigate(
         "/transfer-confirmation",
@@ -89,90 +85,33 @@ async function handleSubmit(event) {
     );
 }
 
-
-
-    /* =====================================================
-       Loading
-       ===================================================== */
-
     if (isLoading) {
-
         return (
-            <div className="transfer-state">
-
-                <div className="state-card">
-
-                    <h2>
-                        جاري تحميل الحسابات
-                    </h2>
-
-                    <p>
-                        يرجى الانتظار قليلًا...
-                    </p>
-
-                </div>
-
-            </div>
+            <LoadingState
+                title="جاري تحميل الحسابات"
+                message="يرجى الانتظار قليلًا..."
+            />
         );
     }
-
-
-    /* =====================================================
-       Error
-       ===================================================== */
 
     if (isError) {
-
         return (
-            <div className="transfer-state">
-
-                <div className="state-card state-error">
-
-                    <h2>
-                        تعذر تحميل الحسابات
-                    </h2>
-
-                    <p>
-                        {error?.message}
-                    </p>
-
-                </div>
-
-            </div>
+            <ErrorState
+                title="تعذر تحميل الحسابات"
+                message={error?.message || "حدث خطأ أثناء جلب حساباتك."}
+                onRetry={refetch}
+            />
         );
     }
-
-
-    /* =====================================================
-       Not Enough Accounts
-       ===================================================== */
 
     if (accounts.length < 2) {
-
         return (
-            <div className="transfer-state">
-
-                <div className="state-card">
-
-                    <h2>
-                        لا توجد حسابات كافية
-                    </h2>
-
-                    <p>
-                        يجب أن يكون لديك حسابان على الأقل
-                        لإجراء تحويل داخلي.
-                    </p>
-
-                </div>
-
-            </div>
+            <EmptyState
+                title="لا توجد حسابات كافية"
+                message="يجب أن يكون لديك حسابان على الأقل لإجراء تحويل داخلي."
+            />
         );
     }
-
-
-    /* =====================================================
-       Selected Accounts
-       ===================================================== */
 
     const sourceAccount =
         accounts.find(
@@ -188,17 +127,11 @@ async function handleSubmit(event) {
                 String(destinationAccountId)
         );
 
-
     return (
 
         <div className="single-transfer-page">
 
             <div className="single-transfer-container">
-
-
-                {/* =================================================
-                   Header
-                   ================================================= */}
 
                 <header className="transfer-header">
 
@@ -212,22 +145,12 @@ async function handleSubmit(event) {
 
                 </header>
 
-
-                {/* =================================================
-                   Main Card
-                   ================================================= */}
-
                 <div className="transfer-card">
 
                     <form
                         className="transfer-form"
                         onSubmit={handleSubmit}
                     >
-
-
-                        {/* =============================================
-                           Source Account
-                           ============================================= */}
 
                         <div className="form-group">
 
@@ -275,11 +198,6 @@ async function handleSubmit(event) {
 
                         </div>
 
-
-                        {/* =============================================
-                           Direction
-                           ============================================= */}
-
                         <div className="transfer-direction">
 
                             <div className="transfer-arrow">
@@ -287,11 +205,6 @@ async function handleSubmit(event) {
                             </div>
 
                         </div>
-
-
-                        {/* =============================================
-                           Destination Account
-                           ============================================= */}
 
                         <div className="form-group">
 
@@ -337,11 +250,6 @@ async function handleSubmit(event) {
 
                         </div>
 
-
-                        {/* =============================================
-                           Amount
-                           ============================================= */}
-
                         <div className="form-group">
 
                             <label
@@ -384,11 +292,6 @@ async function handleSubmit(event) {
 
                         </div>
 
-
-                        {/* =============================================
-                           Validation Error
-                           ============================================= */}
-
                         {validationError && (
 
                             <div className="validation-error">
@@ -399,11 +302,6 @@ async function handleSubmit(event) {
 
                         )}
 
-
-                        {/* =============================================
-                           Submit
-                           ============================================= */}
-
                         <button
                             className="review-button"
                             type="submit"
@@ -413,7 +311,6 @@ async function handleSubmit(event) {
 
                     </form>
 
-
                    
                 </div>
 
@@ -422,5 +319,4 @@ async function handleSubmit(event) {
         </div>
     );
 }
-
 

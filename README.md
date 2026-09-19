@@ -1,16 +1,145 @@
-# React + Vite
+<div dir="rtl">
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+# محفظة FWallet
 
-Currently, two official plugins are available:
+منصة عربية لإدارة الحسابات المالية وتوحيدها في محفظة واحدة.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## أولًا: كيف تشغّل المشروع
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### المتطلبات
 
-## Expanding the Oxlint configuration
+- بيئة التشغيل `Node.js` الإصدار 18 أو أحدث
+- مدير الحزم `npm` (أو `pnpm` / `yarn`)
+- متصفح حديث يدعم `ES Modules`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+### خطوات التشغيل
+
+```bash
+npm install
+npm run dev
+```
+
+ثم افتح الرابط الذي يظهر في الطرفية، وهو غالبًا:
+
+```
+http://localhost:5173
+```
+
+### أوامر أخرى
+
+```bash
+npm run build      # بناء نسخة الإنتاج
+npm run preview    # معاينة نسخة الإنتاج محليًا
+```
+
+---
+
+## المتطلبات البرمجية
+
+الحزم الأساسية التي يعتمد عليها المشروع:
+
+- مكتبة الواجهة `react` وأداة البناء `vite`
+- مكتبة التوجيه `react-router-dom`
+- مكتبة جلب البيانات وتخزينها مؤقتًا `@tanstack/react-query`
+- مكتبة الرسوم البيانية `recharts`
+- مكتبة الأيقونات `lucide-react`
+- حزمة الخطوط `@fontsource/ibm-plex-sans-arabic`
+
+### إعداد الاختصار @
+
+يستخدم المشروع الاختصار `@` للإشارة إلى مجلد `src`، لذا يجب وجود هذا الإعداد في ملف `vite.config.js`:
+
+```js
+import path from "path";
+
+export default {
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+};
+```
+
+### بيانات التشغيل
+
+يقرأ المشروع بياناته من ملفات `JSON` ثابتة عبر المسار `/data`، أي أن الملفات يجب أن توجد داخل مجلد `public/data`:
+
+- ملف المستخدمين `usersData.json`
+- ملف بيانات الحساب `appData.json`
+- ملفات الحسابات `accounts.json` و `accountsDetails.json`
+- ملفات المعاملات `TransactionTemp.json` و `TransactionsData.json`
+- ملف المزودين `providersData.json`
+- ملف الإشعارات `NotificationData.json`
+- ملف التحويلات `TransfersData.json`
+
+يتم تسجيل الدخول باسم مستخدم وكلمة مرور موجودين داخل الملف `usersData.json`، ويُحفظ الرمز `token` في `sessionStorage`.
+
+---
+
+## ثانيًا: فكرة المشروع
+
+الفكرة أن المستخدم يملك حسابات مالية متفرقة لدى جهات مختلفة (بنوك ومحافظ إلكترونية)، ولا توجد شاشة واحدة تجمعها. تقوم المنصة بربط هذه الحسابات وعرضها كمحفظة واحدة.
+
+العلاقة الأساسية في النظام هي: حساب ← مزود ← مستخدم، والمزود هو المصدر الموثوق للرصيد دائمًا، أي أن الواجهة لا تحسب الرصيد من عندها بل تعرض ما يأتي من المزود.
+
+### ما الذي تقدمه المنصة
+
+- لوحة تحكم تعرض إجمالي الرصيد حسب العملة وحصة كل مزود والتدفقات المالية الداخلة والخارجة
+- إدارة الحسابات المرتبطة مع البحث والتصفية وعرض تفاصيل كل حساب ومعاملاته
+- ربط حساب مالي جديد عبر خطوتين: اختيار المزود ثم إدخال بيانات الحساب
+- التحويل بين الحسابات، سواء تحويل مفرد أو تحويل من عدة مصادر إلى وجهة واحدة، مع شاشة مراجعة وشاشة حالة
+- سجل المعاملات وتفاصيل كل معاملة
+- الإشعارات مصنّفة حسب النوع
+- الإعدادات وإدارة بيانات الحساب والأمان
+
+---
+
+## بنية المجلدات
+
+```
+src/
+├── core/          الحالة العامة والمصادقة
+├── features/      كل ميزة في مجلد مستقل
+├── layout/        الهيكل العام والشريط الجانبي والترويسة
+├── router/        حماية المسارات
+└── shared/        المكونات والأدوات المشتركة
+```
+
+المبدأ المتبع هو التقسيم حسب الميزة لا حسب نوع الملف، فكل ميزة تحتوي صفحتها ومكوناتها وتنسيقها وملف الواجهة البرمجية الخاص بها.
+
+---
+
+## نظام حالات الواجهة
+
+تعرض كل صفحة ثلاث حالات موحّدة قبل عرض البيانات، وجميعها في المجلد `shared/components/states`:
+
+- حالة التحميل `LoadingState`
+- حالة الخطأ `ErrorState` مع زر إعادة المحاولة
+- حالة عدم وجود بيانات `EmptyState`
+
+وهناك أيضًا المكوّن `ErrorBoundary` لالتقاط الأخطاء غير المتوقعة، وصفحة `NotFoundPage` للمسارات غير الموجودة.
+
+---
+
+## المسارات
+
+| المسار             | الصفحة             |
+| ------------------ | ------------------ |
+| `/`                | صفحة الترحيب       |
+| `/login`           | تسجيل الدخول       |
+| `/signup`          | إنشاء حساب         |
+| `/dashboard`       | لوحة التحكم        |
+| `/accounts`        | الحسابات           |
+| `/add-account`     | ربط حساب مالي      |
+| `/transactions`    | سجل المعاملات      |
+| `/single-transfer` | تحويل مفرد         |
+| `/multi-transfer`  | تحويل من عدة مصادر |
+| `/notifications`   | الإشعارات          |
+| `/settings`        | الإعدادات          |
+
+جميع المسارات بعد تسجيل الدخول محمية، وتمر عبر المكوّن `ProtectedRoute` ثم المزوّد `AppDataProvider` الذي يجلب بيانات المستخدم قبل عرض أي صفحة.
+
+</div>

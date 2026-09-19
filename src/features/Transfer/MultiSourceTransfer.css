@@ -187,25 +187,6 @@
     color: white;
 }
 
-.transfer-state {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.state-card {
-    padding: 30px;
-    text-align: center;
-    background: white;
-    border-radius: 12px;
-}
-
-.state-error {
-    color: #b00020;
-}
-
-
 @media (max-width: 600px) {
 
     .transfer-card {

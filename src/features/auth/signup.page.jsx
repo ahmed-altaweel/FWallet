@@ -1,9 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { useAuth } from "../../core/auth/AuthContext";
-// import "./auth.style.css"
-import { ArrowLeft, ArrowRight, Camera } from "lucide-react";
+import { useAuth } from "../../core/auth/AuthContext";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export function SignupPage() {
   const { register } = useAuth();
@@ -11,7 +10,7 @@ export function SignupPage() {
 
   const [step, setStep] = useState(1);
   const [data, setData] = useState({});
-  const [avatar, setAvatar] = useState("");
+  const [avatar] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -23,15 +22,6 @@ export function SignupPage() {
             </div>
         );
      }
-
-  const uploadAvatar = (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => setAvatar(reader.result);
-    reader.readAsDataURL(file);
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -127,14 +117,6 @@ export function SignupPage() {
         <div className="signup-step-title">الخطوة {step} من 4</div>
         {step === 1 && (
           <>
-            {/* <div className="signup-avatar">
-              <label className="signup-avatar-box">
-                {avatar ? <img src={avatar} alt="الصورة الشخصية" /> : <Camera />}
-                <input type="file" accept="image/*" onChange={uploadAvatar} hidden />
-              </label>
-              <span>الصورة الشخصية</span>
-            </div> */}
-
             <div className="user-name input">
               <label htmlFor="fullName">الاسم الكامل</label>
               <input className={error && "input-error"} name="fullName" type="text" defaultValue={data.fullName} />

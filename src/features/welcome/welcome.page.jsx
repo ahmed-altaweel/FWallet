@@ -1,4 +1,4 @@
-import "./welcom.style.css"
+import "./welcome.style.css"
 import { useNavigate } from "react-router-dom"
 export function WelcomePage(){
     const navigate=useNavigate()

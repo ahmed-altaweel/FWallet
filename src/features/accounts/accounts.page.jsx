@@ -1,16 +1,16 @@
-
-import React, { useState, useMemo } from 'react';
-import { Funnel, CirclePlus, Search, SquareArrowOutUpRight, ArrowRight } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Funnel, CirclePlus, Search, SquareArrowOutUpRight, ArrowRight, Wallet } from 'lucide-react';
 import { ContainerBox } from "../../shared/utils/ContainerBox";
 import { useNavigate } from "react-router-dom";
 import "./search.style.css";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../core/auth/AuthContext";
 import { fetchData } from "../../shared/utils/FetchData";
+import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
 
 export function AccountsPage() {
   const { token } = useAuth();
-   const navigate=useNavigate();
+  const navigate = useNavigate();
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProvider, setSelectedProvider] = useState("ALL");
@@ -27,7 +27,8 @@ export function AccountsPage() {
     data: accounts = [],
     isLoading,
     isError,
-    error
+    error,
+    refetch
   } = useQuery({
     queryKey: ["accounts", token],
     queryFn: () => fetchData("accounts.json", token),
@@ -38,7 +39,8 @@ export function AccountsPage() {
     data: accountsDetails = [],
     isLoading: isLoadingDetails,
     isError: isErrorDetails,
-    error: errorDetails
+    error: errorDetails,
+    refetch: refetchDetails
   } = useQuery({
     queryKey: ["accounts_details", token],
     queryFn: () => fetchData("accountsDetails.json", token),
@@ -49,7 +51,8 @@ export function AccountsPage() {
     data: transactions = [],
     isLoading: isLoadingTransactions,
     isError: isErrorTransactions,
-    error: errorTransactions
+    error: errorTransactions,
+    refetch: refetchTransactions
   } = useQuery({
     queryKey: ["transactions", token],
     queryFn: () => fetchData("TransactionTemp.json", token),
@@ -83,27 +86,22 @@ export function AccountsPage() {
         selectedProvider === "ALL" ||
         account.provider === selectedProvider;
 
-      
-const query = searchQuery.trim().toLowerCase();
+      const query = searchQuery.trim().toLowerCase();
 
-    const matchesProviderName = account.provider
-      ? String(account.provider).toLowerCase().includes(query)
-      : false;
+      const matchesProviderName = account.provider
+        ? String(account.provider).toLowerCase().includes(query)
+        : false;
 
       const matchesAccountNumber = account.accountNumber
-      ? String(account.accountNumber).toLowerCase().includes(query)
-      : false;
+        ? String(account.accountNumber).toLowerCase().includes(query)
+        : false;
 
-
-     
       return matchesProvider && (matchesProviderName || matchesAccountNumber);
     });
   }, [accounts, searchQuery, selectedProvider]);
 
   return (
     <div>
-   
-
       <SearchBar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -127,9 +125,14 @@ const query = searchQuery.trim().toLowerCase();
               <div className="details-container">
 
                 {isLoadingDetails ? (
-                  <p>جاري تحميل التفاصيل...</p>
+                  <LoadingState message="جاري تحميل تفاصيل الحساب..." size="sm" />
                 ) : isErrorDetails ? (
-                  <p>تعذر تحميل تفاصيل الحساب</p>
+                  <ErrorState
+                    title="تعذر تحميل تفاصيل الحساب"
+                    message={errorDetails?.message || "حدث خطأ أثناء جلب تفاصيل الحساب."}
+                    size="sm"
+                    onRetry={refetchDetails}
+                  />
                 ) : accountDetails ? (
                   <>
                     <h2>
@@ -205,11 +208,21 @@ const query = searchQuery.trim().toLowerCase();
                       <h2>المعاملات</h2>
 
                       {isLoadingTransactions ? (
-                        <p>جاري تحميل المعاملات...</p>
+                        <LoadingState message="جاري تحميل المعاملات..." size="sm" />
                       ) : isErrorTransactions ? (
-                        <p>تعذر تحميل معاملات الحساب</p>
-                      ) : accountTransactions.length > 0 ? (
-
+                        <ErrorState
+                          title="تعذر تحميل المعاملات"
+                          message={errorTransactions?.message || "حدث خطأ أثناء جلب معاملات الحساب."}
+                          size="sm"
+                          onRetry={refetchTransactions}
+                        />
+                      ) : accountTransactions.length === 0 ? (
+                        <EmptyState
+                          title="لا توجد معاملات"
+                          message="لم يتم تسجيل أي معاملة على هذا الحساب."
+                          size="sm"
+                        />
+                      ) : (
                         <div className="transactions-list">
 
                           {accountTransactions.map((transaction) => (
@@ -261,30 +274,23 @@ const query = searchQuery.trim().toLowerCase();
                           ))}
 
                         </div>
-
-                      ) : (
-
-                        <p>
-                          لا توجد معاملات لهذا الحساب
-                        </p>
-
                       )}
 
                     </div>
 
                     <div className="account-actions">
-
-                     
-                        <Button onClick={() => navigate("/single-transfer")}   >
-                                                  بدء تحويل من الحساب
-   
-                        </Button>
-
+                      <Button onClick={() => navigate("/single-transfer")}>
+                        بدء تحويل من الحساب
+                      </Button>
                     </div>
 
                   </>
                 ) : (
-                  <p>لا توجد تفاصيل لهذا الحساب</p>
+                  <EmptyState
+                    title="لا توجد تفاصيل لهذا الحساب"
+                    message="لم يتم العثور على بيانات تفصيلية مرتبطة بهذا الحساب."
+                    size="sm"
+                  />
                 )}
 
               </div>
@@ -292,82 +298,99 @@ const query = searchQuery.trim().toLowerCase();
             </ContainerBox>
           </div>
 
+        ) : isLoading ? (
+          <LoadingState message="جاري تحميل الحسابات..." />
+        ) : isError ? (
+          <ErrorState
+            title="تعذر تحميل الحسابات"
+            message={error?.message || "حدث خطأ أثناء جلب حساباتك."}
+            onRetry={refetch}
+          />
+        ) : accounts.length === 0 ? (
+          <EmptyState
+            icon={<Wallet size={24} />}
+            title="لا توجد حسابات مرتبطة"
+            message="ابدأ بربط حسابك المالي الأول لعرضه هنا."
+            actionLabel="ربط حساب مالي"
+            onAction={() => navigate("/add-account")}
+          />
+        ) : filteredAccounts.length === 0 ? (
+          <EmptyState
+            icon={<Search size={24} />}
+            title="لا توجد نتائج مطابقة"
+            message="جرّب تعديل كلمة البحث أو اختيار مزود مالي آخر."
+          />
         ) : (
-
           <div className="accounts">
 
-            {filteredAccounts.length > 0 ? (
+            {filteredAccounts.map((account) => (
 
-              filteredAccounts.map((account) => (
+              <ContainerBox
+                key={account.id}
+                className="card"
+              >
 
-                <ContainerBox
-                  key={account.id}
-                  className="card"
+                <div
+                  className="account-card"
+                  onClick={() => HandleSelectedAccount(account)}
                 >
 
-                  <div
-                    className="account-card"
-                    onClick={() => HandleSelectedAccount(account)}
-                  >
+                  <div className="card-header">
 
-                    <div className="card-header">
+                    <h3>{account.provider}</h3>
 
-                      <h3>{account.provider}</h3>
-
-                      <div className="status">
-                        <span>{account.status}</span>
-                      </div>
-
+                    <div className="status">
+                      <span>{account.status}</span>
                     </div>
 
-                    <div className="account-info">
+                  </div>
 
-                      <div>
-                        <span>المبلغ | </span>
-                        <span>{account.amount}</span>
-                      </div>
+                  <div className="account-info">
 
-                      <div>
-                        <span>رقم </span>
-                        <span>{account.accountNumber}</span>
-                      </div>
+                    <div>
+                      <span>المبلغ | </span>
+                      <span>{account.amount}</span>
+                    </div>
 
-                      <div>
-                        <span>العملة:</span>
-                        <strong>{account.currency}</strong>
-                      </div>
+                    <div>
+                      <span>رقم </span>
+                      <span>{account.accountNumber}</span>
+                    </div>
 
-                      <div>
-                        <span>المزامنة</span>
-                        <span>
-                          {account.synchrouns
-                            ? "مفعلة"
-                            : "غير مفعلة"}
-                        </span>
-                      </div>
+                    <div>
+                      <span>العملة:</span>
+                      <strong>{account.currency}</strong>
+                    </div>
 
-                      <div className="line">
-                        <br />
-                      </div>
+                    <div>
+                      <span>المزامنة</span>
+                      <span>
+                        {account.synchrouns
+                          ? "مفعلة"
+                          : "غير مفعلة"}
+                      </span>
+                    </div>
 
-                      <div className="footer">
+                    <div className="line">
+                      <br />
+                    </div>
 
-                        <div className="btn2">
+                    <div className="footer">
 
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              HandleSelectedAccount(account);
-                            }}
-                          >
-                            <SquareArrowOutUpRight
-                              size={20}
-                              color="white"
-                            />
-                          </button>
+                      <div className="btn2">
 
-                        </div>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            HandleSelectedAccount(account);
+                          }}
+                        >
+                          <SquareArrowOutUpRight
+                            size={20}
+                            color="white"
+                          />
+                        </button>
 
                       </div>
 
@@ -375,26 +398,13 @@ const query = searchQuery.trim().toLowerCase();
 
                   </div>
 
-                </ContainerBox>
+                </div>
 
-              ))
+              </ContainerBox>
 
-            ) : (
-
-              <div
-                style={{
-                  textAlign: 'center',
-                  width: '100%',
-                  padding: '20px'
-                }}
-              >
-                لا يوجد
-              </div>
-
-            )}
+            ))}
 
           </div>
-
         )}
 
       </div>
@@ -439,15 +449,13 @@ export function SearchBar({
         setSelectedProvider={setSelectedProvider}
       />
 
-    
-<Button
-  onClick={() => navigate("/add-account")}
-  icon={<CirclePlus />}
->
-  ربط حساب مالي
-</Button>
+      <Button
+        onClick={() => navigate("/add-account")}
+        icon={<CirclePlus />}
+      >
+        ربط حساب مالي
+      </Button>
     </div>
-    
   );
 }
 
@@ -488,12 +496,12 @@ export function DropDownList({
   );
 }
 
-export function Button({children,icon,onClick}) {
+export function Button({ children, icon, onClick }) {
 
   return (
     <button type="button" className="btn" onClick={onClick}>
       {children}
-    {icon}      
+      {icon}
     </button>
   );
 }

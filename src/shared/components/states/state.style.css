@@ -1,0 +1,137 @@
+.state-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    width: 100%;
+    min-height: 240px;
+    padding: 40px 24px;
+
+    text-align: center;
+
+    background: var(--white-color);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+}
+
+.state-view-sm {
+    min-height: 140px;
+    padding: 20px 16px;
+    gap: 8px;
+}
+
+.state-view-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    background: var(--secondry-bg);
+    color: var(--text-secondary);
+}
+
+.state-view-sm .state-view-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.state-view-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.state-view-sm .state-view-title {
+    font-size: 15px;
+}
+
+.state-view-message {
+    margin: 0;
+    max-width: 380px;
+
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.state-view-button {
+    margin-top: 6px;
+    padding: 9px 22px;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    color: var(--white-color);
+    background: var(--text-primary);
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.state-view-button:hover {
+    background: var(--primary-700);
+}
+
+.state-view-error .state-view-icon {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.state-view-error .state-view-title {
+    color: #b91c1c;
+}
+
+.state-view-error .state-view-button {
+    background: #b91c1c;
+}
+
+.state-view-error .state-view-button:hover {
+    background: #991b1b;
+}
+
+.state-spinner {
+    width: 26px;
+    height: 26px;
+
+    border: 3px solid var(--border-light);
+    border-top-color: var(--text-primary);
+    border-radius: 50%;
+
+    animation: state-spin 0.8s linear infinite;
+}
+
+@keyframes state-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .state-spinner {
+        animation-duration: 2.4s;
+    }
+}
+
+.not-found-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 100vh;
+    padding: 24px;
+
+    background: var(--secondry-bg);
+}
+
+.not-found-page .state-view {
+    max-width: 460px;
+}

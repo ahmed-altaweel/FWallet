@@ -3,6 +3,7 @@ import {ContainerBox} from "@/shared/utils/ContainerBox";
 import { useAuth } from "../../core/auth/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import {fetchData} from "@/shared/utils/FetchData";
+import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
 
 import { useNavigate } from "react-router-dom";
 import "./notification.style.css";
@@ -86,7 +87,8 @@ export function NotificationPage () {
         data:notifications=[],
         isLoading,
         isError,
-        error
+        error,
+        refetch
     }=useQuery({queryKey:["notifications",token],
    queryFn:()=>fetchData("NotificationData.json",token),
    enabled:!!token,
@@ -96,17 +98,16 @@ export function NotificationPage () {
 
 
     if(isLoading){
-        return (   <div>
-            جاري التحميل ...
-        </div>
-        );
+        return <LoadingState message="جاري تحميل الإشعارات..." />;
     }
     if(isError){
-        return(  <div>
-            خطأ 
-            {error?.message}
-
-        </div> );
+        return (
+            <ErrorState
+                title="تعذر تحميل الإشعارات"
+                message={error?.message || "حدث خطأ أثناء جلب الإشعارات."}
+                onRetry={refetch}
+            />
+        );
     }
   
 
@@ -202,15 +203,21 @@ export function NotificationPage () {
 
             <div className="notifications-card">
 
-                {filteredData.map((notification) => (
-
-                    <Notification
-                        key={notification.userId}
-                        notification={notification}
-                        onClick={() => navigate(`/transactions/${notification.userId}`,{state:{transactionData:notification}})}
+                {filteredData.length === 0 ? (
+                    <EmptyState
+                        title="لا توجد إشعارات"
+                        message="لا توجد إشعارات ضمن هذا التصنيف حاليًا."
+                        size="sm"
                     />
-
-                ))}
+                ) : (
+                    filteredData.map((notification) => (
+                        <Notification
+                            key={notification.userId}
+                            notification={notification}
+                            onClick={() => navigate(`/transactions/${notification.userId}`,{state:{transactionData:notification}})}
+                        />
+                    ))
+                )}
 
             </div>
 

@@ -4,10 +4,6 @@ import {
     updateUserData
 } from "@/shared/utils/mock/MockStore";
 
-/* =========================================================
-   Available Providers
-   ========================================================= */
-
 export const PROVIDERS = [
     {
         id: "alkuraimi",
@@ -29,21 +25,11 @@ export const PROVIDERS = [
     }
 ];
 
-
-/* =========================================================
-   Supported Currencies
-   ========================================================= */
-
 export const CURRENCIES = [
     { code: "YER", name: "ريال يمني" },
     { code: "SAR", name: "ريال سعودي" },
     { code: "USD", name: "دولار أمريكي" }
 ];
-
-
-/* =========================================================
-   Get Providers Available For Linking
-   ========================================================= */
 
 export async function getProviders() {
 
@@ -54,11 +40,6 @@ export async function getProviders() {
     return PROVIDERS;
 }
 
-
-/* =========================================================
-   Connect A New Account
-   ========================================================= */
-
 export async function connectAccount(token, payload) {
 
     const {
@@ -67,7 +48,6 @@ export async function connectAccount(token, payload) {
         iban,
         currency
     } = payload;
-
 
     const provider = PROVIDERS.find(
         item => item.id === providerId
@@ -85,21 +65,17 @@ export async function connectAccount(token, payload) {
         throw { message: "يرجى اختيار عملة الحساب." };
     }
 
-
     await initialize(
         "accounts",
         "accountsData.json"
     );
 
-    /* محاكاة زمن الاتصال بالمزود لجلب/تسجيل بيانات الحساب */
     await new Promise(resolve =>
         setTimeout(resolve, 900)
     );
 
-
     const accounts =
         getUserData("accounts", token) || [];
-
 
     const isDuplicate = accounts.some(
         account =>
@@ -112,7 +88,6 @@ export async function connectAccount(token, payload) {
             message: "هذا الحساب مرتبط لديك بالفعل ضمن هذا المزود."
         };
     }
-
 
     const newAccount = {
         id: `acc-${Date.now()}`,
@@ -128,13 +103,11 @@ export async function connectAccount(token, payload) {
         createdAt: new Date().toISOString()
     };
 
-
     updateUserData(
         "accounts",
         token,
         [...accounts, newAccount]
     );
-
 
     return newAccount;
 }

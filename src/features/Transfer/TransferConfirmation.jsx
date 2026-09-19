@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import { confirmTransfer } from "./Transfer.Api";
 import { useAuth } from "../../core/auth/AuthContext";
+import { EmptyState } from "@/shared/components/states";
 
 import "./TransferConfirmation.css";
 
@@ -45,15 +46,12 @@ export  function TransferConfirmation() {
 
     if (!transfer) {
         return (
-            <div className="transfer-confirmation-state">
-                <div className="transfer-confirmation-state-card">
-                    <h2>لا توجد بيانات للتحويل</h2>
-                    <p>
-                        لم يتم العثور على بيانات التحويل المطلوبة.
-                        يرجى العودة إلى صفحة التحويل والمحاولة مرة أخرى.
-                    </p>
-                </div>
-            </div>
+            <EmptyState
+                title="لا توجد بيانات للتحويل"
+                message="لم يتم العثور على بيانات التحويل المطلوبة، يرجى بدء التحويل من جديد."
+                actionLabel="العودة إلى صفحة التحويل"
+                onAction={() => navigate("/single-transfer")}
+            />
         );
     }
 

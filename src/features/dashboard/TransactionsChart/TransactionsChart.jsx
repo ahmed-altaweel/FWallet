@@ -1,4 +1,3 @@
-
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -13,25 +12,24 @@ import {
 import { CustomTooltip } from "./CustomTooltip";
 import { formatNumber, formatDate } from "@/shared/utils/FormatFunction";
 import { fetchData } from "@/shared/utils/FetchData";
+import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
 
 export function TransactionChart({ token }) {
     const {
         data=[],
         isLoading,
         isError,
-        error
+        error,
+        refetch
     } = useQuery({
         queryKey: ["transactions", token],
         queryFn: () => fetchData("TransactionsData.json", token),
         enabled: !!token,
     });
-    console.log(data)
-      const chartData = useMemo(() => {
-
+    const chartData = useMemo(() => {
         const grouped = {};
 
         data.forEach((d) => {
-
             const {
                 date,
                 amount,
@@ -62,7 +60,6 @@ export function TransactionChart({ token }) {
                 new Date(b.date)
         );
     }, [data]);
-   // حساب الإجماليات
     const totals = useMemo(() => {
         const income = chartData.reduce(
             (sum, item) =>
@@ -80,14 +77,29 @@ export function TransactionChart({ token }) {
             net: income - expense,
         };
     }, [chartData]);
-    if(isLoading)
-        return <div>Loading</div>
+    if (isLoading)
+        return <LoadingState message="جاري تحميل التدفقات المالية..." size="sm" />;
+
     if (isError)
-        return <div>{error}</div>
-    // تجهيز بيانات المخطط
+        return (
+            <ErrorState
+                title="تعذر تحميل التدفقات المالية"
+                message={error?.message || "حدث خطأ أثناء جلب بيانات المعاملات."}
+                size="sm"
+                onRetry={refetch}
+            />
+        );
+
+    if (chartData.length === 0)
+        return (
+            <EmptyState
+                title="لا توجد تدفقات مالية"
+                message="لم يتم تسجيل أي معاملات لعرضها في الرسم البياني."
+                size="sm"
+            />
+        );
     return (
         <div className="transaction-chart">
-            {/* رأس البطاقة */}
             <div className="transaction-chart-header">
                 <div className="transaction-net">
                     <div className="transaction-net-label">
@@ -104,9 +116,7 @@ export function TransactionChart({ token }) {
                     </div>
                 </div>
             </div>
-            {/* الإحصائيات */}
             <div className="transaction-legend">
-                {/* الدخل */}
                 <div className="transaction-legend-item">
                     <span className="transaction-legend-dot income-dot" />
                     <span className="transaction-legend-label">
@@ -116,7 +126,6 @@ export function TransactionChart({ token }) {
                         {formatNumber(totals.income)}
                     </span>
                 </div>
-                {/* المصروف */}
                 <div className="transaction-legend-item">
                     <span className="transaction-legend-dot expense-dot" />
                     <span className="transaction-legend-label">
@@ -127,7 +136,6 @@ export function TransactionChart({ token }) {
                     </span>
                 </div>
             </div>
-            {/* المخطط */}
             <div className="transaction-chart-container">
                 <ResponsiveContainer
                     width="100%"
@@ -178,7 +186,6 @@ export function TransactionChart({ token }) {
                                 stroke: "#0d2a4a",
                             }}
                         />
-                        {/* خط المعاملات الداخلة */}
                         <Line
                             type="monotone"
                             dataKey="income"
@@ -197,8 +204,7 @@ export function TransactionChart({ token }) {
                                 strokeWidth: 2,
                             }}
                         />
-                        {/* خط المعاملات الخارجة */}
-``                      <Line
+                        <Line
                             type="monotone"
                             dataKey="expense"
                             name="المعاملات الخارجة"

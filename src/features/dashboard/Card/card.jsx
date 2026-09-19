@@ -1,20 +1,28 @@
-import {  useMemo } from "react";
-import { Calculate } from "./Calcualte";
+import { useMemo } from "react";
+import { Wallet } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { Calculate } from "./Calculate";
 import { fetchData } from "@/shared/utils/FetchData";
 import { TotalCard } from "./totalCard.jsx";
 import { ProviderChart } from "../ProvidersChart/ProvideCharts.jsx";
-import { useQuery } from "@tanstack/react-query";
+import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
+
 export function TotalBalanceCard({ token }) {
+  const navigate = useNavigate();
+
   const {
     data = [],
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["providers", token],
     queryFn: () => fetchData("providersData.json", token),
     enabled: !!token,
   });
+
   const Data = useMemo(() => {
     return Calculate(data);
   }, [data]);
@@ -36,6 +44,34 @@ export function TotalBalanceCard({ token }) {
     });
     return d;
   }, [Data]);
+
+  if (isLoading) {
+    return <LoadingState message="جاري تحميل الأرصدة..." size="sm" />;
+  }
+
+  if (isError) {
+    return (
+      <ErrorState
+        title="تعذر تحميل الأرصدة"
+        message={error?.message || "حدث خطأ أثناء جلب بيانات المزودين."}
+        size="sm"
+        onRetry={refetch}
+      />
+    );
+  }
+
+  if (balance.length === 0) {
+    return (
+      <EmptyState
+        icon={<Wallet size={24} />}
+        title="لا توجد حسابات مرتبطة"
+        message="اربط حسابك المالي الأول لعرض إجمالي الرصيد."
+        actionLabel="ربط حساب مالي"
+        onAction={() => navigate("/add-account")}
+      />
+    );
+  }
+
   return (
     <>
       {balance.map((x, i) => {

@@ -7,10 +7,6 @@ import {
     write
 } from "../../shared/utils/mock/MockStore";
 
-
-/* =========================================================
-   Initialization
-   ========================================================= */
 export async function initializeTransferData(token) {
     await initialize(
         "accounts",
@@ -31,10 +27,6 @@ export async function initializeTransferData(token) {
     );
 }
 
-
-/* =========================================================
-   Accounts
-   ========================================================= */
 export async function getAccounts(token) {
     await initialize(
         "accounts",
@@ -47,7 +39,6 @@ export async function getAccounts(token) {
         token
     );
 }
-
 
 export async function getTransactions(token) {
     await initialize(
@@ -95,7 +86,6 @@ export async function validateSingleTransfer(
         amount
     } = transferData;
 
-
     const sourceAccount = accounts.find(
         account =>
             account.id === sourceAccountId
@@ -109,7 +99,6 @@ export async function validateSingleTransfer(
                 "Source account is not owned by the current user."
         };
     }
-
 
     const destinationAccount = accounts.find(
         account =>
@@ -125,7 +114,6 @@ export async function validateSingleTransfer(
         };
     }
 
-
     if (
         sourceAccount.id ===
         destinationAccount.id
@@ -137,7 +125,6 @@ export async function validateSingleTransfer(
                 "Source and destination cannot be the same account."
         };
     }
-
 
     if (
         typeof amount !== "number" ||
@@ -152,7 +139,6 @@ export async function validateSingleTransfer(
         };
     }
 
-
     if (sourceAccount.status !== "active") {
         return {
             valid: false,
@@ -161,7 +147,6 @@ export async function validateSingleTransfer(
                 "Source account is not active."
         };
     }
-
 
     if (
         destinationAccount.status !==
@@ -175,7 +160,6 @@ export async function validateSingleTransfer(
         };
     }
 
-
     return {
         valid: true,
         sourceAccount,
@@ -183,8 +167,6 @@ export async function validateSingleTransfer(
         amount
     };
 }
-
-
 
 export async function validateMultiSourceTransfer(
     token,
@@ -205,7 +187,6 @@ export async function validateMultiSourceTransfer(
         sources
     } = transferData;
 
-
     const destinationAccount = accounts.find(
         account =>
             account.id === destinationAccountId
@@ -220,7 +201,6 @@ export async function validateMultiSourceTransfer(
         };
     }
 
-
     if (destinationAccount.status !== "active") {
         return {
             valid: false,
@@ -229,7 +209,6 @@ export async function validateMultiSourceTransfer(
                 "Destination account is not active."
         };
     }
-
 
     if (
         !Array.isArray(sources) ||
@@ -243,12 +222,10 @@ export async function validateMultiSourceTransfer(
         };
     }
 
-
     const sourceIds =
         sources.map(
             source => source.accountId
         );
-
 
     if (
         new Set(sourceIds).size !==
@@ -262,9 +239,7 @@ export async function validateMultiSourceTransfer(
         };
     }
 
-
     const validatedSources = [];
-
 
     for (const source of sources) {
 
@@ -272,7 +247,6 @@ export async function validateMultiSourceTransfer(
             item =>
                 item.id === source.accountId
         );
-
 
         if (!account) {
             return {
@@ -282,7 +256,6 @@ export async function validateMultiSourceTransfer(
                     `Source account ${source.accountId} is not owned by the current user.`
             };
         }
-
 
         if (
             account.id ===
@@ -297,7 +270,6 @@ export async function validateMultiSourceTransfer(
             };
         }
 
-
         if (account.status !== "active") {
             return {
                 valid: false,
@@ -307,7 +279,6 @@ export async function validateMultiSourceTransfer(
                     `Source account ${account.id} is not active.`
             };
         }
-
 
         if (
             typeof source.amount !==
@@ -326,13 +297,11 @@ export async function validateMultiSourceTransfer(
             };
         }
 
-
         validatedSources.push({
             account,
             amount: source.amount
         });
     }
-
 
     const totalAmount =
         sources.reduce(
@@ -341,7 +310,6 @@ export async function validateMultiSourceTransfer(
             0
         );
 
-
     return {
         valid: true,
         destinationAccount,
@@ -349,8 +317,6 @@ export async function validateMultiSourceTransfer(
         totalAmount
     };
 }
-
-
 
 export function createTransferRequest(
     token,
@@ -392,8 +358,6 @@ export function createTransferRequest(
     };
 }
 
-
-
 export async function mockProviderTransfer(
     validation
 ) {
@@ -401,13 +365,11 @@ export async function mockProviderTransfer(
         setTimeout(resolve, 800)
     );
 
-
     const {
         sourceAccount,
         destinationAccount,
         amount
     } = validation;
-
 
     if (
         sourceAccount.balance <
@@ -422,7 +384,6 @@ export async function mockProviderTransfer(
                 "Provider rejected the transfer because of insufficient balance."
         };
     }
-
 
     return {
         success: true,
@@ -458,7 +419,6 @@ export async function mockProviderTransfer(
     };
 }
 
-
 export async function mockProviderMultiSourceTransfer(
     validation
 ) {
@@ -466,9 +426,7 @@ export async function mockProviderMultiSourceTransfer(
         setTimeout(resolve, 800)
     );
 
-
     const results = [];
-
 
     for (
         const source of validation.sources
@@ -478,7 +436,6 @@ export async function mockProviderMultiSourceTransfer(
             account,
             amount
         } = source;
-
 
         if (
             account.balance <
@@ -504,7 +461,6 @@ export async function mockProviderMultiSourceTransfer(
 
             continue;
         }
-
 
         results.push({
             success: true,
@@ -539,21 +495,17 @@ export async function mockProviderMultiSourceTransfer(
         });
     }
 
-
     const successful =
         results.filter(
             result =>
                 result.success
         ).length;
 
-
     const failed =
         results.length -
         successful;
 
-
     let status = "failed";
-
 
     if (
         successful ===
@@ -565,7 +517,6 @@ export async function mockProviderMultiSourceTransfer(
         status = "partial";
     }
 
-
     return {
         success:
             successful > 0,
@@ -575,8 +526,6 @@ export async function mockProviderMultiSourceTransfer(
         results
     };
 }
-
-
 
 export function createTransactionRecords(
     transfer,
@@ -620,7 +569,6 @@ export function createTransactionRecords(
         ];
     }
 
-
     return providerResult.results.map(
         (result, index) => ({
             id:
@@ -659,7 +607,6 @@ export function createTransactionRecords(
     );
 }
 
-
 export async function saveTransfer(
     token,
     transfer
@@ -676,9 +623,7 @@ export async function saveTransfer(
             token
         ) || [];
 
-
     transfers.push(transfer);
-
 
     updateUserData(
         "transfers",
@@ -686,11 +631,8 @@ export async function saveTransfer(
         transfers
     );
 
-
     return transfer;
 }
-
-
 
 export async function saveTransactions(
     token,
@@ -708,11 +650,9 @@ export async function saveTransactions(
             token
         ) || [];
 
-
     currentTransactions.push(
         ...transactions
     );
-
 
     updateUserData(
         "transactions",
@@ -720,11 +660,8 @@ export async function saveTransactions(
         currentTransactions
     );
 
-
     return transactions;
 }
-
-
 
 export async function updateAccountBalance(
     token,
@@ -743,20 +680,17 @@ export async function updateAccountBalance(
             token
         ) || [];
 
-
     const accountIndex =
         accounts.findIndex(
             account =>
                 account.id === accountId
         );
 
-
     if (accountIndex === -1) {
         throw new Error(
             "Account not found."
         );
     }
-
 
     accounts[accountIndex] = {
         ...accounts[accountIndex],
@@ -766,28 +700,19 @@ export async function updateAccountBalance(
                 .balance - amount
     };
 
-
     updateUserData(
         "accounts",
         token,
         accounts
     );
 
-
     return accounts[accountIndex];
 }
-/* =========================================================
-   Confirm Transfer
-   ========================================================= */
 
 export async function confirmTransfer(
     token,
     transferData
 ) {
-
-    /* =========================================
-       SINGLE
-       ========================================= */
 
     if (
         transferData.type ===
@@ -802,7 +727,6 @@ export async function confirmTransfer(
                 validation.message
             );
         }
-
 
         const transfer =
             createTransferRequest(
@@ -874,13 +798,11 @@ export async function confirmTransfer(
         transfer.status =
             providerResult.status;
 
-
         transfer.transactionIds =
             transactions.map(
                 transaction =>
                     transaction.id
             );
-
 
         await updateAccountBalance(
             token,
@@ -910,7 +832,6 @@ export async function confirmTransfer(
         };
     }
 
-
     if (
         transferData.type ===
         "multi"
@@ -922,13 +843,11 @@ export async function confirmTransfer(
                 transferData
             );
 
-
         if (!validation.valid) {
             throw new Error(
                 validation.message
             );
         }
-
 
         const transfer =
             createTransferRequest(
@@ -971,12 +890,10 @@ export async function confirmTransfer(
                 }
             );
 
-
         const providerResult =
             await mockProviderMultiSourceTransfer(
                 validation
             );
-
 
         const transactions =
             createTransactionRecords(
@@ -984,22 +901,14 @@ export async function confirmTransfer(
                 providerResult
             );
 
-
         transfer.status =
             providerResult.status;
-
 
         transfer.transactionIds =
             transactions.map(
                 transaction =>
                     transaction.id
             );
-
-
-        /*
-         * Only successful source
-         * operations affect balances.
-         */
 
         for (
             const result
@@ -1020,18 +929,15 @@ export async function confirmTransfer(
             }
         }
 
-
         await saveTransactions(
             token,
             transactions
         );
 
-
         await saveTransfer(
             token,
             transfer
         );
-
 
         return {
             transfer,
@@ -1040,16 +946,10 @@ export async function confirmTransfer(
         };
     }
 
-
     throw new Error(
         "Unsupported transfer type."
     );
 }
-
-
-/* =========================================================
-   Get Transfer
-   ========================================================= */
 
 export async function getTransfer(
     token,
@@ -1058,13 +958,11 @@ export async function getTransfer(
     const transfers =
         await getTransfers(token);
 
-
     if (
         !Array.isArray(transfers)
     ) {
         return null;
     }
-
 
     return (
         transfers.find(
@@ -1074,11 +972,6 @@ export async function getTransfer(
         ) || null
     );
 }
-
-
-/* =========================================================
-   Get Transfer Status
-   ========================================================= */
 
 export async function getTransferStatus(
     token,
@@ -1090,7 +983,6 @@ export async function getTransferStatus(
             transferId
         );
 
-
     if (!transfer) {
         return {
             found: false,
@@ -1099,10 +991,8 @@ export async function getTransferStatus(
         };
     }
 
-
     const transactions =
         await getTransactions(token);
-
 
     const transferTransactions =
         Array.isArray(transactions)
@@ -1112,7 +1002,6 @@ export async function getTransferStatus(
                     transferId
             )
             : [];
-
 
     return {
         found: true,

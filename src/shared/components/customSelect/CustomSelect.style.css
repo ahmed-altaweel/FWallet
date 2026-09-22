@@ -1,0 +1,177 @@
+/* ===================== Custom Select / Dropdown ===================== */
+
+.custom-select {
+    position: relative;
+    width: 100%;
+    user-select: none;
+}
+
+/* Trigger button (replaces the native select box) */
+.custom-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+
+    background-color: var(--primary-bg, #fff);
+    color: var(--text-primary, #070d59);
+
+    border: 1px solid var(--border-light, #e5eaf0);
+    border-radius: 14px;
+
+    font-size: 15px;
+    font-family: inherit;
+    text-align: right;
+    cursor: pointer;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.custom-select-trigger:hover:not(:disabled) {
+    border-color: var(--primary-300, #a9c6e8);
+}
+
+.custom-select.is-open .custom-select-trigger {
+    border-color: var(--secondry-color, #f7b633);
+    box-shadow: 0 0 0 3px rgba(247, 182, 51, 0.15);
+}
+
+.custom-select-trigger:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background-color: var(--secondry-bg, #f1f5f9);
+}
+
+.custom-select-value {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.custom-select-value.is-placeholder {
+    color: var(--text-muted, #94a3b8);
+}
+
+.custom-select-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    color: var(--primary-500, #5893d4);
+    transition: transform 0.2s ease;
+}
+
+.custom-select.is-open .custom-select-arrow {
+    transform: rotate(180deg);
+    color: var(--secondry-600, #d99a1f);
+}
+
+/* Dropdown menu */
+.custom-select-menu {
+    position: absolute;
+    z-index: 50;
+    top: calc(100% + 8px);
+    right: 0;
+    left: 0;
+
+    max-height: 260px;
+    overflow-y: auto;
+
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+
+    background-color: var(--primary-bg, #fff);
+    border: 1px solid var(--border-light, #e5eaf0);
+    border-radius: 14px;
+    box-shadow: 0 12px 28px -6px rgba(7, 13, 89, 0.18),
+        var(--shadow-soft, 0 0 10px 1px rgba(7, 13, 89, 0.07));
+
+    animation: custom-select-pop 0.15s ease-out;
+}
+
+@keyframes custom-select-pop {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-select-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-select-menu::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+
+.custom-select-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    padding: 10px 12px;
+    border-radius: 10px;
+
+    font-size: 14.5px;
+    color: var(--text-primary, #070d59);
+
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.custom-select-option-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.custom-select-option.is-highlighted {
+    background-color: var(--secondry-bg, #f1f5f9);
+}
+
+.custom-select-option.is-selected {
+    background-color: var(--primary-100, #dce9f7);
+    color: var(--primary-700, #1f3c88);
+    font-weight: 600;
+}
+
+.custom-select-option-check {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--secondry-600, #d99a1f);
+}
+
+.custom-select-placeholder {
+    color: var(--text-muted, #94a3b8);
+    border-bottom: 1px solid var(--border-light, #e5eaf0);
+    border-radius: 0;
+    margin-bottom: 4px;
+    padding-bottom: 12px;
+}
+
+/* When the trigger carries the project's error styling, mirror it */
+.custom-select.input-error .custom-select-trigger {
+    border: 1px solid #dc2626;
+    background-color: #fffafa;
+    box-shadow: 0 0 10px 1px rgba(220, 38, 38, 0.08);
+}
+
+.custom-select.input-error.is-open .custom-select-trigger {
+    border-color: #dc2626;
+    box-shadow: 0 0 10px 2px rgba(220, 38, 38, 0.12);
+}

@@ -1,27 +1,21 @@
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAccounts, validateSingleTransfer } from "./Transfer.Api";
 import { useAuth } from "../../core/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
+import { CustomSelect } from "@/shared/components/customSelect/CustomSelect";
 import "./SingleTransfer.css";
 
-export  function SingleTransfer() {
-
+export function SingleTransfer() {
     const navigate = useNavigate();
     const { token } = useAuth();
 
-    const [sourceAccountId, setSourceAccountId] =
-        useState("");
-
-    const [destinationAccountId, setDestinationAccountId] =
-        useState("");
-
-    const [amount, setAmount] =
-        useState("");
-
-    const [validationError, setValidationError] =
-        useState(null);
+    const [sourceAccountId, setSourceAccountId] = useState("");
+    const [destinationAccountId, setDestinationAccountId] = useState("");
+    const [amount, setAmount] = useState("");
+    const [validationError, setValidationError] = useState(null);
 
     const {
         data: accounts = [],
@@ -38,15 +32,12 @@ export  function SingleTransfer() {
         enabled: !!token
     });
 
-  
-async function handleSubmit(event) {
+    async function handleSubmit(event) {
+        event.preventDefault();
 
-    event.preventDefault();
+        setValidationError(null);
 
-    setValidationError(null);
-
-    const result =
-        await validateSingleTransfer(
+        const result = await validateSingleTransfer(
             token,
             {
                 sourceAccountId,
@@ -55,35 +46,31 @@ async function handleSubmit(event) {
             }
         );
 
-    if (!result.valid) {
+        if (!result.valid) {
+            setValidationError(result.message);
+            return;
+        }
 
-        setValidationError(
-            result.message
-        );
+        navigate(
+            "/transfer-confirmation",
+            {
+                state: {
+                    transfer: {
+                        type: "single",
 
-        return;
-    }
+                        sourceAccount:
+                            result.sourceAccount,
 
-    navigate(
-        "/transfer-confirmation",
-        {
-            state: {
-                transfer: {
-                    type: "single",
+                        destinationAccount:
+                            result.destinationAccount,
 
-                    sourceAccount:
-                        result.sourceAccount,
-
-                    destinationAccount:
-                        result.destinationAccount,
-
-                    amount:
-                        result.amount
+                        amount:
+                            result.amount
+                    }
                 }
             }
-        }
-    );
-}
+        );
+    }
 
     if (isLoading) {
         return (
@@ -127,8 +114,19 @@ async function handleSubmit(event) {
                 String(destinationAccountId)
         );
 
-    return (
+    const sourceAccountOptions =
+        accounts.map(account => ({
+            value: account.id,
+            label: `${account.name} — ${account.balance} ${account.currency}`
+        }));
 
+    const destinationAccountOptions =
+        accounts.map(account => ({
+            value: account.id,
+            label: `${account.name} — ${account.currency}`
+        }));
+
+    return (
         <div className="single-transfer-page">
 
             <div className="single-transfer-container">
@@ -161,40 +159,19 @@ async function handleSubmit(event) {
                                 الحساب المصدر
                             </label>
 
-                            <select
+                            <CustomSelect
                                 id="source-account"
-                                className="form-select"
+                                name="sourceAccountId"
+                                options={sourceAccountOptions}
                                 value={sourceAccountId}
                                 onChange={event =>
                                     setSourceAccountId(
                                         event.target.value
                                     )
                                 }
+                                placeholder="اختر الحساب الذي سيتم الخصم منه"
                                 required
-                            >
-
-                                <option value="">
-                                    اختر الحساب الذي سيتم الخصم منه
-                                </option>
-
-                                {accounts.map(account => (
-
-                                    <option
-                                        key={account.id}
-                                        value={account.id}
-                                    >
-
-                                        {account.name}
-                                        {" — "}
-                                        {account.balance}
-                                        {" "}
-                                        {account.currency}
-
-                                    </option>
-
-                                ))}
-
-                            </select>
+                            />
 
                         </div>
 
@@ -215,38 +192,19 @@ async function handleSubmit(event) {
                                 الحساب الوجهة
                             </label>
 
-                            <select
+                            <CustomSelect
                                 id="destination-account"
-                                className="form-select"
+                                name="destinationAccountId"
+                                options={destinationAccountOptions}
                                 value={destinationAccountId}
                                 onChange={event =>
                                     setDestinationAccountId(
                                         event.target.value
                                     )
                                 }
+                                placeholder="اختر الحساب الذي سيتم التحويل إليه"
                                 required
-                            >
-
-                                <option value="">
-                                    اختر الحساب الذي سيتم التحويل إليه
-                                </option>
-
-                                {accounts.map(account => (
-
-                                    <option
-                                        key={account.id}
-                                        value={account.id}
-                                    >
-
-                                        {account.name}
-                                        {" — "}
-                                        {account.currency}
-
-                                    </option>
-
-                                ))}
-
-                            </select>
+                            />
 
                         </div>
 
@@ -261,7 +219,7 @@ async function handleSubmit(event) {
 
                             <div className="amount-wrapper">
 
-                                <input 
+                                <input
                                     dir="ltr"
                                     id="transfer-amount"
                                     className="form-input"
@@ -279,13 +237,12 @@ async function handleSubmit(event) {
                                 />
 
                                 {sourceAccount && (
-
-                                    <span dir="ltr" className="amount-currency">
-
+                                    <span
+                                        dir="ltr"
+                                        className="amount-currency"
+                                    >
                                         {sourceAccount.currency}
-
                                     </span>
-
                                 )}
 
                             </div>
@@ -293,13 +250,9 @@ async function handleSubmit(event) {
                         </div>
 
                         {validationError && (
-
                             <div className="validation-error">
-
                                 {validationError}
-
                             </div>
-
                         )}
 
                         <button
@@ -311,7 +264,6 @@ async function handleSubmit(event) {
 
                     </form>
 
-                   
                 </div>
 
             </div>

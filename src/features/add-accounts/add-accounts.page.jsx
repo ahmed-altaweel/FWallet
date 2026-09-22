@@ -1,5 +1,9 @@
 import { useMemo, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+    useMutation,
+    useQuery,
+    useQueryClient
+} from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, CircleCheck } from "lucide-react";
 
@@ -24,7 +28,7 @@ export function AddAccountsPage() {
 
     const { token } = useAuth();
     const navigate = useNavigate();
-
+   const queryClient = useQueryClient();
     const [step, setStep] = useState(1);
     const [selectedProviderId, setSelectedProviderId] = useState("");
     const [form, setForm] = useState(initialForm);
@@ -281,9 +285,9 @@ export function AddAccountsPage() {
                                     </div>
 
 
-                                    <h2 className="add-account-step-title">
+                                    <h3 className="add-account-step-title">
                                         بيانات الحساب
-                                    </h2>
+                                    </h3>
 
 
                                     <form

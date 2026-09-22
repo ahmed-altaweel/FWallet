@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -8,11 +9,17 @@ import {
 } from "./Transfer.Api";
 
 import { useAuth } from "../../core/auth/AuthContext";
-import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
+import {
+    LoadingState,
+    ErrorState,
+    EmptyState
+} from "@/shared/components/states";
+
+import { CustomSelect } from "@/shared/components/customSelect/CustomSelect";
 
 import "./MultiSourceTransfer.css";
 
-export  function MultiSourceTransfer() {
+export function MultiSourceTransfer() {
 
     const navigate = useNavigate();
     const { token } = useAuth();
@@ -38,6 +45,7 @@ export  function MultiSourceTransfer() {
         queryFn: () => getAccounts(token),
         enabled: !!token
     });
+
     function handleSourceChange(index, field, value) {
 
         const updated = [...sources];
@@ -51,7 +59,7 @@ export  function MultiSourceTransfer() {
         setValidationError(null);
     }
 
-  function addSource() {
+    function addSource() {
 
         setSources([
             ...sources,
@@ -60,73 +68,78 @@ export  function MultiSourceTransfer() {
     }
 
     function removeSource(index) {
+
         if (sources.length === 1) return;
-        setSources(sources.filter((_, i) => i !== index)
+
+        setSources(
+            sources.filter((_, i) => i !== index)
         );
     }
 
-async function handleSubmit(event) {
+    async function handleSubmit(event) {
 
-    event.preventDefault();
+        event.preventDefault();
 
-    setValidationError(null);
+        setValidationError(null);
 
-    const result =
-        await validateMultiSourceTransfer(
-            token,
+        const result =
+            await validateMultiSourceTransfer(
+                token,
+                {
+                    destinationAccountId,
+
+                    sources: sources.map(source => ({
+                        accountId: source.accountId,
+                        amount: Number(source.amount)
+                    }))
+                }
+            );
+
+        if (!result.valid) {
+
+            setValidationError(
+                result.message
+            );
+
+            return;
+        }
+
+        navigate(
+            "/transfer-confirmation",
             {
-                destinationAccountId,
+                state: {
+                    transfer: {
+                        type: "multi",
 
-                sources: sources.map(source => ({
-                    accountId: source.accountId,
-                    amount: Number(source.amount)
-                }))
-            }
-        );
+                        destinationAccount:
+                            result.destinationAccount,
 
-    if (!result.valid) {
+                        sources:
+                            result.sources.map(source => ({
+                                accountId:
+                                    source.account.id,
 
-        setValidationError(
-            result.message
-        );
+                                name:
+                                    source.account.name,
 
-        return;
-    }
-    navigate(
-        "/transfer-confirmation",
-        {
-            state: {
-                transfer: {
-                    type: "multi",
+                                amount:
+                                    source.amount,
 
-                    destinationAccount:
-                        result.destinationAccount,
+                                currency:
+                                    source.account.currency,
 
-                    sources:
-                        result.sources.map(source => ({
-                            accountId:
-                                source.account.id,
+                                balance:
+                                    source.account.balance
+                            })),
 
-                            name:
-                                source.account.name,
-
-                            amount:
-                                source.amount,
-
-                            currency:
-                                source.account.currency,
-
-                            balance:
-                                source.account.balance
-                        })),
-
-                    totalAmount:
-                        result.totalAmount
+                        totalAmount:
+                            result.totalAmount
+                    }
                 }
             }
-        }
-    );
-}
+        );
+    }
+
     if (isLoading) {
         return (
             <LoadingState
@@ -135,15 +148,20 @@ async function handleSubmit(event) {
             />
         );
     }
+
     if (isError) {
         return (
             <ErrorState
                 title="تعذر تحميل الحسابات"
-                message={error?.message || "حدث خطأ أثناء جلب حساباتك."}
+                message={
+                    error?.message ||
+                    "حدث خطأ أثناء جلب حساباتك."
+                }
                 onRetry={refetch}
             />
         );
     }
+
     if (accounts.length < 2) {
         return (
             <EmptyState
@@ -152,67 +170,80 @@ async function handleSubmit(event) {
             />
         );
     }
+
     const totalAmount = sources.reduce(
         (total, source) =>
             total + (Number(source.amount) || 0),
         0
     );
 
+    const destinationAccountOptions =
+        accounts.map(account => ({
+            value: account.id,
+            label: `${account.name} — ${account.currency}`
+        }));
+
+    const sourceAccountOptions =
+        accounts.map(account => ({
+            value: account.id,
+            label: `${account.name} — ${account.balance} ${account.currency}`
+        }));
+
     return (
         <div className="multi-transfer-page">
+
             <div className="multi-transfer-container">
 
                 <header className="transfer-header">
-                    <h1>تحويل من عدة حسابات</h1>
+
+                    <h1>
+                        تحويل من عدة حسابات
+                    </h1>
+
                     <p>
                         تجميع الأموال من عدة حسابات وتحويلها
                         إلى حساب واحد
                     </p>
+
                 </header>
 
                 <div className="transfer-card">
 
-                    <form className="transfer-form" onSubmit={handleSubmit}>
+                    <form
+                        className="transfer-form"
+                        onSubmit={handleSubmit}
+                    >
 
                         <div className="form-group">
 
-                               <h3>الحساب الوجهة</h3> 
-                            
+                            <h3>
+                                الحساب الوجهة
+                            </h3>
 
-                            <select
-                                className="form-select"
+                            <CustomSelect
+                                id="destination-account"
+                                name="destinationAccountId"
+                                options={destinationAccountOptions}
                                 value={destinationAccountId}
                                 onChange={event => {
+
                                     setDestinationAccountId(
                                         event.target.value
                                     );
 
                                     setValidationError(null);
-                                    setValidatedTransfer(null);
                                 }}
+                                placeholder="اختر الحساب الوجهة"
                                 required
-                            >
-                                <option value="">
-                                    اختر الحساب الوجهة
-                                </option>
-
-                                {accounts.map(account => (
-                                    <option
-                                        key={account.id}
-                                        value={account.id}
-                                    >
-                                        {account.name}
-                                        {" — "}
-                                        {account.currency}
-                                    </option>
-                                ))}
-                            </select>
+                            />
 
                         </div>
 
                         <div className="sources-header">
 
-                            <h3>الحسابات المصدر</h3>
+                            <h3>
+                                الحسابات المصدر
+                            </h3>
 
                             <button
                                 type="button"
@@ -223,6 +254,7 @@ async function handleSubmit(event) {
                             </button>
 
                         </div>
+
                         {sources.map((source, index) => {
 
                             const account =
@@ -244,8 +276,9 @@ async function handleSubmit(event) {
                                             المصدر {index + 1}
                                         </label>
 
-                                        <select
-                                            className="form-select"
+                                        <CustomSelect
+                                            name={`source-${index}`}
+                                            options={sourceAccountOptions}
                                             value={source.accountId}
                                             onChange={event =>
                                                 handleSourceChange(
@@ -254,25 +287,9 @@ async function handleSubmit(event) {
                                                     event.target.value
                                                 )
                                             }
+                                            placeholder="اختر الحساب"
                                             required
-                                        >
-                                            <option value="">
-                                                اختر الحساب
-                                            </option>
-
-                                            {accounts.map(account => (
-                                                <option
-                                                    key={account.id}
-                                                    value={account.id}
-                                                >
-                                                    {account.name}
-                                                    {" — "}
-                                                    {account.balance}
-                                                    {" "}
-                                                    {account.currency}
-                                                </option>
-                                            ))}
-                                        </select>
+                                        />
 
                                     </div>
 
@@ -312,6 +329,7 @@ async function handleSubmit(event) {
                                     </div>
 
                                     {sources.length > 1 && (
+
                                         <button
                                             type="button"
                                             className="remove-source-button"
@@ -321,6 +339,7 @@ async function handleSubmit(event) {
                                         >
                                             حذف
                                         </button>
+
                                     )}
 
                                 </div>
@@ -336,6 +355,7 @@ async function handleSubmit(event) {
                             <strong>
                                 {totalAmount}
                                 {" "}
+
                                 {sources[0]?.accountId &&
                                     accounts.find(
                                         account =>
@@ -350,9 +370,11 @@ async function handleSubmit(event) {
                         </div>
 
                         {validationError && (
+
                             <div className="validation-error">
                                 {validationError}
                             </div>
+
                         )}
 
                         <button
@@ -363,8 +385,11 @@ async function handleSubmit(event) {
                         </button>
 
                     </form>
+
                 </div>
+
             </div>
+
         </div>
     );
 }

@@ -67,7 +67,8 @@ export async function connectAccount(token, payload) {
 
     await initialize(
         "accounts",
-        "accountsData.json"
+        "accountsData.json",
+        token
     );
 
     await new Promise(resolve =>

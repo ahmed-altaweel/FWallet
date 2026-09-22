@@ -8,6 +8,7 @@
     --secondry-color:#F7B633;     /* Gold - لون التمييز/الأكشن */
     --primary-bg:#ffffff;
     --secondry-bg:#F1F5F9;
+    --secondry-bg:#f6f8fb;
 
     /* --- تدرجات مشتقة من primary (للنصوص والخلفيات الداكنة) --- */
     --primary-700:#1F3C88;        /* أفتح شوية من primary، للـ hover/tooltip */
@@ -85,7 +86,7 @@
 #page-content{
     grid-column: 2;
     grid-row: 2;
-  background-color:var(--primary-bg);
+  background-color:var(--secondry-bg);
     min-height: 0;
   overflow-y: auto;
 

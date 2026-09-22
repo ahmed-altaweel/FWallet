@@ -1,0 +1,31 @@
+[
+  {
+    "token": "Bearer ahmed",
+    "data": {
+      "fullName": "أحمد مفيد الطويل",
+      "username": "ahmed.altweel",
+      "email": "ahmedaltweel@gmail.com",
+      "phone": "+967777123456",
+      "address": "صنعاء - شارع الزبيري",
+      "gender": "male",
+      "birthDate": "1994-05-12",
+      "nationalId": "01019876543",
+      "avatar":"/imges/image.png"
+
+    }
+  },
+  {
+    "token": "Bearer abdulaleem",
+    "data": {
+      "fullName": "عبدالعليم البتول",
+      "username": "abdulaleem.b",
+      "email": "ab0odsoftwar@gmail.com",
+      "phone": "+967733112233",
+      "address": "تعز - المدينة",
+      "gender": "male",
+      "birthDate": "1996-02-20",
+      "nationalId": "02017654321",
+      "avatar": null
+    }
+  }
+]

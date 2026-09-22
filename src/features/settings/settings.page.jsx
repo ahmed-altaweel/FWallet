@@ -1,14 +1,17 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import "./settings.style.css";
-import { useAppData } from "../../core/state/useAppData";
+import { useAuth } from "../../core/auth/AuthContext";
 import { Icon } from "@/shared/components/Icon";
 import { ProfileSection } from "./sections/ProfileSection";
 import { ContactSection } from "./sections/ContactSection";
 import { PersonalSection } from "./sections/PersonalSection";
 import { SecuritySection } from "./sections/SecuritySection";
 import { detailSubtitle } from "./detailSubtitle";
+import { getProfile, updateProfile } from "./Settings.Api";
+import { LoadingState, ErrorState } from "@/shared/components/states";
 
-const initialData = {
+const emptyData = {
   fullName: "",
   username: "",
   email: "",
@@ -54,10 +57,24 @@ const sections = [
 ];
 
 export function SettingsPage() {
-  const { data } = useAppData();
+  const { token } = useAuth();
+  const queryClient = useQueryClient();
+
+  const {
+    data: profile,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["profile", token],
+    queryFn: () => getProfile(token),
+    enabled: !!token,
+  });
+
   const [active, setActive] = useState(null);
-  const [form, setForm] = useState(initialData);
-  const [saved, setSaved] = useState(initialData);
+  const [form, setForm] = useState(emptyData);
+  const [saved, setSaved] = useState(emptyData);
   const [avatar, setAvatar] = useState(null);
   const [savedAvatar, setSavedAvatar] = useState(null);
   const [notice, setNotice] = useState("");
@@ -68,6 +85,24 @@ export function SettingsPage() {
   });
 
   const fileRef = useRef(null);
+
+  // تعبئة النموذج بالبيانات الحقيقية عند وصولها من الـ API
+  useEffect(() => {
+    if (!profile) return;
+
+    const loadedForm = {
+      ...emptyData,
+      ...profile,
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    };
+
+    setForm(loadedForm);
+    setSaved(loadedForm);
+    setAvatar(profile.avatar || null);
+    setSavedAvatar(profile.avatar || null);
+  }, [profile]);
 
   const dirty = useMemo(
     () =>
@@ -96,11 +131,31 @@ export function SettingsPage() {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
+  const saveMutation = useMutation({
+    mutationFn: (payload) => updateProfile(token, payload),
+    onSuccess: (result) => {
+      const savedForm = { ...emptyData, ...result };
+      setSaved(savedForm);
+      setForm(savedForm);
+      setSavedAvatar(result.avatar || null);
+      setNotice("تم حفظ التغييرات بنجاح");
+      window.setTimeout(() => setNotice(""), 1800);
+      queryClient.invalidateQueries({ queryKey: ["profile", token] });
+    },
+  });
+
   const save = () => {
-    setSaved(form);
-    setSavedAvatar(avatar);
-    setNotice("تم حفظ التغييرات بنجاح");
-    window.setTimeout(() => setNotice(""), 1800);
+    const {
+      currentPassword,
+      newPassword,
+      confirmPassword,
+      ...profileFields
+    } = form;
+
+    saveMutation.mutate({
+      ...profileFields,
+      avatar,
+    });
   };
 
   const cancel = () => {
@@ -121,6 +176,20 @@ export function SettingsPage() {
 
   const current = active ? sections.find((s) => s.id === active) : null;
 
+  if (isLoading) {
+    return <LoadingState message="جاري تحميل بيانات الإعدادات..." />;
+  }
+
+  if (isError) {
+    return (
+      <ErrorState
+        title="تعذر تحميل بيانات الإعدادات"
+        message={error?.message || "حدث خطأ أثناء جلب بيانات حسابك."}
+        onRetry={refetch}
+      />
+    );
+  }
+
   return (
     <section className="fw-lux-page" dir="rtl">
       {notice && (
@@ -138,18 +207,18 @@ export function SettingsPage() {
           <div className="fw-lux-hero">
             <div className="fw-lux-hero-account">
               <div className="fw-lux-hero-account-avatar profile-image">
-                {data?.img ? (
-                  <img src={data.img} alt="الصورة الشخصية" />
+                {savedAvatar ? (
+                  <img src={savedAvatar} alt="الصورة الشخصية" />
                 ) : (
-                  <span>{(data?.name || "م").charAt(0)}</span>
+                  <span>{(saved?.fullName || "م").charAt(0)}</span>
                 )}
               </div>
 
               <div className="fw-lux-hero-account-copy">
                 <span className="fw-lux-hero-account-label">حساب FWallet</span>
-                <strong>{data?.name || "اسم المستخدم"}</strong>
+                <strong>{saved?.fullName || "اسم المستخدم"}</strong>
                 <span className="fw-lux-hero-account-email">
-                  {data?.email || "البريد الإلكتروني"}
+                  {saved?.email || "البريد الإلكتروني"}
                 </span>
               </div>
 
@@ -178,8 +247,6 @@ export function SettingsPage() {
                 style={{ "--i": index }}
                 onClick={() => setActive(section.id)}
               >
-                
-
                 <div className="fw-lux-card-top">
                   <span className="fw-lux-card-icon">
                     <Icon name={section.icon} />
@@ -265,7 +332,7 @@ export function SettingsPage() {
                 <button
                   type="button"
                   className="fw-lux-btn fw-lux-btn-ghost"
-                  disabled={!dirty}
+                  disabled={!dirty || saveMutation.isPending}
                   onClick={cancel}
                 >
                   إلغاء
@@ -274,10 +341,12 @@ export function SettingsPage() {
                 <button
                   type="button"
                   className="fw-lux-btn fw-lux-btn-primary"
-                  disabled={!dirty}
+                  disabled={!dirty || saveMutation.isPending}
                   onClick={save}
                 >
-                  <span>حفظ التغييرات</span>
+                  <span>
+                    {saveMutation.isPending ? "جاري الحفظ..." : "حفظ التغييرات"}
+                  </span>
                   <Icon name="check" />
                 </button>
               </footer>

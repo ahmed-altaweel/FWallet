@@ -19,7 +19,7 @@ import {
   ErrorState,
   EmptyState,
 } from "@/shared/components/states";
-
+import { fetchPersistedData } from "@/shared/utils/PersistedData.jsx";
 export function AccountsPage() {
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ export function AccountsPage() {
     refetch,
   } = useQuery({
     queryKey: ["accounts", token],
-    queryFn: () => fetchData("accounts.json", token),
+   queryFn: () => fetchPersistedData("accountsList", "accounts.json", token),
     enabled: !!token,
   });
 
@@ -55,7 +55,7 @@ export function AccountsPage() {
     refetch: refetchDetails,
   } = useQuery({
     queryKey: ["accounts_details", token],
-    queryFn: () => fetchData("accountsDetails.json", token),
+    queryFn: () => fetchPersistedData("accountsDetailsList", "accountsDetails.json", token),
     enabled: !!token,
   });
 
@@ -67,7 +67,7 @@ export function AccountsPage() {
     refetch: refetchTransactions,
   } = useQuery({
     queryKey: ["accounts", token],
-    queryFn: () => fetchData("TransactionTemp.json", token),
+ queryFn: () => fetchPersistedData("transactionTemp", "TransactionTemp.json", token),
     enabled: !!token,
   });
 

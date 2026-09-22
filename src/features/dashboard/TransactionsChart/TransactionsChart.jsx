@@ -13,7 +13,7 @@ import { CustomTooltip } from "./CustomTooltip";
 import { formatNumber, formatDate } from "@/shared/utils/FormatFunction";
 import { fetchData } from "@/shared/utils/FetchData";
 import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
-
+import { fetchPersistedData } from "@/shared/utils/PersistedData.jsx";
 export function TransactionChart({ token }) {
     const {
         data=[],
@@ -23,7 +23,7 @@ export function TransactionChart({ token }) {
         refetch
     } = useQuery({
         queryKey: ["transactions", token],
-        queryFn: () => fetchData("TransactionsData.json", token),
+        queryFn: () => fetchPersistedData("transactions", "TransactionsData.json", token),
         enabled: !!token,
     });
     const chartData = useMemo(() => {

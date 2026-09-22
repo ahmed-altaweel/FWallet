@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "@/shared/utils/FetchData";
 import { formatDate } from "@/shared/utils/FormatFunction";
 import "./Transaction.style.css";
-
+import { fetchPersistedData } from "@/shared/utils/PersistedData.jsx";
 export function TransactionsPage() {
     const { token } = useAuth();
 
@@ -17,7 +17,7 @@ export function TransactionsPage() {
         refetch,
     } = useQuery({
         queryKey: ["transactions", token],
-        queryFn: () => fetchData("TransactionTemp.json", token),
+     queryFn: () => fetchPersistedData("transactionTemp", "TransactionTemp.json", token),
         enabled: !!token,
     });
 

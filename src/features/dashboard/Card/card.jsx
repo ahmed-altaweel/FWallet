@@ -7,7 +7,7 @@ import { fetchData } from "@/shared/utils/FetchData";
 import { TotalCard } from "./totalCard.jsx";
 import { ProviderChart } from "../ProvidersChart/ProvideCharts.jsx";
 import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
-
+import { fetchPersistedData } from "@/shared/utils/PersistedData.jsx";
 export function TotalBalanceCard({ token }) {
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ export function TotalBalanceCard({ token }) {
     refetch,
   } = useQuery({
     queryKey: ["providers", token],
-    queryFn: () => fetchData("providersData.json", token),
+    queryFn: () => fetchPersistedData("providers", "providersData.json", token),
     enabled: !!token,
   });
 

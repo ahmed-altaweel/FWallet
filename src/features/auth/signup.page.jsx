@@ -1,7 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { useAuth } from "../../core/auth/AuthContext";
+import { useAuth } from "../../core/auth/AuthContext";
+
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export function SignupPage() {

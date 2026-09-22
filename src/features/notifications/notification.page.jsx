@@ -4,7 +4,7 @@ import { useAuth } from "../../core/auth/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import {fetchData} from "@/shared/utils/FetchData";
 import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
-
+import { fetchPersistedData } from "@/shared/utils/PersistedData.jsx";
 import { useNavigate } from "react-router-dom";
 import "./notification.style.css";
 
@@ -90,7 +90,7 @@ export function NotificationPage () {
         error,
         refetch
     }=useQuery({queryKey:["notifications",token],
-   queryFn:()=>fetchData("NotificationData.json",token),
+    queryFn: () => fetchPersistedData("notifications", "NotificationData.json", token),
    enabled:!!token,
 
 

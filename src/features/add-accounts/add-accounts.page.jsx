@@ -11,7 +11,7 @@ import { useAuth } from "@/core/auth/AuthContext";
 import { Icon } from "@/shared/components/Icon";
 import { LuxField } from "@/shared/components/LuxField";
 import { FieldWrapper } from "@/shared/components/FieldWrapper";
-import { InputShell } from "@/shared/components/InputShell";
+import { CustomSelect } from "@/shared/components/customSelect/CustomSelect";
 import { LoadingState, ErrorState, EmptyState } from "@/shared/components/states";
 
 import { getProviders, connectAccount, CURRENCIES } from "./AddAccounts.Api";
@@ -23,6 +23,11 @@ const initialForm = {
     iban: "",
     currency: ""
 };
+
+const CURRENCY_OPTIONS = CURRENCIES.map(currency => ({
+    value: currency.code,
+    label: currency.name
+}));
 
 export function AddAccountsPage() {
 
@@ -152,8 +157,23 @@ export function AddAccountsPage() {
                     ) : (
 
                         <>
-                            <div className="add-account-step-badge">
-                                الخطوة {step} من 2
+                            <div className="add-account-toolbar">
+
+                                <div className="add-account-step-badge">
+                                    الخطوة {step} من 2
+                                </div>
+
+                                {step === 2 && (
+                                    <button
+                                        type="button"
+                                        className="add-account-back-button"
+                                        onClick={backToProviders}
+                                    >
+                                        <ArrowRight size={16} />
+                                        تغيير المزود
+                                    </button>
+                                )}
+
                             </div>
 
 
@@ -267,16 +287,6 @@ export function AddAccountsPage() {
 
                                 <section className="add-account-step">
 
-                                    <button
-                                        type="button"
-                                        className="add-account-back-button"
-                                        onClick={backToProviders}
-                                    >
-                                        <ArrowRight size={16} />
-                                        تغيير المزود
-                                    </button>
-
-
                                     <div className="add-account-selected-provider">
                                         <span className="provider-card-icon">
                                             <Icon name={selectedProvider?.icon} />
@@ -314,27 +324,15 @@ export function AddAccountsPage() {
                                         />
 
                                         <FieldWrapper label="عملة الحساب">
-                                            <InputShell icon="currency">
-                                                <select
-                                                    value={form.currency}
-                                                    onChange={e =>
-                                                        setField("currency", e.target.value)
-                                                    }
-                                                >
-                                                    <option value="">
-                                                        اختر عملة الحساب
-                                                    </option>
-
-                                                    {CURRENCIES.map(currency => (
-                                                        <option
-                                                            key={currency.code}
-                                                            value={currency.code}
-                                                        >
-                                                            {currency.name}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </InputShell>
+                                            <CustomSelect
+                                                name="currency"
+                                                options={CURRENCY_OPTIONS}
+                                                value={form.currency}
+                                                onChange={e =>
+                                                    setField("currency", e.target.value)
+                                                }
+                                                placeholder="اختر عملة الحساب"
+                                            />
                                         </FieldWrapper>
 
 
@@ -429,4 +427,3 @@ function SuccessState({ account, onConnectAnother, onGoToAccounts }) {
         </section>
     );
 }
-

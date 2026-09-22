@@ -17,6 +17,121 @@
     box-shadow: var(--shadow-soft);
 }
 
+/* ============================== Welcome & quick actions ============================== */
+
+.dashboard-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.dashboard-welcome-text h1 {
+    margin: 0 0 4px;
+    color: var(--text-primary);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.dashboard-welcome-text p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.dashboard-quick-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.dashboard-quick-actions button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 42px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 12px;
+    background: var(--primary-color);
+    color: var(--white-color);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s ease, transform .1s ease;
+}
+
+.dashboard-quick-actions button:hover {
+    background: var(--primary-700);
+}
+
+.dashboard-quick-actions button:active {
+    transform: scale(.96);
+}
+
+.dashboard-quick-actions button.ghost {
+    background: var(--secondry-bg);
+    color: var(--primary-color);
+}
+
+.dashboard-quick-actions button.ghost:hover {
+    background: var(--primary-100);
+}
+
+/* ============================== KPI row ============================== */
+
+.dashboard-kpi-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.dashboard-kpi-card {
+    flex: 1 1 200px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--primary-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    box-shadow: var(--shadow-soft);
+}
+
+.dashboard-kpi-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--secondry-bg);
+    color: var(--primary-color);
+}
+
+.dashboard-kpi-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dashboard-kpi-body strong {
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.dashboard-kpi-body span {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
 .staticts-balance{
     width: 100%;
     display:flex;
@@ -203,6 +318,220 @@
 
 .provider-chart__tooltip-value {
      color: var(--primary-300);
+}
+
+/* ============================== Chart + side panels grid ============================== */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+    align-items: start;
+}
+
+.dashboard-grid .transactions-chart {
+    margin-top: 0;
+}
+
+.dashboard-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dashboard-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px;
+    background: var(--primary-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+.dashboard-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard-panel-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.dashboard-panel-header button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: none;
+    background: transparent;
+    color: var(--secondry-600);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.dashboard-panel-header button:hover {
+    color: var(--primary-color);
+}
+
+.dashboard-transactions-list,
+.dashboard-notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dashboard-transaction-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--secondry-bg);
+    border-radius: 10px;
+}
+
+.dashboard-transaction-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.dashboard-transaction-main strong {
+    color: var(--text-primary);
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dashboard-transaction-main span {
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.dashboard-transaction-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.dashboard-transaction-amount {
+    direction: ltr;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.dashboard-status-pill {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.dashboard-status-pill.status-success,
+.dashboard-status-pill.status-completed {
+    background: #DCFCE7;
+    color: #15803D;
+}
+
+.dashboard-status-pill.status-pending {
+    background: #FEF3C7;
+    color: #B45309;
+}
+
+.dashboard-status-pill.status-failed {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.dashboard-notification-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--secondry-bg);
+    border-radius: 10px;
+}
+
+.dashboard-notification-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--primary-bg);
+    color: var(--primary-color);
+    font-size: 15px;
+}
+
+.dashboard-notification-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.dashboard-notification-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.dashboard-notification-body span {
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.5;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.dashboard-unread-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--secondry-color);
+    flex-shrink: 0;
+}
+
+@media (max-width: 1000px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .dashboard-welcome {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-quick-actions {
+        width: 100%;
+    }
+
+    .dashboard-quick-actions button {
+        flex: 1;
+        justify-content: center;
+    }
 }
 
 .transactions-chart{
@@ -448,4 +777,3 @@ tspan {
 
     font-weight: 600;
 }
-

@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #0D2A4A;
+    --primary-color: #070D59;
 }
 
 * {
@@ -207,7 +207,7 @@ h2{
 
     border-radius: 18px;
 
-    box-shadow: 0 20px 40px rgba(13, 42, 74, 0.18);
+    box-shadow: 0 20px 40px rgba(7, 13, 89, 0.18);
 
     transform: rotate(3deg);
 

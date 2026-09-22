@@ -126,7 +126,7 @@ overflow: hidden;
     font-size: 14px;
     font-weight: 700;
     color: white;
-    background-color: #0D2A4A;
+    background-color: #070D59;
 
     border: none;
     cursor: pointer;
@@ -135,7 +135,7 @@ overflow: hidden;
 
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     i {
-    color: #22D3EE;
+    color: #F7B633;
 }
 }
 .header .sync {
@@ -152,13 +152,13 @@ overflow: hidden;
     cursor: pointer;
     transition:all 150ms ease;
        i {
-    color: #22D3EE;
+    color: #F7B633;
   
     }
         
 }
 .header .transfer:hover {
-    background-color: #123E6B;
+    background-color: #1F3C88;
 }
 
 .header .transfer:active {
@@ -197,7 +197,7 @@ overflow: hidden;
 }
 .header .notification:active {
     color: #0F172A;
-    background-color: #094581;
+    background-color: #1F3C88;
 }
 .header .transfer,.header .sync {
     display: none;
@@ -274,7 +274,7 @@ overflow: hidden;
 }
 
 .nav-item.active {
-    background-color: #0D2A4A;
+    background-color: #070D59;
     color: white;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }

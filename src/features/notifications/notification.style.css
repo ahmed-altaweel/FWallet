@@ -2,7 +2,7 @@
     --notification-bg: #f6f8fb;
     --notification-card: #ffffff;
     --notification-border: #dfe6ef;
-    --notification-text: #10233f;
+    --notification-text: #1F3C88;
     --notification-muted: #b6c0cd;
 }
 
@@ -232,7 +232,7 @@ cursor: pointer;
 
     border-radius: 50%;
 
-    background-color: #102f51;
+    background-color: #1F3C88;
 
     flex-shrink: 0;
 }

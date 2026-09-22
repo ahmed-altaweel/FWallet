@@ -1,6 +1,6 @@
 /* :root{
-    --primary-color:#0D2A4A;
-    --secondry-color: #22D3EE;
+    --primary-color:#070D59;
+    --secondry-color: #F7B633;
     --bg-primary: rgba(255, 255, 255, 0.9);
     --bg-secondry:#F1F5F9;
 } */
@@ -66,7 +66,7 @@ input{
     border-radius:12px;
     height: 40px;
    width: 100%;
-    border:1px solid #0D2A4A;
+    border:1px solid #070D59;
     padding:8px 8px 8px 8px;
    
     transition: 0.20s ease;
@@ -79,7 +79,7 @@ label{
 }
 input:focus {
     /* transform: scale(1.02); */
-    border:2px solid #072749   ;
+    border:2px solid #070D59   ;
     outline: none;
 }
 
@@ -100,7 +100,7 @@ top:32px;
     width:100%;
 }
 .submit:hover{
-      background-color: #123E6B;
+      background-color: #1F3C88;
 }
 .submit:active{
  transform: scale(0.95);

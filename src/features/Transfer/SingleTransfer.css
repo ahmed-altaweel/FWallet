@@ -99,7 +99,7 @@
     border-color: var(--secondry-color);
 
     box-shadow:
-        0 0 0 3px rgba(34, 211, 238, 0.12);
+        0 0 0 3px rgba(247, 182, 51, 0.12);
 }
 
 .form-input {
@@ -130,7 +130,7 @@
 
     font-size: 22px;
 
-    border: 1px solid rgba(34, 211, 238, 0.25);
+    border: 1px solid rgba(247, 182, 51, 0.25);
 }
 
 
@@ -174,7 +174,7 @@
     border: none;
     border-radius: 10px;
 
-    background-color: #0D2A4A;
+    background-color: #070D59;
     color: var(--white-color);
 
     font-family: inherit;
@@ -192,7 +192,7 @@
     background: var(--primary-700);
 
     box-shadow:
-        0 6px 18px rgba(13, 42, 74, 0.18);
+        0 6px 18px rgba(7, 13, 89, 0.18);
 }
 
 .review-button:active {
@@ -203,8 +203,8 @@
     outline: none;
 
     box-shadow:
-        0 0 0 3px rgba(34, 211, 238, 0.18),
-        0 6px 18px rgba(13, 42, 74, 0.14);
+        0 0 0 3px rgba(247, 182, 51, 0.18),
+        0 6px 18px rgba(7, 13, 89, 0.14);
 }
 
 
@@ -331,7 +331,7 @@
     color: var(--white-color);
 
     box-shadow:
-        0 6px 18px rgba(34, 211, 238, 0.18);
+        0 6px 18px rgba(247, 182, 51, 0.18);
 }
 
 .confirm-button:active {
@@ -342,7 +342,7 @@
     outline: none;
 
     box-shadow:
-        0 0 0 3px rgba(34, 211, 238, 0.18);
+        0 0 0 3px rgba(247, 182, 51, 0.18);
 }
 
 

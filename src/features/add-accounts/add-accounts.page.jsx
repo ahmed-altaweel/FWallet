@@ -59,7 +59,15 @@ export function AddAccountsPage() {
                 accountNumber: form.accountNumber.trim(),
                 iban: form.iban.trim(),
                 currency: form.currency
-            })
+            }),
+        onSuccess: () => {
+                queryClient.invalidateQueries({
+                queryKey: ["accounts"]
+        });
+                queryClient.invalidateQueries({
+                queryKey: ["providers"]
+        });
+    }
     });
 
 
@@ -417,4 +425,4 @@ function SuccessState({ account, onConnectAnother, onGoToAccounts }) {
         </section>
     );
 }
-
+

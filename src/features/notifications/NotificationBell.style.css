@@ -68,7 +68,7 @@
 .notification-dropdown-header h3 {
     margin: 0 0 6px;
 
-    color: #10233f;
+    color: #1F3C88;
 
     font-size: 19px;
 
@@ -76,7 +76,7 @@
 }
 
 .notification-dropdown-header span {
-    color: #7890af;
+    color: #5893D4;
 
     font-size: 13px;
 }
@@ -167,7 +167,7 @@
 
     margin-bottom: 5px;
 
-    color: #10233f;
+    color: #1F3C88;
 
     font-size: 14px;
 
@@ -187,7 +187,7 @@
 
     border-radius: 50%;
 
-    background-color: #102f51;
+    background-color: #1F3C88;
 }
 
 
@@ -196,7 +196,7 @@
 ========================= */
 
 .notification-preview-message {
-    color: #7890af;
+    color: #5893D4;
 
     font-size: 12px;
 
@@ -242,7 +242,7 @@
 
     border-radius: 10px;
 
-    background-color: #102f51;
+    background-color: #1F3C88;
 
     color: white;
 
@@ -254,5 +254,5 @@
 }
 
 .notification-dropdown-footer button:hover {
-    background-color: #0c2744;
+    background-color: #070D59;
 }

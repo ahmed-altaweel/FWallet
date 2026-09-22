@@ -178,7 +178,7 @@ export function SettingsPage() {
                 style={{ "--i": index }}
                 onClick={() => setActive(section.id)}
               >
-                <span className="fw-lux-card-number">{section.number}</span>
+                
 
                 <div className="fw-lux-card-top">
                   <span className="fw-lux-card-icon">

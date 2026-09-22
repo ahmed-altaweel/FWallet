@@ -33,6 +33,7 @@ export  function TransferConfirmation() {
                 destinationAccountId: transfer.destinationAccount.id,
                 amount: Number(transfer.amount)
             });
+
         },
 
         onSuccess: result => {
@@ -41,6 +42,10 @@ export  function TransferConfirmation() {
                     transferId: result.transfer.id
                 }
             });
+                queryClient.invalidateQueries({
+                queryKey: ["accounts"]
+        })
+    
         }
     });
 

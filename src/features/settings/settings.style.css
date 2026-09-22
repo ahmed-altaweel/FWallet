@@ -1,20 +1,7 @@
-:root {
-  --lux-fast: .2s ease;
-  --lux-navy: #0d2a4a;
-  --lux-navy-2: #173d66;
-  --lux-navy-3: #234f7d;
-  --lux-ink: #172235;
-  --lux-muted: #7b8798;
-  --lux-bg: #f5f7fa;
-  --lux-card: #ffffff;
-  --lux-border: #dfe6ed;
-  --lux-soft: #edf3f8;
-  --lux-soft-2: #f8fafc;
-  --lux-success: #1d8750;
-  --lux-warning: #b77b20;
-  --lux-danger: #c92d2d;
-  --lux-shadow: 0 22px 50px rgba(13, 42, 74, 0.08)
-}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+
+/* ============================== Page shell ============================== */
 
 .fw-lux-page {
   position: relative;
@@ -23,72 +10,50 @@
   min-height: calc(100vh - 120px);
   overflow: hidden;
   padding: 32px 26px 46px;
-  background: linear-gradient(180deg, #f7f9fb 0%, #f3f6f9 100%);
-  color: var(--lux-ink)
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 31px, rgba(7, 13, 89, .035) 31px 32px),
+    var(--secondry-bg);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
 }
+
 
 .fw-lux-ambient {
-  position: absolute;
-  z-index: -1;
-  border-radius: 50%;
-  filter: blur(2px);
-  pointer-events: none
+  display: none;
 }
 
-.fw-lux-ambient-one {
-  width: 380px;
-  height: 380px;
-  top: -180px;
-  right: -80px;
-  background: radial-gradient(circle, rgba(13, 42, 74, .10), rgba(13, 42, 74, 0) 70%)
-}
-
-.fw-lux-ambient-two {
-  width: 320px;
-  height: 320px;
-  bottom: -170px;
-  left: 8%;
-  background: radial-gradient(circle, rgba(13, 42, 74, .06), rgba(13, 42, 74, 0) 72%)
+@keyframes fwLuxFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .fw-lux-view-in {
-  animation: luxViewIn .48s cubic-bezier(.2, .8, .2, 1) both
-}
-
-@keyframes luxViewIn {
-  from {
-    opacity: 0;
-    transform: translateY(18px) scale(.988);
-    filter: blur(2px)
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0)
-  }
+  animation: fwLuxFadeIn .4s var(--ease);
 }
 
 .fw-lux-home {
-  max-width: 1120px;
-  margin: 0 auto
+  max-width: 1080px;
+  margin: 0 auto;
 }
+
+/* ================================ Hero =================================== */
 
 .fw-lux-hero {
   position: relative;
-  min-height: 230px;
+  min-height: 0;
   overflow: hidden;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: minmax(0, 1fr) 140px;
   align-items: center;
   gap: 20px;
   margin-bottom: 20px;
-  padding: 30px 34px;
-  border-radius: 26px;
-  background: #fff;
-  color: var(--lux-ink);
-  border: 1px solid var(--lux-border);
-  box-shadow: var(--lux-shadow)
+  padding: 26px 30px;
+  border-radius: var(--radius-doc);
+  border: 1px solid var(--border-light);
+  border-bottom: 3px solid var(--secondry-color);
+  background: var(--primary-bg);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-soft);
 }
 
 .fw-lux-hero::after {
@@ -96,234 +61,359 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(13, 42, 74, .025), transparent 42%), radial-gradient(circle at 82% 40%, rgba(13, 42, 74, .045), transparent 30%)
+  background: linear-gradient(180deg, rgba(247, 182, 51, .05), transparent 45%);
 }
 
 .fw-lux-hero-ornament {
   position: relative;
   z-index: 2;
-  width: 230px;
-  height: 230px;
-  justify-self: end
+  width: 128px;
+  height: 128px;
+  justify-self: end;
 }
 
 .fw-lux-ring {
   position: absolute;
   inset: 50%;
-  border: 1px solid rgba(255, 255, 255, .18);
+  border: 1px solid rgba(7, 13, 89, .12);
   border-radius: 50%;
-  transform: translate(-50%, -50%)
+  transform: translate(-50%, -50%);
 }
 
 .fw-lux-ring.ring-a {
-  width: 210px;
-  height: 210px
+  width: 128px;
+  height: 128px;
 }
 
 .fw-lux-ring.ring-b {
-  width: 150px;
-  height: 150px;
-  border-color: rgba(255, 255, 255, .24)
+  width: 92px;
+  height: 92px;
+  border-color: rgba(7, 13, 89, .16);
 }
 
 .fw-lux-ring.ring-c {
-  width: 92px;
-  height: 92px;
-  border-color: rgba(255, 255, 255, .34)
+  width: 58px;
+  height: 58px;
+  border: 1px dashed var(--secondry-color);
 }
 
 .fw-lux-center-gem {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 62px;
-  height: 62px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: rgba(255, 255, 255, .10);
-  border: 1px solid rgba(255, 255, 255, .24);
+  background: var(--primary-color);
+  border: 1px solid var(--secondry-color);
   color: #fff;
-  box-shadow: 0 0 0 10px rgba(255, 255, 255, .035), 0 15px 35px rgba(0, 0, 0, .12);
-  transform: translate(-50%, -50%)
+  box-shadow: var(--shadow-soft);
+  transform: translate(-50%, -50%);
 }
 
 .fw-lux-center-gem svg {
-  width: 25px;
-  height: 25px
+  width: 17px;
+  height: 17px;
 }
 
-.fw-lux-section-grid {
+.fw-lux-hero-account {
+  position: relative;
+  z-index: 2;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px
+  grid-template-columns: 72px minmax(0, 1fr) 12px;
+  align-items: center;
+  gap: 18px;
+  max-width: 620px;
+}
+
+.fw-lux-hero-account-avatar {
+  width: 72px;
+  height: 72px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--primary-color), var(--primary-700));
+
+  padding: 3px;
+  background-clip: padding-box;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.fw-lux-hero-account-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.fw-lux-hero-account-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.fw-lux-hero-account-label {
+  margin-bottom: 6px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.fw-lux-hero-account-copy strong {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 24px;
+  line-height: 1.35;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fw-lux-hero-account-email {
+  max-width: 100%;
+  margin-top: 6px;
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fw-lux-hero-save-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 5px var(--success-bg);
+}
+
+.fw-lux-hero-save-dot.dirty {
+  background: var(--warning);
+  box-shadow: 0 0 0 5px var(--warning-bg);
+}
+
+@media (max-width: 760px) {
+  .fw-lux-hero-account {
+    grid-template-columns: 60px minmax(0, 1fr) 10px;
+    gap: 14px;
+  }
+
+  .fw-lux-hero-account-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+  }
+
+  .fw-lux-hero-account-copy strong {
+    font-size: 19px;
+  }
+
+  .fw-lux-hero-account-email {
+    font-size: 13px;
+  }
+}
+
+/* ============================ Section list =============================== */
+/* شبكة flex قابلة للالتفاف: كل بطاقة لها حدودها وظلها الخاص
+   بدل الاعتماد على خطوط فاصلة داخل لوح واحد. */
+
+.fw-lux-section-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
 }
 
 .fw-lux-section-card {
   --i: 0;
   position: relative;
-  min-height: 190px;
+  flex: 1 1 260px;
+  min-height: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px;
-  border: 1px solid var(--lux-border);
-  border-radius: 22px;
-  background: #fff;
-  color: var(--lux-ink);
+  gap: 14px;
+  padding: 22px 26px 20px;
+  border: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  border-radius: var(--radius-doc);
+  background: var(--primary-bg);
+  color: var(--text-primary);
   font-family: inherit;
   text-align: right;
   cursor: pointer;
-  box-shadow: 0 14px 30px rgba(13, 42, 74, .045);
-  animation: luxCardIn .46s cubic-bezier(.2, .8, .2, 1) both;
-  animation-delay: calc(var(--i) * 70ms);
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease
+  box-shadow: var(--shadow-soft);
+  transition: background var(--ease), border-color var(--ease);
 }
 
-@keyframes luxCardIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px)
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0)
-  }
+.fw-lux-section-grid .fw-lux-section-card:last-child {
+  border-bottom: 1px solid var(--border-light);
 }
 
 .fw-lux-section-card::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 3px;
+  background: var(--secondry-color);
   opacity: 0;
-  pointer-events: none;
-  background: linear-gradient(135deg, rgba(13, 42, 74, .04), transparent 45%);
-  transition: opacity .22s ease
+  transition: opacity var(--ease);
 }
 
 .fw-lux-section-card:hover {
-  transform: translateY(-5px);
-  border-color: #c8d4df;
-  box-shadow: 0 20px 42px rgba(13, 42, 74, .10)
+  background: var(--secondry-bg);
 }
 
 .fw-lux-section-card:hover::before {
-  opacity: 1
+  opacity: 1;
+}
+
+.fw-lux-section-card:focus-visible {
+  outline: 2px solid var(--secondry-color);
+  outline-offset: -2px;
 }
 
 .fw-lux-card-number {
   position: absolute;
   top: 16px;
-  left: 18px;
-  color: #e5ebf1;
-  font-size: 28px;
-  font-weight: 950;
-  letter-spacing: -1px
+  left: 20px;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-light);
+  background: var(--secondry-bg);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+
+.fw-lux-card-number::before {
+  content: "FW-";
 }
 
 .fw-lux-card-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start
+  align-items: flex-start;
 }
 
 .fw-lux-card-icon {
-  width: 58px;
-  height: 58px;
+  width: 50px;
+  height: 50px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--lux-soft);
-  color: var(--lux-navy);
-  border: 1px solid #d9e3ec;
-  transition: .22s ease
+  background: var(--secondry-bg);
+  color: var(--primary-color);
+  border: 1px solid var(--border-light);
+  transition: var(--ease);
 }
 
 .fw-lux-card-icon svg {
-  width: 23px;
-  height: 23px
+  width: 21px;
+  height: 21px;
 }
 
 .fw-lux-card-arrow {
   position: relative;
   z-index: 2;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: #f6f8fa;
-  color: #8290a1;
-  transition: .22s ease
+  background: var(--secondry-bg);
+  color: var(--text-muted);
+  transition: var(--ease);
 }
 
 .fw-lux-card-arrow svg {
-  width: 15px;
-  height: 15px
+  width: 14px;
+  height: 14px;
 }
 
 .fw-lux-section-card:hover .fw-lux-card-icon,
 .fw-lux-section-card:hover .fw-lux-card-arrow {
-  background: var(--lux-navy);
-  color: #fff
+  background: var(--primary-color);
+  color: #fff;
 }
 
 .fw-lux-section-card:hover .fw-lux-card-arrow {
-  transform: translateX(-3px)
+  transform: translateX(-3px);
 }
 
 .fw-lux-card-copy {
-  margin: 20px 0 16px
+  margin: 2px 0 0;
 }
 
 .fw-lux-card-copy strong {
   display: block;
-  margin-bottom: 7px;
-  font-size: 17px;
-  font-weight: 900
-  
+  margin-bottom: 6px;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .fw-lux-card-copy p {
-  max-width: 360px;
+  max-width: 520px;
   margin: 0;
-  color: var(--lux-muted);
+  color: var(--text-secondary);
   font-size: 14px;
-  line-height: 1.8
+  line-height: 1.75;
 }
 
 .fw-lux-card-progress {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px
+  gap: 10px;
+  max-width: 320px;
 }
 
-.fw-lux-card-progress>span {
-  height: 5px;
+.fw-lux-card-progress > span {
+  height: 4px;
   overflow: hidden;
-  border-radius: 999px;
-  background: #e9eef3
+  border-radius: var(--radius-pill);
+  background: var(--border-light);
 }
 
 .fw-lux-card-progress i {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--lux-navy), var(--lux-navy-3))
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-700));
 }
 
 .fw-lux-card-progress small {
-  color: var(--lux-muted);
-  font-size: 14px;
-  font-weight: 800
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
 }
 
+/* ================================ Detail ================================== */
+
 .fw-lux-detail {
-  max-width: 1120px;
-  margin: 0 auto
+  max-width: 1080px;
+  margin: 0 auto;
 }
 
 .fw-lux-detail-toolbar {
@@ -331,7 +421,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  margin-bottom: 12px
+  margin-bottom: 12px;
 }
 
 .fw-lux-back {
@@ -339,57 +429,62 @@
   align-items: center;
   gap: 8px;
   min-height: 40px;
-  padding: 8px 13px;
-  border: 1px solid var(--lux-border);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .92);
-  color: var(--lux-navy);
+  padding: 8px 14px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  background: var(--primary-bg);
+  color: var(--primary-color);
   font-family: inherit;
   font-size: 14px;
-  font-weight: 850;
+  font-weight: 600;
   cursor: pointer;
-  transition: .18s ease
+  transition: var(--ease);
 }
 
 .fw-lux-back:hover {
-  background: #fff;
-  border-color: #c8d3df;
-  transform: translateX(2px)
+  background: var(--secondry-bg);
+  border-color: var(--primary-300);
+}
+
+.fw-lux-back:focus-visible {
+  outline: 2px solid var(--secondry-color);
+  outline-offset: 2px;
 }
 
 .fw-lux-back svg {
   width: 15px;
-  height: 15px
+  height: 15px;
 }
 
 .fw-lux-state-pill {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #edf8f2;
-  color: var(--lux-success);
-  font-size: 14px;
-  font-weight: 850
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--success-bg);
+  color: var(--success);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.fw-lux-state-pill>span {
+.fw-lux-state-pill > span {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: currentColor
+  background: currentColor;
 }
 
 .fw-lux-state-pill.dirty {
-  background: #fff6e8;
-  color: var(--lux-warning)
+  background: var(--warning-bg);
+  color: var(--warning);
 }
 
 .fw-lux-detail-shell {
   display: grid;
   gap: 18px;
-  align-items: stretch
+  align-items: stretch;
 }
 
 .fw-lux-form-panel {
@@ -397,70 +492,78 @@
   min-height: 610px;
   display: flex;
   flex-direction: column;
-  background: #fff;
-  border: 1px solid var(--lux-border);
-  border-radius: 24px;
-  box-shadow: var(--lux-shadow)
+  background: var(--primary-bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-doc);
+  box-shadow: var(--shadow-soft);
 }
 
 .fw-lux-form-head {
-  padding: 24px 26px 18px;
-  background: linear-gradient(180deg, #fbfcfe 0%, #ffffff 100%);
-  border-bottom: 1px solid var(--lux-border)
+  padding: 24px 28px 18px;
+  background: var(--primary-bg);
+  border-bottom: 1px solid var(--border-light);
+  border-top: 3px solid var(--secondry-color);
 }
 
-.fw-lux-form-head>span {
-  display: block;
-  margin-bottom: 5px;
-  color: var(--lux-navy);
-  font-size: 14px;
-  font-weight: 950;
-  letter-spacing: 1px
+.fw-lux-form-head > span {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--secondry-bg);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .fw-lux-form-head h3 {
   margin: 0 0 5px;
-  font-size: 23px;
-  font-weight: 950
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .fw-lux-form-head p {
   margin: 0;
-  color: var(--lux-muted);
-  font-size: 14px
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 .fw-lux-form-body {
   flex: 1;
-  padding: 26px
+  padding: 28px;
 }
 
 .fw-lux-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 19px
+  gap: 22px;
 }
 
 .fw-lux-span-2 {
-  grid-column: 1 / -1
+  grid-column: 1 / -1;
 }
 
 .fw-lux-field {
   display: flex;
   flex-direction: column;
-  gap: 8px
+  gap: 8px;
 }
 
 .fw-lux-field label {
-  color: #344154;
+  color: var(--text-secondary);
   font-size: 13px;
-  font-weight: 850
+  font-weight: 600;
 }
+
+/* حقول على شكل "خط توقيع" ورقي بدل صندوق ممتلئ */
 
 .fw-lux-input-shell {
   position: relative;
   display: flex;
-  align-items: center
+  align-items: center;
 }
 
 .fw-lux-input-shell input,
@@ -468,92 +571,104 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 54px;
-  padding: 0 55px 0 14px;
-  border: 1px solid #d6dee6;
-  border-radius: 15px;
+  height: 46px;
+  padding: 0 40px 0 6px;
+  border: 0;
+  border-bottom: 1.5px solid var(--border-light);
+  border-radius: 0;
   outline: none;
-  background: #f4f6f8;
-  color: var(--lux-ink);
+  background: transparent;
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 14px;
-  font-weight: 650;
-  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease
+  font-weight: 500;
+  transition: border-color var(--ease);
 }
 
 .fw-lux-input-shell input:hover,
 .fw-lux-input-shell select:hover {
-  background: #f7f9fb;
-  border-color: #c7d1db
+  border-bottom-color: var(--text-muted);
 }
 
 .fw-lux-input-shell input:focus,
 .fw-lux-input-shell select:focus {
-  background: #fff;
-  border-color: var(--lux-navy);
-  box-shadow: 0 0 0 4px rgba(13, 42, 74, .065);
-  transform: translateY(-1px)
+  border-bottom-color: var(--secondry-color);
+  box-shadow: none;
+  transform: none;
 }
 
 .fw-lux-field-icon {
   position: absolute;
-  right: 8px;
+  left: 4px;
   z-index: 3;
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 30px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: #fff;
-  color: var(--lux-navy);
-  border: 1px solid #dbe3ea;
-  box-shadow: 0 4px 10px rgba(13, 42, 74, .035);
-  pointer-events: none
+  background: transparent;
+  color: var(--text-muted);
+  border: 0;
+  box-shadow: none;
+  pointer-events: none;
 }
 
 .fw-lux-field-icon svg {
-  width: 17px;
-  height: 17px
+  width: 16px;
+  height: 16px;
 }
+
+/* خط التوقيع الذهبي يتّسع من المنتصف عند التركيز */
 
 .fw-lux-input-glow {
   position: absolute;
-  inset: -1px;
-  z-index: 0;
-  border-radius: 16px;
-  opacity: 0;
+  left: 50%;
+  right: auto;
+  top: auto;
+  bottom: -1.5px;
+  width: 0;
+  height: 2px;
+  border-radius: 0;
+  opacity: 1;
   pointer-events: none;
-  box-shadow: 0 8px 20px rgba(13, 42, 74, .08);
-  transition: opacity .18s ease
+  background: var(--secondry-color);
+  box-shadow: none;
+  transition: width var(--ease), left var(--ease);
 }
 
 .fw-lux-input-shell:focus-within .fw-lux-input-glow {
-  opacity: 1
+  width: 100%;
+  left: 0;
 }
 
 .fw-lux-eye {
   position: absolute;
-  left: 8px;
+  left: 4px;
   z-index: 4;
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   display: grid;
   place-items: center;
   border: 0;
   border-radius: 50%;
-  background: #fff;
-  color: var(--lux-navy);
-  cursor: pointer
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--ease);
 }
 
 .fw-lux-eye:hover {
-  background: var(--lux-soft)
+  color: var(--primary-color);
+  background: transparent;
 }
 
 .fw-lux-eye svg {
   width: 16px;
-  height: 16px
+  height: 16px;
 }
+
+/* ============================ Profile showcase ============================ */
+/* بطاقة "ختم" رسمية بدل تدرّج زخرفي */
 
 .fw-lux-profile-showcase {
   position: relative;
@@ -562,201 +677,213 @@
   align-items: center;
   gap: 22px;
   padding: 22px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #f7f9fb 0%, #ffffff 70%);
-  border: 1px solid var(--lux-border)
+  border-radius: var(--radius-doc);
+  background: var(--secondry-bg);
+  border: 1px solid var(--border-light);
 }
 
 .fw-lux-profile-showcase::after {
-  content: "";
-  position: absolute;
-  left: -40px;
-  top: -70px;
-  width: 170px;
-  height: 170px;
-  border-radius: 50%;
-  border: 1px solid #ebf0f4;
-  box-shadow: 0 0 0 28px rgba(235, 240, 244, .45), 0 0 0 56px rgba(235, 240, 244, .20)
+  content: none;
 }
 
 .fw-lux-avatar-stage {
   position: relative;
   z-index: 2;
-  width: 116px;
-  height: 116px;
-  flex: 0 0 116px
+  width: 104px;
+  height: 104px;
+  flex: 0 0 104px;
 }
 
 .fw-lux-avatar-halo {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 1px solid #dce5ed;
-  box-shadow: 0 0 0 7px #fff, 0 0 0 9px #e6edf3
+  border: 1.5px dashed var(--secondry-color);
+  box-shadow: 0 0 0 6px var(--primary-bg);
 }
 
 .fw-lux-avatar-large {
   position: absolute;
-  inset: 9px;
+  inset: 10px;
   overflow: hidden;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(145deg, var(--lux-navy), var(--lux-navy-3));
+  background: linear-gradient(145deg, var(--primary-color), var(--primary-700));
   color: #fff;
-  font-size: 31px;
-  font-weight: 950;
-  box-shadow: 0 18px 34px rgba(13, 42, 74, .18)
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 600;
+  box-shadow: var(--shadow-soft);
 }
 
 .fw-lux-avatar-large img {
   width: 100%;
   height: 100%;
-  object-fit: cover
+  object-fit: cover;
 }
 
 .fw-lux-avatar-badge {
   position: absolute;
-  left: 3px;
-  bottom: 8px;
+  left: 2px;
+  bottom: 6px;
   width: 24px;
   height: 24px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--lux-success);
-  color: #fff;
-  border: 4px solid #fff;
-  font-size: 14px;
-  font-weight: 950
+  background: var(--secondry-color);
+  color: var(--primary-color);
+  border: 3px solid var(--primary-bg);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .fw-lux-profile-meta {
   position: relative;
-  z-index: 2
+  z-index: 2;
 }
 
-.fw-lux-profile-meta>span {
+.fw-lux-profile-meta > span {
   display: block;
   margin-bottom: 4px;
-  color: var(--lux-navy);
-  font-size: 14px;
-  font-weight: 950;
-  letter-spacing: .8px
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .8px;
 }
 
 .fw-lux-profile-meta h3 {
   margin: 0 0 5px;
-  font-size: 17px
+  font-size: 17px;
+  color: var(--text-primary);
 }
 
 .fw-lux-profile-meta p {
   margin: 0 0 12px;
-  color: var(--lux-muted);
-  font-size: 14px
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 .fw-lux-profile-actions {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap
+  flex-wrap: wrap;
 }
 
 .fw-lux-mini-action {
   min-height: 38px;
-  padding: 8px 13px;
-  border: 1px solid #d7dfe7;
-  border-radius: 999px;
-  background: #fff;
-  color: #425064;
+  padding: 8px 14px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  background: var(--primary-bg);
+  color: var(--text-secondary);
   font-family: inherit;
   font-size: 14px;
-  font-weight: 850;
-  cursor: pointer
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--ease);
 }
 
 .fw-lux-mini-action:hover {
-  border-color: #c4d0db;
-  background: #f9fbfc
+  border-color: var(--primary-300);
+  background: var(--secondry-bg);
 }
 
 .fw-lux-mini-action.danger {
-  color: var(--lux-danger);
-  border-color: transparent
+  color: var(--danger);
+  border-color: transparent;
+  background: var(--danger-bg);
 }
 
+/* ============================= Security banner ============================ */
+/* شريط بحواف مثقّبة يذكّر بإيصال/تذكرة مؤمّنة */
+
 .fw-lux-security-banner {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 13px;
   padding: 17px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, var(--lux-navy), #173f67);
+  border-radius: var(--radius-doc);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-700));
   color: #fff;
-  box-shadow: 0 14px 28px rgba(13, 42, 74, .12)
+  border-top: 1px dashed rgba(255, 255, 255, .3);
+  border-bottom: 1px dashed rgba(255, 255, 255, .3);
+  box-shadow: var(--shadow-soft);
 }
 
 .fw-lux-security-icon {
-  width: 50px;
-  height: 50px;
-  flex: 0 0 50px;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: rgba(255, 255, 255, .10);
-  border: 1px solid rgba(13, 42, 74, .14)
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid var(--secondry-color);
+  color: var(--secondry-color);
 }
 
 .fw-lux-security-icon svg {
-  width: 21px;
-  height: 21px
+  width: 20px;
+  height: 20px;
 }
 
-.fw-lux-security-banner>div>span {
+.fw-lux-security-banner > div > span {
   display: block;
   margin-bottom: 3px;
-  color: #bcd0e0;
-  font-size: 14px;
-  font-weight: 950;
-  letter-spacing: .9px
+  color: var(--secondry-100);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .9px;
 }
 
 .fw-lux-security-banner strong {
   display: block;
   margin-bottom: 4px;
-  font-size: 14px
+  font-size: 14px;
 }
 
 .fw-lux-security-banner p {
   margin: 0;
-  color: #d4e0e9;
+  color: var(--primary-100);
   font-size: 14px;
-  line-height: 1.7
+  line-height: 1.7;
 }
+
+/* ================================ Footer =================================== */
 
 .fw-lux-form-footer {
   display: flex;
   justify-content: flex-end;
   gap: 9px;
-  padding: 15px 26px;
-  border-top: 1px solid var(--lux-border);
-  background: #fbfcfd
+  padding: 15px 28px;
+  border-top: 1px solid var(--border-light);
+  background: var(--secondry-bg);
 }
 
 .fw-lux-btn {
   min-height: 42px;
-  padding: 8px 16px;
-  border-radius: 13px;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
   font-family: inherit;
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 700;
   cursor: pointer;
-  transition: .18s ease
+  transition: var(--ease);
 }
 
 .fw-lux-btn:disabled {
   opacity: .42;
-  cursor: not-allowed
+  cursor: not-allowed;
+}
+
+.fw-lux-btn:focus-visible {
+  outline: 2px solid var(--secondry-color);
+  outline-offset: 2px;
 }
 
 .fw-lux-btn-primary {
@@ -765,27 +892,33 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 1px solid var(--lux-navy);
-  background: linear-gradient(135deg, var(--lux-navy), var(--lux-navy-2));
+  border: 1px solid var(--primary-color);
+  background: var(--primary-color);
   color: #fff;
-  box-shadow: 0 10px 22px rgba(13, 42, 74, .13)
+  box-shadow: var(--shadow-soft);
 }
 
 .fw-lux-btn-primary:not(:disabled):hover {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(13, 42, 74, .17)
+  background: var(--primary-700);
+  border-color: var(--primary-700);
 }
 
 .fw-lux-btn-primary svg {
   width: 15px;
-  height: 15px
+  height: 15px;
 }
 
 .fw-lux-btn-ghost {
-  border: 1px solid #d8e0e7;
-  background: #fff;
-  color: #526071
+  border: 1px solid var(--border-light);
+  background: var(--primary-bg);
+  color: var(--text-secondary);
 }
+
+.fw-lux-btn-ghost:not(:disabled):hover {
+  background: var(--secondry-bg);
+}
+
+/* ================================= Toast ==================================== */
 
 .fw-lux-notice {
   position: fixed;
@@ -795,47 +928,37 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 15px;
-  border-radius: 999px;
-  background: #fff;
-  color: var(--lux-navy);
-  border: 1px solid #dbe3ea;
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-color);
+  color: #fff;
+  border: 1px solid var(--primary-700);
   font-size: 14px;
-  font-weight: 900;
-  box-shadow: 0 16px 34px rgba(13, 42, 74, .12);
+  font-weight: 700;
+  box-shadow: var(--shadow-soft);
   transform: translateX(-50%);
-  animation: luxNotice .28s ease both
+  animation: fwLuxFadeIn .3s var(--ease);
 }
 
 .fw-lux-notice-mark {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--lux-navy);
-  color: #fff;
-  font-size: 14px
+  background: var(--secondry-color);
+  color: var(--primary-color);
+  font-size: 12px;
+  font-weight: 700;
 }
 
-@keyframes luxNotice {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -8px) scale(.97)
-  }
+/* ============================ Motion & responsive ============================ */
 
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0) scale(1)
-  }
-}
-
-@media (prefers-reduced-motion:reduce) {
+@media (prefers-reduced-motion: reduce) {
 
   .fw-lux-view-in,
-  .fw-lux-section-card,
   .fw-lux-notice {
-    animation: none
+    animation: none;
   }
 
   .fw-lux-section-card,
@@ -844,160 +967,59 @@
   .fw-lux-back,
   .fw-lux-input-shell input,
   .fw-lux-input-shell select,
+  .fw-lux-input-glow,
   .fw-lux-btn {
-    transition: none
+    transition: none;
   }
 }
 
-@media (max-width:900px) {
+@media (max-width: 900px) {
   .fw-lux-hero {
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr;
   }
 
   .fw-lux-hero-ornament {
-    display: none
+    display: none;
   }
 
   .fw-lux-detail-shell {
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr;
   }
 }
 
-@media (max-width:700px) {
+@media (max-width: 700px) {
   .fw-lux-page {
-    padding: 20px 12px 32px
+    padding: 20px 12px 32px;
   }
 
-  .fw-lux-section-grid {
-    grid-template-columns: 1fr
+  .fw-lux-section-card {
+    flex: 1 1 100%;
+    padding: 20px 18px 18px;
   }
 
   .fw-lux-form-grid {
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr;
   }
 
   .fw-lux-span-2 {
-    grid-column: auto
+    grid-column: auto;
   }
 
   .fw-lux-profile-showcase {
     align-items: flex-start;
-    flex-direction: column
+    flex-direction: column;
   }
 
   .fw-lux-detail-toolbar {
     align-items: flex-start;
-    flex-direction: column
+    flex-direction: column;
   }
 
   .fw-lux-form-footer {
-    flex-direction: column-reverse
+    flex-direction: column-reverse;
   }
 
   .fw-lux-form-footer .fw-lux-btn {
-    width: 100%
-  }
-}
-
-.fw-lux-hero-account {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: 78px minmax(0, 1fr) 12px;
-  align-items: center;
-  gap: 18px;
-  max-width: 620px
-}
-
-.fw-lux-hero-account-avatar {
-  width: 78px;
-  height: 78px;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--lux-soft);
-  border: 2px solid #fff;
-  box-shadow: 0 0 0 5px rgba(13, 42, 74, .08), 0 14px 28px rgba(13, 42, 74, .10);
-  color: var(--lux-navy);
-  font-size: 28px;
-  font-weight: 950
-}
-
-.fw-lux-hero-account-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover
-}
-
-.fw-lux-hero-account-copy {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start
-}
-
-.fw-lux-hero-account-label {
-  margin-bottom: 6px;
-  color: var(--lux-muted);
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: .8px
-}
-
-.fw-lux-hero-account-copy strong {
-  max-width: 100%;
-  overflow: hidden;
-  color: var(--lux-ink);
-  font-size: 26px;
-  line-height: 1.35;
-  font-weight: 950;
-  white-space: nowrap;
-  text-overflow: ellipsis
-}
-
-.fw-lux-hero-account-email {
-  max-width: 100%;
-  margin-top: 6px;
-  overflow: hidden;
-  color: var(--lux-muted);
-  font-size: 15px;
-  font-weight: 700;
-  white-space: nowrap;
-  text-overflow: ellipsis
-}
-
-.fw-lux-hero-save-dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #63d69a;
-  box-shadow: 0 0 0 6px rgba(99, 214, 154, .12)
-}
-
-.fw-lux-hero-save-dot.dirty {
-  background: #f0bd65;
-  box-shadow: 0 0 0 6px rgba(240, 189, 101, .12)
-}
-
-@media(max-width:760px) {
-  .fw-lux-hero-account {
-    grid-template-columns: 64px minmax(0, 1fr) 10px;
-    gap: 14px
-  }
-
-  
-  .fw-lux-hero-account-avatar {
-    width: 64px;
-    height: 64px;
-    font-size: 23px
-  }
-
-  .fw-lux-hero-account-copy strong {
-    font-size: 21px
-  }
-
-  .fw-lux-hero-account-email {
-    font-size: 14px
+    width: 100%;
   }
 }

@@ -4,23 +4,23 @@
 } */
 :root{
     /* --- الألوان الأساسية (كما اقترحتها) --- */
-    --primary-color:#;      /* Navy - اللون الرئيسي */
-    --secondry-color:#22D3EE;     /* Cyan - لون التمييز/الأكشن */
+    --primary-color:#070D59;      /* Navy - اللون الرئيسي */
+    --secondry-color:#F7B633;     /* Gold - لون التمييز/الأكشن */
     --primary-bg:#ffffff;
     --secondry-bg:#F1F5F9;
 
     /* --- تدرجات مشتقة من primary (للنصوص والخلفيات الداكنة) --- */
-    --primary-700:#123A63;        /* أفتح شوية من primary، للـ hover/tooltip */
-    --primary-500:#3E5C7D;        /* للعناوين الثانوية فوق خلفية داكنة */
-    --primary-300:#8FA3B8;        /* نص هادئ/muted فوق خلفية داكنة */
-    --primary-100:#DCE4EC;        /* حدود فاتحة جداً فوق خلفية داكنة */
+    --primary-700:#1F3C88;        /* أفتح شوية من primary، للـ hover/tooltip */
+    --primary-500:#5893D4;        /* للعناوين الثانوية فوق خلفية داكنة */
+    --primary-300:#A9C6E8;        /* نص هادئ/muted فوق خلفية داكنة */
+    --primary-100:#DCE9F7;        /* حدود فاتحة جداً فوق خلفية داكنة */
 
     /* --- تدرجات مشتقة من secondry (cyan) للتمييز --- */
-    --secondry-600:#0EA5C4;       /* cyan أغمق قليلاً - نص/أيقونات فوق أبيض */
-    --secondry-100:#CFFAFE;       /* خلفية شارة/Badge فاتحة */
+    --secondry-600:#D99A1F;       /* cyan أغمق قليلاً - نص/أيقونات فوق أبيض */
+    --secondry-100:#FDECC7;       /* خلفية شارة/Badge فاتحة */
 
     /* --- نصوص عامة (فوق الخلفيات الفاتحة) --- */
-    --text-primary:#0D2A4A;       /* نفس primary، للعناوين */
+    --text-primary:#070D59;       /* نفس primary، للعناوين */
     --text-secondary:#5B6B7C;     /* نص ثانوي رمادي-أزرق فوق أبيض */
     --text-muted:#94A3B8;         /* نص خافت جداً */
 
@@ -29,7 +29,7 @@
     --white-color:#ffffff;
     --smoke-color1:rgba(248, 248, 248, 0.808); /* نص شبه أبيض فوق الداكن */
 
-    --shadow-soft: 0 0 10px 1px rgba(13, 42, 74, 0.07);
+    --shadow-soft: 0 0 10px 1px rgba(7, 13, 89, 0.07);
 }
  body{
   background-color: var(--primary-bg);

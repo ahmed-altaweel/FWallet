@@ -124,7 +124,7 @@
 .provider-card.selected {
     border-color: var(--secondry-color);
     background: var(--secondry-100);
-    box-shadow: 0 0 0 3px rgba(34, 211, 238, .15);
+    box-shadow: 0 0 0 3px rgba(247, 182, 51, .15);
 }
 
 .provider-card-icon {
@@ -232,7 +232,7 @@
 
 .add-account-primary-button:hover {
     background: var(--primary-700);
-    box-shadow: 0 6px 18px rgba(13, 42, 74, .18);
+    box-shadow: 0 6px 18px rgba(7, 13, 89, .18);
 }
 
 .add-account-primary-button:active {

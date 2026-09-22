@@ -13,6 +13,8 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  Landmark,
+  Wallet,
 } from "lucide-react";
 
 export const ICONS = {
@@ -30,6 +32,8 @@ export const ICONS = {
   "arrow-left": ArrowLeft,
   "arrow-right": ArrowRight,
   check: Check,
+  bank: Landmark,
+  wallet: Wallet,
 };
 
 export function Icon({ name }) {

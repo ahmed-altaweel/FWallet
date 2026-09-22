@@ -1,18 +1,19 @@
 import { useState, useMemo } from "react";
 import {
+  Search,
   Funnel,
   CirclePlus,
-  Search,
-  SquareArrowOutUpRight,
   ArrowRight,
-  Wallet,
+  RefreshCw,
+  SquareArrowOutUpRight,
+  Copy,
+  Check,
 } from "lucide-react";
-import { ContainerBox } from "../../shared/utils/ContainerBox";
 import { useNavigate } from "react-router-dom";
 import "./search.style.css";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../core/auth/AuthContext";
-import { fetchData } from "../../shared/utils/FetchData";
+import { Icon } from "@/shared/components/Icon";
 import { CustomSelect } from "@/shared/components/customSelect/CustomSelect";
 import {
   LoadingState,
@@ -20,6 +21,23 @@ import {
   EmptyState,
 } from "@/shared/components/states";
 import { fetchPersistedData } from "@/shared/utils/PersistedData.jsx";
+import { formatNumber, formatDate } from "@/shared/utils/FormatFunction";
+
+const STATUS_LABELS = {
+  active: "نشط",
+  inactive: "غير نشط",
+  pending: "قيد المراجعة",
+  suspended: "موقوف",
+};
+
+function getProviderIconName(providerName = "") {
+  return /بنك|مصرف/.test(providerName) ? "bank" : "wallet";
+}
+
+function parseAmount(value) {
+  return parseFloat(String(value).replace(/,/g, "")) || 0;
+}
+
 export function AccountsPage() {
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -27,13 +45,8 @@ export function AccountsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProvider, setSelectedProvider] = useState("ALL");
 
-  const HandleSelectedAccount = (account) => {
-    setSelectedAccount(account);
-  };
-
-  const HandleBackToList = () => {
-    setSelectedAccount(null);
-  };
+  const HandleSelectedAccount = (account) => setSelectedAccount(account);
+  const HandleBackToList = () => setSelectedAccount(null);
 
   const {
     data: accounts = [],
@@ -43,7 +56,7 @@ export function AccountsPage() {
     refetch,
   } = useQuery({
     queryKey: ["accounts", token],
-   queryFn: () => fetchPersistedData("accountsList", "accounts.json", token),
+    queryFn: () => fetchPersistedData("accountsList", "accounts.json", token),
     enabled: !!token,
   });
 
@@ -55,27 +68,65 @@ export function AccountsPage() {
     refetch: refetchDetails,
   } = useQuery({
     queryKey: ["accounts_details", token],
-    queryFn: () => fetchPersistedData("accountsDetailsList", "accountsDetails.json", token),
+    queryFn: () =>
+      fetchPersistedData("accountsDetailsList", "accountsDetails.json", token),
     enabled: !!token,
   });
 
   const {
-    data: transactions = [],
+    data: allTransactions = [],
     isLoading: isLoadingTransactions,
     isError: isErrorTransactions,
     error: errorTransactions,
     refetch: refetchTransactions,
   } = useQuery({
-    queryKey: ["accounts", token],
- queryFn: () => fetchPersistedData("transactionTemp", "TransactionTemp.json", token),
+    // مفتاح مستقل لتفادي تعارضه مع بيانات "accounts" أو مع dataset المعاملات الأخرى في لوحة التحكم
+    queryKey: ["account_transactions", token],
+    queryFn: () =>
+      fetchPersistedData("transactionTemp", "TransactionTemp.json", token),
     enabled: !!token,
   });
 
-  const accountDetails = useMemo(() => {
-    if (!selectedAccount || !Array.isArray(accountsDetails)) {
-      return null;
-    }
+  const detailsById = useMemo(() => {
+    const map = {};
+    (accountsDetails || []).forEach((d) => {
+      map[d.id] = d;
+    });
+    return map;
+  }, [accountsDetails]);
 
+  const transactionsByAccount = useMemo(() => {
+    const map = {};
+    (allTransactions || []).forEach((t) => {
+      if (!map[t.accountId]) map[t.accountId] = [];
+      map[t.accountId].push(t);
+    });
+    return map;
+  }, [allTransactions]);
+
+  const overview = useMemo(() => {
+    const activeCount = accounts.filter((a) => a.status === "active").length;
+    const syncedCount = accounts.filter((a) => a.synchrouns).length;
+
+    const currencyMap = {};
+    accounts.forEach((a) => {
+      currencyMap[a.currency] =
+        (currencyMap[a.currency] || 0) + parseAmount(a.amount);
+    });
+
+    return {
+      total: accounts.length,
+      activeCount,
+      syncedCount,
+      currencyTotals: Object.entries(currencyMap).map(([currency, balance]) => ({
+        currency,
+        balance,
+      })),
+    };
+  }, [accounts]);
+
+  const accountDetails = useMemo(() => {
+    if (!selectedAccount || !Array.isArray(accountsDetails)) return null;
     return (
       accountsDetails.find((account) => account.id === selectedAccount.id) ??
       null
@@ -83,14 +134,9 @@ export function AccountsPage() {
   }, [accountsDetails, selectedAccount]);
 
   const accountTransactions = useMemo(() => {
-    if (!selectedAccount || !Array.isArray(transactions)) {
-      return [];
-    }
-
-    return transactions.filter(
-      (transaction) => transaction.accountId === selectedAccount.id,
-    );
-  }, [transactions, selectedAccount]);
+    if (!selectedAccount) return [];
+    return transactionsByAccount[selectedAccount.id] || [];
+  }, [transactionsByAccount, selectedAccount]);
 
   const filteredAccounts = useMemo(() => {
     return accounts.filter((account) => {
@@ -111,8 +157,69 @@ export function AccountsPage() {
     });
   }, [accounts, searchQuery, selectedProvider]);
 
+  if (selectedAccount) {
+    return (
+      <AccountDetailPanel
+        accountDetails={accountDetails}
+        isLoadingDetails={isLoadingDetails}
+        isErrorDetails={isErrorDetails}
+        errorDetails={errorDetails}
+        refetchDetails={refetchDetails}
+        transactions={accountTransactions}
+        isLoadingTransactions={isLoadingTransactions}
+        isErrorTransactions={isErrorTransactions}
+        errorTransactions={errorTransactions}
+        refetchTransactions={refetchTransactions}
+        onBack={HandleBackToList}
+        onTransfer={() => navigate("/single-transfer")}
+      />
+    );
+  }
+
   return (
-    <div>
+    <div className="acc-page" dir="rtl">
+      <header className="acc-page-header">
+        <div>
+          <h1>الحسابات المربوطة</h1>
+          <p>إدارة جميع حساباتك البنكية ومحافظك الإلكترونية من مكان واحد</p>
+        </div>
+      </header>
+
+      {!isLoading && !isError && accounts.length > 0 && (
+        <section className="acc-overview">
+          <div className="acc-kpi-row">
+            <div className="acc-kpi-card">
+              <span className="acc-kpi-value">{overview.total}</span>
+              <span className="acc-kpi-label">إجمالي الحسابات</span>
+            </div>
+
+            <div className="acc-kpi-card">
+              <span className="acc-kpi-value">{overview.activeCount}</span>
+              <span className="acc-kpi-label">حسابات نشطة</span>
+            </div>
+
+            <div className="acc-kpi-card">
+              <span className="acc-kpi-value">{overview.syncedCount}</span>
+              <span className="acc-kpi-label">مزامنة تلقائية مفعّلة</span>
+            </div>
+          </div>
+
+          <div className="acc-currency-row">
+            {overview.currencyTotals.map((item) => (
+              <div key={item.currency} className="acc-currency-card">
+                <span className="acc-currency-card-label">
+                  إجمالي الرصيد بعملة {item.currency}
+                </span>
+                <div className="acc-currency-card-value">
+                  <span dir="ltr">{formatNumber(item.balance)}</span>
+                  <small>{item.currency}</small>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       <SearchBar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -120,275 +227,354 @@ export function AccountsPage() {
         setSelectedProvider={setSelectedProvider}
       />
 
-      <div>
-        {selectedAccount ? (
-          <div className="account-details-page" dir="rtl">
-            <ContainerBox>
-              <button onClick={HandleBackToList} className="back-btn">
-                <ArrowRight size={20} />
-                <span>رجوع</span>
-              </button>
+      {isLoading ? (
+        <LoadingState message="جاري تحميل الحسابات..." />
+      ) : isError ? (
+        <ErrorState
+          title="تعذر تحميل الحسابات"
+          message={error?.message || "حدث خطأ أثناء جلب حساباتك."}
+          onRetry={refetch}
+        />
+      ) : accounts.length === 0 ? (
+        <EmptyState
+          icon={<Icon name="wallet" />}
+          title="لا توجد حسابات مرتبطة"
+          message="ابدأ بربط حسابك المالي الأول لعرضه هنا."
+          actionLabel="ربط حساب مالي"
+          onAction={() => navigate("/add-account")}
+        />
+      ) : filteredAccounts.length === 0 ? (
+        <EmptyState
+          icon={<Search size={24} />}
+          title="لا توجد نتائج مطابقة"
+          message="جرّب تعديل كلمة البحث أو اختيار مزود مالي آخر."
+        />
+      ) : (
+        <div className="acc-grid">
+          {filteredAccounts.map((account) => (
+            <AccountCard
+              key={account.id}
+              account={account}
+              detail={detailsById[account.id]}
+              transactionsCount={(transactionsByAccount[account.id] || []).length}
+              onSelect={HandleSelectedAccount}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
-              <div className="details-container">
-                {isLoadingDetails ? (
-                  <LoadingState
-                    message="جاري تحميل تفاصيل الحساب..."
-                    size="sm"
-                  />
-                ) : isErrorDetails ? (
-                  <ErrorState
-                    title="تعذر تحميل تفاصيل الحساب"
-                    message={
-                      errorDetails?.message ||
-                      "حدث خطأ أثناء جلب تفاصيل الحساب."
-                    }
-                    size="sm"
-                    onRetry={refetchDetails}
-                  />
-                ) : accountDetails ? (
-                  <>
-                    <h2>{accountDetails.provider}</h2>
+function CopyButton({ value, label, className = "" }) {
+  const [copied, setCopied] = useState(false);
 
-                    <div className="details-grid">
-                      <div className="detail-card">
-                        <span className="label">معرف الحساب</span>
-                        <span className="value">{accountDetails.id}</span>
-                      </div>
+  if (!value) return null;
 
-                      <div className="detail-card">
-                        <span className="label">رقم الحساب</span>
-                        <span className="value">
-                          {accountDetails.accountNumber}
-                        </span>
-                      </div>
+  function handleCopy(event) {
+    event.stopPropagation();
+    navigator.clipboard?.writeText(String(value));
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1500);
+  }
 
-                      <div className="detail-card">
-                        <span className="label">العملة</span>
-                        <span className="value">{accountDetails.currency}</span>
-                      </div>
+  return (
+    <button
+      type="button"
+      className={`acc-copy-btn ${className}`}
+      onClick={handleCopy}
+      aria-label={`نسخ ${label}`}
+      title={copied ? "تم النسخ" : `نسخ ${label}`}
+    >
+      {copied ? <Check size={13} /> : <Copy size={13} />}
+    </button>
+  );
+}
 
-                      <div className="detail-card">
-                        <span className="label">الرصيد</span>
-                        <span className="value amount">
-                          {accountDetails.amount}
-                        </span>
-                      </div>
+function AccountCard({ account, detail, transactionsCount, onSelect }) {
+  const iconName = getProviderIconName(account.provider);
+  const statusLabel = STATUS_LABELS[account.status] || account.status;
 
-                      <div className="detail-card">
-                        <span className="label">الحالة</span>
-                        <span className="value status-badge">
-                          {accountDetails.status}
-                        </span>
-                      </div>
+  const metaParts = [];
+  if (detail?.bankBranch) metaParts.push(`الفرع: ${detail.bankBranch}`);
+  if (detail?.lastSync)
+    metaParts.push(`آخر مزامنة: ${formatDate(detail.lastSync)}`);
 
-                      <div className="detail-card">
-                        <span className="label">المزامنة</span>
-                        <span className="value">
-                          {accountDetails.synchrouns ? "مفعلة" : "غير مفعلة"}
-                        </span>
-                      </div>
+  return (
+    <button type="button" className="acc-card" onClick={() => onSelect(account)}>
+      <div className="acc-card-top">
+        <span className="acc-card-icon">
+          <Icon name={iconName} />
+        </span>
 
-                      <div className="detail-card">
-                        <span className="label">آخر مزامنة</span>
-                        <span className="value">{accountDetails.lastSync}</span>
-                      </div>
+        <span className={`acc-status-pill status-${account.status}`}>
+          <span className="acc-status-dot" />
+          {statusLabel}
+        </span>
+      </div>
 
-                      <div className="detail-card">
-                        <span className="label">اسم صاحب الحساب</span>
-                        <span className="value">
-                          {accountDetails.ownerName}
-                        </span>
-                      </div>
+      <div className="acc-card-body">
+        <strong className="acc-card-provider">{account.provider}</strong>
 
-                      <div className="detail-card">
-                        <span className="label">فرع البنك</span>
-                        <span className="value">
-                          {accountDetails.bankBranch}
-                        </span>
-                      </div>
+        <div className="acc-card-number-row">
+          <span className="acc-card-number" dir="ltr">
+            {account.accountNumber}
+          </span>
+          <CopyButton value={account.accountNumber} label="رقم الحساب" />
+        </div>
 
-                      <div className="detail-card full-width">
-                        <span className="label">IBAN</span>
-                        <span className="value ltr">{accountDetails.iban}</span>
-                      </div>
-
-                      <div className="detail-card">
-                        <span className="label">تاريخ إنشاء الحساب</span>
-                        <span className="value">
-                          {accountDetails.createdAt}
-                        </span>
-                      </div>
-
-                      <div className="detail-card full-width">
-                        <span className="label">الوصف</span>
-                        <span className="value">
-                          {accountDetails.description}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="transactions-section">
-                      <h2>المعاملات</h2>
-
-                      {isLoadingTransactions ? (
-                        <LoadingState
-                          message="جاري تحميل المعاملات..."
-                          size="sm"
-                        />
-                      ) : isErrorTransactions ? (
-                        <ErrorState
-                          title="تعذر تحميل المعاملات"
-                          message={
-                            errorTransactions?.message ||
-                            "حدث خطأ أثناء جلب معاملات الحساب."
-                          }
-                          size="sm"
-                          onRetry={refetchTransactions}
-                        />
-                      ) : accountTransactions.length === 0 ? (
-                        <EmptyState
-                          title="لا توجد معاملات"
-                          message="لم يتم تسجيل أي معاملة على هذا الحساب."
-                          size="sm"
-                        />
-                      ) : (
-                        <div className="transactions-list">
-                          {accountTransactions.map((transaction) => (
-                            <ContainerBox
-                              key={transaction.id}
-                              className="transaction-card"
-                            >
-                              <div className="transaction-header">
-                                <h4>{transaction.title}</h4>
-
-                                <span>{transaction.status}</span>
-                              </div>
-
-                              <div className="transaction-info">
-                                <p>
-                                  <strong>المبلغ: </strong>
-                                  {transaction.amount} {transaction.currency}
-                                </p>
-
-                                <p>
-                                  <strong>من: </strong>
-                                  {transaction.from}
-                                </p>
-
-                                <p>
-                                  <strong>إلى: </strong>
-                                  {transaction.to}
-                                </p>
-
-                                <p>
-                                  <strong>التاريخ: </strong>
-                                  {transaction.date}
-                                </p>
-                              </div>
-                            </ContainerBox>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="account-actions">
-                      <Button onClick={() => navigate("/single-transfer")}>
-                        بدء تحويل من الحساب
-                      </Button>
-                    </div>
-                  </>
-                ) : (
-                  <EmptyState
-                    title="لا توجد تفاصيل لهذا الحساب"
-                    message="لم يتم العثور على بيانات تفصيلية مرتبطة بهذا الحساب."
-                    size="sm"
-                  />
-                )}
-              </div>
-            </ContainerBox>
-          </div>
-        ) : isLoading ? (
-          <LoadingState message="جاري تحميل الحسابات..." />
-        ) : isError ? (
-          <ErrorState
-            title="تعذر تحميل الحسابات"
-            message={error?.message || "حدث خطأ أثناء جلب حساباتك."}
-            onRetry={refetch}
-          />
-        ) : accounts.length === 0 ? (
-          <EmptyState
-            icon={<Wallet size={24} />}
-            title="لا توجد حسابات مرتبطة"
-            message="ابدأ بربط حسابك المالي الأول لعرضه هنا."
-            actionLabel="ربط حساب مالي"
-            onAction={() => navigate("/add-account")}
-          />
-        ) : filteredAccounts.length === 0 ? (
-          <EmptyState
-            icon={<Search size={24} />}
-            title="لا توجد نتائج مطابقة"
-            message="جرّب تعديل كلمة البحث أو اختيار مزود مالي آخر."
-          />
-        ) : (
-          <div className="accounts">
-            {filteredAccounts.map((account) => (
-              <ContainerBox key={account.id} className="card">
-                <div
-                  className="account-card"
-                  onClick={() => HandleSelectedAccount(account)}
-                >
-                  <div className="card-header">
-                    <h3>{account.provider}</h3>
-
-                    <div className="status">
-                      <span>{account.status}</span>
-                    </div>
-                  </div>
-
-                  <div className="account-info">
-                    <div>
-                      <span>المبلغ | </span>
-                      <span>{account.amount}</span>
-                    </div>
-
-                    <div>
-                      <span>رقم </span>
-                      <span>{account.accountNumber}</span>
-                    </div>
-
-                    <div>
-                      <span>العملة:</span>
-                      <strong>{account.currency}</strong>
-                    </div>
-
-                    <div>
-                      <span>المزامنة</span>
-                      <span>{account.synchrouns ? "مفعلة" : "غير مفعلة"}</span>
-                    </div>
-
-                    <div className="line">
-                      <br />
-                    </div>
-
-                    <div className="footer">
-                      <div className="btn2">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            HandleSelectedAccount(account);
-                          }}
-                        >
-                          <SquareArrowOutUpRight size={20} color="white" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ContainerBox>
-            ))}
-          </div>
+        {metaParts.length > 0 && (
+          <span className="acc-card-meta">{metaParts.join(" • ")}</span>
         )}
+      </div>
+
+      <div className="acc-card-balance">
+        <span className="acc-card-balance-value" dir="ltr">
+          {formatNumber(parseAmount(account.amount))}
+        </span>
+        <span className="acc-card-balance-currency">{account.currency}</span>
+      </div>
+
+      <div className="acc-card-footer">
+        <div className="acc-card-footer-left">
+          <span
+            className={`acc-sync-indicator ${
+              account.synchrouns ? "is-on" : "is-off"
+            }`}
+          >
+            <RefreshCw size={13} />
+            {account.synchrouns ? "مزامنة تلقائية" : "مزامنة يدوية"}
+          </span>
+
+          <span className="acc-txn-count-chip">{transactionsCount} عملية</span>
+        </div>
+
+        <span className="acc-card-arrow">
+          <SquareArrowOutUpRight size={16} />
+        </span>
+      </div>
+    </button>
+  );
+}
+
+function AccountDetailPanel({
+  accountDetails,
+  isLoadingDetails,
+  isErrorDetails,
+  errorDetails,
+  refetchDetails,
+  transactions,
+  isLoadingTransactions,
+  isErrorTransactions,
+  errorTransactions,
+  refetchTransactions,
+  onBack,
+  onTransfer,
+}) {
+  const txnStats = useMemo(() => {
+    let inbound = 0;
+    let outbound = 0;
+
+    transactions.forEach((t) => {
+      const amount = parseAmount(t.amount);
+      if (t.type === "deposit") inbound += amount;
+      else outbound += amount;
+    });
+
+    return { inbound, outbound, count: transactions.length };
+  }, [transactions]);
+
+  return (
+    <div className="acc-details-page" dir="rtl">
+      <button type="button" onClick={onBack} className="acc-back-btn">
+        <ArrowRight size={18} />
+        <span>رجوع إلى الحسابات</span>
+      </button>
+
+      {isLoadingDetails ? (
+        <LoadingState message="جاري تحميل تفاصيل الحساب..." size="sm" />
+      ) : isErrorDetails ? (
+        <ErrorState
+          title="تعذر تحميل تفاصيل الحساب"
+          message={errorDetails?.message || "حدث خطأ أثناء جلب تفاصيل الحساب."}
+          size="sm"
+          onRetry={refetchDetails}
+        />
+      ) : !accountDetails ? (
+        <EmptyState
+          title="لا توجد تفاصيل لهذا الحساب"
+          message="لم يتم العثور على بيانات تفصيلية مرتبطة بهذا الحساب."
+          size="sm"
+        />
+      ) : (
+        <>
+          <AccountHero account={accountDetails} />
+
+          <section className="acc-detail-grid">
+            <DetailCard label="معرف الحساب" value={accountDetails.id} />
+            <DetailCard label="العملة" value={accountDetails.currency} />
+            <DetailCard label="فرع البنك" value={accountDetails.bankBranch} />
+            <DetailCard label="اسم صاحب الحساب" value={accountDetails.ownerName} />
+            <DetailCard
+              label="المزامنة"
+              value={accountDetails.synchrouns ? "مفعلة" : "غير مفعلة"}
+            />
+            <DetailCard
+              label="آخر مزامنة"
+              value={formatDate(accountDetails.lastSync)}
+            />
+            <DetailCard
+              label="تاريخ إنشاء الحساب"
+              value={accountDetails.createdAt}
+            />
+            <DetailCard
+              full
+              label="IBAN"
+              value={accountDetails.iban}
+              ltr
+              copyLabel="رقم الآيبان"
+            />
+            <DetailCard full label="الوصف" value={accountDetails.description} />
+          </section>
+
+          <section className="acc-txn-stats-row">
+            <div className="acc-txn-stat">
+              <span className="acc-txn-stat-value positive" dir="ltr">
+                +{formatNumber(txnStats.inbound)}
+              </span>
+              <span className="acc-txn-stat-label">
+                إجمالي المبالغ الداخلة ({accountDetails.currency})
+              </span>
+            </div>
+
+            <div className="acc-txn-stat">
+              <span className="acc-txn-stat-value negative" dir="ltr">
+                -{formatNumber(txnStats.outbound)}
+              </span>
+              <span className="acc-txn-stat-label">
+                إجمالي المبالغ الخارجة ({accountDetails.currency})
+              </span>
+            </div>
+
+            <div className="acc-txn-stat">
+              <span className="acc-txn-stat-value">{txnStats.count}</span>
+              <span className="acc-txn-stat-label">عدد العمليات المسجّلة</span>
+            </div>
+          </section>
+
+          <section className="acc-transactions-section">
+            <div className="acc-section-head">
+              <h3>سجل العمليات على هذا الحساب</h3>
+              <span className="acc-count-badge">{transactions.length}</span>
+            </div>
+
+            {isLoadingTransactions ? (
+              <LoadingState message="جاري تحميل المعاملات..." size="sm" />
+            ) : isErrorTransactions ? (
+              <ErrorState
+                title="تعذر تحميل المعاملات"
+                message={
+                  errorTransactions?.message ||
+                  "حدث خطأ أثناء جلب معاملات الحساب."
+                }
+                size="sm"
+                onRetry={refetchTransactions}
+              />
+            ) : transactions.length === 0 ? (
+              <EmptyState
+                title="لا توجد معاملات"
+                message="لم يتم تسجيل أي معاملة على هذا الحساب."
+                size="sm"
+              />
+            ) : (
+              <div className="acc-transactions-list">
+                {transactions.map((transaction) => (
+                  <div className="acc-transaction-row" key={transaction.id}>
+                    <div className="acc-transaction-main">
+                      <strong>{transaction.title}</strong>
+                      <span className="acc-transaction-parties">
+                        {transaction.from} ← {transaction.to}
+                      </span>
+                    </div>
+
+                    <div className="acc-transaction-meta">
+                      <span
+                        className={`acc-transaction-status status-${(
+                          transaction.status || ""
+                        ).toLowerCase()}`}
+                      >
+                        {transaction.status}
+                      </span>
+
+                      <span
+                        className={`acc-transaction-amount ${
+                          transaction.type === "deposit" ? "positive" : ""
+                        }`}
+                        dir="ltr"
+                      >
+                        {transaction.type === "deposit" ? "+" : "-"}
+                        {transaction.amount} {transaction.currency}
+                      </span>
+
+                      <span className="acc-transaction-date">
+                        {formatDate(transaction.date)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          <div className="acc-detail-actions">
+            <Button onClick={onTransfer}>بدء تحويل من الحساب</Button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function AccountHero({ account }) {
+  const iconName = getProviderIconName(account.provider);
+  const statusLabel = STATUS_LABELS[account.status] || account.status;
+
+  return (
+    <section className="acc-detail-hero">
+      <span className="acc-detail-hero-icon">
+        <Icon name={iconName} />
+      </span>
+
+      <div className="acc-detail-hero-copy">
+        <h2>{account.provider}</h2>
+        <div className="acc-detail-hero-number">
+          <span dir="ltr">{account.accountNumber}</span>
+          <CopyButton value={account.accountNumber} label="رقم الحساب" />
+        </div>
+      </div>
+
+      <span className={`acc-status-pill status-${account.status}`}>
+        <span className="acc-status-dot" />
+        {statusLabel}
+      </span>
+
+      <div className="acc-detail-hero-balance">
+        <span dir="ltr">{formatNumber(parseAmount(account.amount))}</span>
+        <small>{account.currency}</small>
+      </div>
+    </section>
+  );
+}
+
+function DetailCard({ label, value, full, ltr, copyLabel }) {
+  return (
+    <div className={`acc-detail-card ${full ? "full-width" : ""}`}>
+      <span className="acc-detail-card-label">{label}</span>
+      <div className="acc-detail-card-value-row">
+        <span className={`acc-detail-card-value ${ltr ? "ltr" : ""}`}>
+          {value || "—"}
+        </span>
+        {copyLabel && value && <CopyButton value={value} label={copyLabel} />}
       </div>
     </div>
   );
@@ -402,29 +588,27 @@ export function SearchBar({
 }) {
   const navigate = useNavigate();
   return (
-    <div className="container-search">
-      <div className="input-wrapper">
-        <Search className="search-placeholder-icon" size={18} />
-
+    <div className="acc-toolbar">
+      <div className="acc-search-wrap">
+        <Search className="acc-search-icon" size={18} />
         <input
           type="text"
-          className="search-input"
-          placeholder="بحث .."
+          className="acc-search-input"
+          placeholder="ابحث بالمزود المالي أو رقم الحساب"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
 
-      <span className="filter-icon">
-        <Funnel />
-      </span>
+      <div className="acc-filter-wrap">
+        <Funnel size={16} className="acc-filter-icon" />
+        <DropDownList
+          selectedProvider={selectedProvider}
+          setSelectedProvider={setSelectedProvider}
+        />
+      </div>
 
-      <DropDownList
-        selectedProvider={selectedProvider}
-        setSelectedProvider={setSelectedProvider}
-      />
-
-      <Button onClick={() => navigate("/add-account")} icon={<CirclePlus />}>
+      <Button onClick={() => navigate("/add-account")} icon={<CirclePlus size={18} />}>
         ربط حساب مالي
       </Button>
     </div>
@@ -439,23 +623,20 @@ export function DropDownList({ selectedProvider, setSelectedProvider }) {
     { value: "مصرف الراجحي", label: "مصرف الراجحي" },
   ];
   return (
-    <div className="drop-down">
-      {" "}
-      <CustomSelect
-        name="trans-finance"
-        id="trans-finance"
-        options={providerOptions}
-        value={selectedProvider}
-        onChange={(e) => setSelectedProvider(e.target.value)}
-        placeholder="كافة المزودات المالية"
-      />{" "}
-    </div>
+    <CustomSelect
+      name="trans-finance"
+      id="trans-finance"
+      options={providerOptions}
+      value={selectedProvider}
+      onChange={(e) => setSelectedProvider(e.target.value)}
+      placeholder="كافة المزودات المالية"
+    />
   );
 }
 
 export function Button({ children, icon, onClick }) {
   return (
-    <button type="button" className="btn" onClick={onClick}>
+    <button type="button" className="acc-primary-btn" onClick={onClick}>
       {children}
       {icon}
     </button>

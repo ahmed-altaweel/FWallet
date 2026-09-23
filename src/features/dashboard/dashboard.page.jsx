@@ -36,7 +36,7 @@ export function Dashboard(){
                 </div>
             </div>
 
-            <DashboardKPIs token={token} />
+           
 
             <div className="staticts-balance">
                 <p>إجمالي الرصيد حسب العملة</p>
@@ -45,7 +45,7 @@ export function Dashboard(){
                     <TotalBalanceCard token={token}/>
                 </div>
             </div>
-
+ <DashboardKPIs token={token} />
             <div className="dashboard-grid">
                 <div className="transactions-chart">
                     <p className="transaction-chart-title">

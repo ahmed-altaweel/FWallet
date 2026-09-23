@@ -11,8 +11,8 @@
   overflow: hidden;
   padding: 32px 26px 46px;
   background:
-    repeating-linear-gradient(to bottom, transparent 0 31px, rgba(7, 13, 89, .035) 31px 32px),
-    var(--secondry-bg);
+  repeating-linear-gradient(to bottom, transparent 0 31px, rgba(7, 13, 89, .035) 31px 32px),
+  var(--secondry-bg);
   color: var(--text-primary);
   font-family: var(--font-ui);
 }
@@ -224,9 +224,7 @@
   }
 }
 
-/* ============================ Section list =============================== */
-/* شبكة flex قابلة للالتفاف: كل بطاقة لها حدودها وظلها الخاص
-   بدل الاعتماد على خطوط فاصلة داخل لوح واحد. */
+
 
 .fw-lux-section-grid {
   display: flex;
@@ -562,7 +560,7 @@
   font-weight: 600;
 }
 
-/* حقول على شكل "خط توقيع" ورقي بدل صندوق ممتلئ */
+
 
 .fw-lux-input-shell {
   position: relative;
@@ -622,7 +620,7 @@
   height: 16px;
 }
 
-/* خط التوقيع يتّسع من المنتصف عند التركيز */
+
 
 .fw-lux-input-glow {
   position: absolute;
@@ -804,7 +802,7 @@
    background: #ed1c1c9f;
 }
 /* ============================= Security banner ============================ */
-/* شريط بحواف مثقّبة يذكّر بإيصال/تذكرة مؤمّنة */
+
 
 .fw-lux-security-banner {
   position: relative;

@@ -187,22 +187,7 @@ export function AccountsPage() {
 
       {!isLoading && !isError && accounts.length > 0 && (
         <section className="acc-overview">
-          <div className="acc-kpi-row">
-            <div className="acc-kpi-card">
-              <span className="acc-kpi-value">{overview.total}</span>
-              <span className="acc-kpi-label">إجمالي الحسابات</span>
-            </div>
-
-            <div className="acc-kpi-card">
-              <span className="acc-kpi-value">{overview.activeCount}</span>
-              <span className="acc-kpi-label">حسابات نشطة</span>
-            </div>
-
-            <div className="acc-kpi-card">
-              <span className="acc-kpi-value">{overview.syncedCount}</span>
-              <span className="acc-kpi-label">مزامنة تلقائية مفعّلة</span>
-            </div>
-          </div>
+         
 
           <div className="acc-currency-row">
             {overview.currencyTotals.map((item) => (
